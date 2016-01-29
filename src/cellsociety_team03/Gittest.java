@@ -1,8 +1,7 @@
 package cellsociety_team03;
 
 public class Gittest {
-	private static final int whatever;
-
+    private int test;
 
     public Gittest () {
         // TODO Auto-generated constructor stub
