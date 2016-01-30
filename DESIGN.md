@@ -15,18 +15,16 @@ The basic architecture of our program is as follows. There's a UI that will allo
 
 ![we also drew this on the board](events.jpg)
 
-The way we structured our program, Main simply launches the application and also allows you to read in an XML file or exit the program. When you load an XML file it will create a Game object, pass the file and scene to it. The constructor of Game will then parse the XML file. When the XML file is parsed, it will initialize the game with the Scene and some data structure that holds the rules for the CA which we parsed from the XML file. When the Game is initialized, a new Grid is made based on the which CA the XML file specifies. The specific Grid will change the UI with information relevant to it. The Grid updates by calling the step() function. The Grid class itself is an abstract super class and each specific Grid extends it. The way they implement ste() is specific to the rules of the CA. The Grid is populated by Cell objects. There are two major Cell subclasses, SimpleCell and DataCell. SimpleCells simply exist in one of the states listed in the enumeration class State. DataCells on the other hand have persistent information that needs to be tracked.  
+
+The way we structured our program, Main simply launches the application and also allows you to read in an XML file or exit the program. When you load an XML file it will create a Game object, pass the file and scene to it. The constructor of Game will then parse the XML file. When the XML file is parsed, it will initialize the game with the Scene and some data structure that holds the rules for the CA which we parsed from the XML file. When the Game is initialized, a new Grid is made based on the which CA the XML file specifies. The specific Grid will change the UI with information relevant to it. The Grid updates by calling the step() function. The Grid class itself is an abstract super class and each specific Grid extends it. The way they implement step() is specific to the rules of the CA. The Grid is populated by Cell objects. There are two major Cell subclasses, SimpleCell and DataCell. SimpleCells simply exist in one of the states listed in the enumeration class State. DataCells on the other hand have persistent information that needs to be tracked.  
 
 
 ### User Interface
-Users will load an XML file with the specifications for the CA. Once the file is loaded, they will be able to step through the CA or run it continuously and stop whenever they want. They can then exit that CA and load another XML file to run a different one.
+Users will load an XML file with the specifications for the CA. Once the file is loaded, they will be able to step through the CA or run it continuously and stop whenever they want. They can then exit that CA and load another XML file to run a different one. When a CA is chosen, the application will display all pertinent information as well as the visuals of the simulation. There will be buttons to step, start, and reset the CA. If an error occurs, an error window will pop-up giving the explanation for what happened.
 
 
+![also on the whiteboard](ui.jpg)
 
-* How will user interact with program (keep it very simple)
-* Overall appearance of UI
-* Pictures of UI
-* Descrive erroneous situations that are reported to the user
 
 ### Design Details
 * Describe components in detail, including extra sub-components
