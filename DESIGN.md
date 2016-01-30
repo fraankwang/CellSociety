@@ -6,14 +6,17 @@ CompSci 308: Cell Society Design
 ### Introduction
 The goal of this project is to create a program that runs multiple different types of Cellular Automata and displays it graphically. Our program will be flexible enough to deal with all the CAs specified in the assignment description.  Our code should be able to add even more types of CAs if needed.
 
-The basic architecture of our program is as follows. There's a UI that will allow you to load in an XML file. Once that is loaded in, depending on the type of CA the XML file describes, the program creates a grid filled with cells that follow the rules of CA. 
+The basic architecture of our program is as follows. There's a UI that will allow you to load in an XML file. Once that is loaded in, depending on the type of CA the XML file describes, the program creates a grid filled with cells that follow the rules of CA.
 
 
 
 ### Overview
+![we drew this on a white board](classes.jpg)
 
-* Describe specific components, their purpose, and how they collaborate with each other
-* Picture of how components are related (UML)
+![we also drew this on the board](events.jpg)
+
+The way we structured our program, Main simply launches the application and also allows you to read in an XML file or exit the program. When you load an XML file it will create a Game object, pass the file and scene to it. The constructor of Game will then parse the XML file. When the XML file is parsed, it will initialize the game with the Scene and some data structure that holds the rules for the CA which we parsed from the XML file. When the Game is initialized, a new Grid is made based on the which CA the XML file specifies. The specific Grid will change the UI with information relevant to it. The Grid updates by calling the step() function. The Grid class itself is an abstract super class and each specific Grid extends it. The way they implement ste() is specific to the rules of the CA. The Grid is populated by Cell objects. There are two major Cell subclasses, SimpleCell and DataCell. SimpleCells simply exist in one of the states listed in the enumeration class State. DataCells on the other hand have persistent information that needs to be tracked.  
+
 
 ### User Interface
 Users will load an XML file with the specifications for the CA. Once the file is loaded, they will be able to step through the CA or run it continuously and stop whenever they want. They can then exit that CA and load another XML file to run a different one.
