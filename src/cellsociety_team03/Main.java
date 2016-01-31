@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -92,11 +94,14 @@ public class Main extends Application{
 		} else if (e.getSource() == resetButton){
 			if (primaryGame != null) primaryGame.initializeGrid();
 		} else if (e.getSource() == newGameButton){
-			// prompt user to pick an XML file
-			
-			// TESTING: using test.xml file
-			File file = new File("test.xml");
-			setUpGame(file);
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Select an XML file");
+			fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml"));
+			File file = fileChooser.showOpenDialog(primaryStage);
+			if (file != null) {
+			    setUpGame(file);
+			}
+
 		} else if (e.getSource() == exitButton){
 			primaryStage.close();
 		}
@@ -121,7 +126,9 @@ public class Main extends Application{
 	 */
 	private Map<String,String> parseXML(File file){
 		Map<String,String> myParams = new HashMap<String,String>();
-//		@TODO parse XML and convert to Map<String,String>		
+//		TODO parse XML and convert to Map<String,String>
+		
+		
 		return myParams;
 	}
 }
