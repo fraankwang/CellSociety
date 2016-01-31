@@ -1,0 +1,7 @@
+<Title>Fire</Title>
+<GameParameters>
+	<probcatch>33</probcatch>
+	<rows>10</rows>
+	<columns>10</columns>
+	<delay>50</delay>
+</GameParameters>

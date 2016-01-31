@@ -8,9 +8,15 @@ import java.util.Map;
 
 public class SegregationGrid extends Grid {
 
+	private double similarityPercentage;
+	private double redPercentage;
+	private double bluePercentage;
+	
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
-		// TODO Auto-generated constructor stub
+		similarityPercentage = Double.parseDouble(params.get("similarityPercentage"));
+		redPercentage = Double.parseDouble(params.get("redPercentage"));
+		bluePercentage = Double.parseDouble(params.get("bluePercentage"));
 	}
 	
 	protected void setCellStates(){

@@ -8,9 +8,11 @@ import java.util.Map;
 
 public class FireGrid extends Grid {
 
+	private double probCatch;
+	
 	public FireGrid(Map<String, String> params) {
 		super(params);
-		// TODO Auto-generated constructor stub
+		probCatch = Double.parseDouble(params.get("probCatch"));
 	}
 	
 	protected void setCellStates(){

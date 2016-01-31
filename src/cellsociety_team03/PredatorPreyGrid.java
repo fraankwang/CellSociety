@@ -8,9 +8,22 @@ import java.util.Map;
 
 public class PredatorPreyGrid extends Grid {
 
+	private int fishBreed;
+	private int sharkBreed;
+	private int sharkHealth;
+	private double sharkPercentage;
+	private double fishPercentage;
+	private double emptyPercentage;
+	
+	
 	public PredatorPreyGrid(Map<String, String> params) {
 		super(params);
-		// TODO Auto-generated constructor stub
+		fishBreed = Integer.parseInt(params.get("fishBreed"));
+		sharkBreed = Integer.parseInt(params.get("sharkBreed"));
+		sharkHealth = Integer.parseInt(params.get("sharkHealth"));
+		sharkPercentage = Double.parseDouble(params.get("sharkPercentage"));
+		fishPercentage = Double.parseDouble(params.get("fishPercentage"));
+		emptyPercentage = Double.parseDouble(params.get("emptyPercentage"));
 	}
 	
 	protected void setCellStates(){

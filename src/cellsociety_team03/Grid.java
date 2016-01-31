@@ -12,8 +12,9 @@ import javafx.scene.layout.GridPane;
 
 public abstract class Grid {
 	GridCell[][] myCells;
-	int myGridWidth;
-	int myGridHeight;
+	int myColumns;
+	int myRows;
+	long delay;
 	Group myRoot;
 	GridPane myGridPane;
 	Map<String,String> myParameters;
@@ -25,6 +26,10 @@ public abstract class Grid {
 	 */
 	public Grid(Map<String,String> params){
 		myParameters = params;
+		myRows = Integer.parseInt(params.get("rows"));
+		myColumns = Integer.parseInt(params.get("columns"));
+		delay = Long.parseLong(params.get("delay"));
+		
 		// read params
 			// initializes Cells
 			// TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
@@ -65,6 +70,7 @@ public abstract class Grid {
 	 * Initializes and populates myCells given the initial grid set up parameters
 	 */
 	private void initializeCells(){
+		myCells = new GridCell[myRows][myColumns];
 		// read myParameters to determine initial set up
 		createBoard();
 	}
@@ -101,20 +107,20 @@ public abstract class Grid {
 		this.myCells = myCells;
 	}
 
-	public int getGridWidth() {
-		return myGridWidth;
+	public int getColumns() {
+		return myColumns;
 	}
 
-	public void setGridWidth(int gridWidth) {
-		this.myGridWidth = gridWidth;
+	public void setColumns(int gridWidth) {
+		this.myColumns = gridWidth;
 	}
 
-	public int getGridHeight() {
-		return myGridHeight;
+	public int getRows() {
+		return myRows;
 	}
 
-	public void setGridHeight(int gridHeight) {
-		this.myGridHeight = gridHeight;
+	public void setRows(int gridHeight) {
+		this.myRows = gridHeight;
 	}
 
 	public Group getRoot() {

@@ -1,0 +1,12 @@
+<Title>PredatorPrey</Title>
+<GameParameters>
+	<fishbreed>2</fishbreed>
+	<sharkbreed>4</sharkbreed>
+	<sharkhealth>3</sharkhealth>
+	<sharkpercentage>25</sharkpercentage>
+	<fishpercentage>25</fishpercentage>
+	<empty>50</empty>
+	<rows>10</rows>
+	<columns>10</columns>
+	<delay>50</delay>
+</GameParameters>
