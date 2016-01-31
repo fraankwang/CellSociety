@@ -14,7 +14,7 @@ public class FireGrid extends Grid {
 	}
 	
 	@Override
-	protected void step(){
+	protected void step(Double elapsedTime){
 		
 	}
 
