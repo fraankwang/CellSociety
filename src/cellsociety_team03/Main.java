@@ -29,6 +29,7 @@ public class Main extends Application{
 	private Button stopButton;
 	private Button resetButton;
 	private Button newGameButton;
+	private Button exitButton;
 	
 	/**
 	 * Sets primaryStage (which displays primaryScene) and primaryScene (which displays primaryRoot)
@@ -39,9 +40,9 @@ public class Main extends Application{
 	public void start(Stage s) throws Exception {
 		primaryStage = s;
 		primaryRoot = new Group();
-		primaryRoot.getChildren().add(gameRoot);
-
+		
 		initialize();
+		
 		
 		primaryScene = new Scene(primaryRoot,500,500,Color.WHITE);
 		primaryStage.setScene(primaryScene);
@@ -53,27 +54,30 @@ public class Main extends Application{
     }
 	
 	/**
+	 * Initializes both splashRoot and gameRoot to be added to primaryRoot.
 	 * Creates new HBox to hold all the game buttons that stay visible the entire time.
 	 * Each of the buttons will call the handleButton function which sets off additional actions
 	 */
 	private void initialize(){
 		//create horizontally aligned box with spacing of 50
 		splashRoot = new HBox(50);
+		gameRoot = new Group();
 		
 		startButton = new Button("Start");
 		stopButton = new Button("Stop");
 		resetButton = new Button("Reset");
 		newGameButton = new Button("New Game");
+		exitButton = new Button("Exit");
 		
 		//set asynchronous functions to handle button clicks
 		startButton.setOnAction(e-> handleButton(e));
 		stopButton.setOnAction(e-> handleButton(e));
 		resetButton.setOnAction(e-> handleButton(e));
 		newGameButton.setOnAction(e-> handleButton(e));
+		exitButton.setOnAction(e-> handleButton(e));
 		
-		splashRoot.getChildren().addAll(startButton,stopButton,resetButton,newGameButton);
-		
-		primaryRoot.getChildren().add(splashRoot);
+		splashRoot.getChildren().addAll(startButton,stopButton,resetButton,newGameButton,exitButton);
+		primaryRoot.getChildren().addAll(splashRoot, gameRoot);
 	}
 	
 	/**
@@ -82,17 +86,19 @@ public class Main extends Application{
 	 */
 	private void handleButton(ActionEvent e){
 		if (e.getSource() == startButton){
-			primaryGame.startGame();
+			if (primaryGame != null) primaryGame.startGame();
 		} else if (e.getSource() == stopButton) {
-			primaryGame.stopGame();
+			if (primaryGame != null) primaryGame.stopGame();
 		} else if (e.getSource() == resetButton){
-			primaryGame.initializeGrid();
+			if (primaryGame != null) primaryGame.initializeGrid();
 		} else if (e.getSource() == newGameButton){
 			// prompt user to pick an XML file
 			
 			// TESTING: using test.xml file
 			File file = new File("test.xml");
 			setUpGame(file);
+		} else if (e.getSource() == exitButton){
+			primaryStage.close();
 		}
 	}
 	
@@ -102,10 +108,10 @@ public class Main extends Application{
 	 */
 	private void setUpGame(File file){
 		Map<String,String> params = parseXML(file);
-		String type = params.get("Type");
+//		String type = params.get("Type");
 		
-		primaryGame = new Game(type, params);
-		gameRoot = primaryGame.getGameRoot();
+//		primaryGame = new Game(type, params);
+//		gameRoot = primaryGame.getGameRoot();
 	}
 	
 	/**
