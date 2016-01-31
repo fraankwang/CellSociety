@@ -38,4 +38,4 @@ Users will load an XML file with the specifications for the CA. Once the file is
 * Assumptions or dependencies that impact overall design
 
 ### Team Responsibilities
-* Describe how you will split up responsibility among teammates
+We've decided to split the work into two parts. One person will be responsible for dealing with the interactions between and implementing the Game, Grid, and Cell class. The second half of the work will be split between two people. Each of those people will work on implementing the specific Grid types that follow rules of the CAs. They'll each do two each as there are four.
