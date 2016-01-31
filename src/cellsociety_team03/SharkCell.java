@@ -3,10 +3,10 @@ package cellsociety_team03;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
-public class SharkCell extends Cell {
+public class SharkCell extends GridCell {
 
-    public SharkCell (State currentState, Color color, int size, Shape s) {
-        super(currentState, color, size, s);
+    public SharkCell (State currentState, int size, Shape s) {
+        super(currentState, size, s);
     }
 
 }

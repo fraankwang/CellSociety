@@ -43,7 +43,7 @@ public class Main extends Application{
 		
 		initialize();
 		
-		
+		// TODO: figure out primaryScene's dimensions
 		primaryScene = new Scene(primaryRoot,500,500,Color.WHITE);
 		primaryStage.setScene(primaryScene);
 		primaryStage.show();

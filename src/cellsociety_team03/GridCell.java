@@ -4,17 +4,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
 
-public abstract class Cell {
+public abstract class GridCell {
     private State myCurrentState;
     private State myNextState;
-    private Color myColor; // TODO: make it part of State enum
+    private Color myColor;
     private int mySize;
     private Shape myShape; // TODO: can we figure out a way to make it Node?
 
-    public Cell (State currentState, Color color, int size, Shape s) {
+    public GridCell (State currentState, int size, Shape s) {
         myCurrentState = currentState;
         myShape = s;
-        myShape.setFill(color);
+        myColor = myCurrentState.getColor();
+        myShape.setFill(myColor);
         mySize = size;
     }
 
@@ -32,6 +33,11 @@ public abstract class Cell {
 
     public void setMyNextState (State myNextState) {
         this.myNextState = myNextState;
+    }
+    
+    public void transitionStates(){
+    	this.myCurrentState = this.myNextState;
+    	this.myNextState = null;
     }
 
     public Shape getMyShape () {
