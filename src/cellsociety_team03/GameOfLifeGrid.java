@@ -12,10 +12,14 @@ public class GameOfLifeGrid extends Grid {
 		super(params);
 		// TODO Auto-generated constructor stub
 	}
-	
-	@Override
-	protected void step(Double elapsedTime){
+
+	protected void setCellStates(){
+		for (int r = 0; r < myCells.length; r++){
+			for (int c = 0; c < myCells[0].length; c++){
+				// TODO: Cell State determining algorithms
+			}		
+		}
+		
 		
 	}
-
 }

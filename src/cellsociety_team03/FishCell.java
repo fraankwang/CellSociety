@@ -5,8 +5,8 @@ import javafx.scene.shape.Shape;
 
 public class FishCell extends DataCell {
 
-    public FishCell (State currentState, Color color, int size, Shape s) {
-        super(currentState, color, size, s);
+    public FishCell (State currentState, int size, Shape s) {
+        super(currentState, size, s);
     }
 
 }
