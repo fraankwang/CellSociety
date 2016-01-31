@@ -4,13 +4,11 @@
 
 package cellsociety_team03;
 
-import java.io.File;
 import java.util.Map;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.util.Duration;
 
 public class Game {
