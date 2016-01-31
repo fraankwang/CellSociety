@@ -8,18 +8,20 @@ import java.util.Map;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
+import javafx.scene.control.Cell;
+import javafx.scene.layout.GridPane;
 
 public abstract class Grid {
 	Cell[][] myCells;
-	int gridWidth;
-	int gridHeight;
-	Group root;
+	int myGridWidth;
+	int myGridHeight;
+	Group myRoot;
 	
 	public Grid(Map<String,String> params){
 		
 	}
 	
-	protected abstract void step();
+	protected abstract void step(Double elapsedTime);
 	
 	private void handleMouseInput(ActionEvent e){
 		
@@ -36,6 +38,10 @@ public abstract class Grid {
 	private void createBoard(){
 		//make GridPane based on Cell[][] myCells
 		//set root
+		GridPane gp = new GridPane();
+		for (int i = 0; i< myCells.length; i++){
+			
+		}
 	}
 
 	public Cell[][] getMyCells() {
@@ -47,27 +53,27 @@ public abstract class Grid {
 	}
 
 	public int getGridWidth() {
-		return gridWidth;
+		return myGridWidth;
 	}
 
 	public void setGridWidth(int gridWidth) {
-		this.gridWidth = gridWidth;
+		this.myGridWidth = gridWidth;
 	}
 
 	public int getGridHeight() {
-		return gridHeight;
+		return myGridHeight;
 	}
 
 	public void setGridHeight(int gridHeight) {
-		this.gridHeight = gridHeight;
+		this.myGridHeight = gridHeight;
 	}
 
 	public Group getRoot() {
-		return root;
+		return myRoot;
 	}
 
 	public void setRoot(Group root) {
-		this.root = root;
+		this.myRoot = root;
 	}
 	
 	

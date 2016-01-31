@@ -14,7 +14,7 @@ public class GameOfLifeGrid extends Grid {
 	}
 	
 	@Override
-	protected void step(){
+	protected void step(Double elapsedTime){
 		
 	}
 
