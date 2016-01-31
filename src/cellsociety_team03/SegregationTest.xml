@@ -1,0 +1,10 @@
+<Title>Segregation</Title>
+<GameParameters>
+	<similaritypercentage>50</similaritypercentage>
+	<redpercentage>50</redpercentage>
+	<bluepercentage>50</bluepercentage>
+	<emptypercentage>10</emptypercentage>
+	<rows>10</rows>
+	<columns>10</columns>
+	<delay>50</delay>
+</GameParameters>

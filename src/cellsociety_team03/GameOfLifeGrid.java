@@ -8,9 +8,13 @@ import java.util.Map;
 
 public class GameOfLifeGrid extends Grid {
 
+	private double nonEmptyPercentage;
+	private double emptyPercentage;
+	
 	public GameOfLifeGrid(Map<String, String> params) {
 		super(params);
-		// TODO Auto-generated constructor stub
+		nonEmptyPercentage = Double.parseDouble(params.get("nonEmptyPercentage"));
+		emptyPercentage = Double.parseDouble(params.get("emptyPercentage"));
 	}
 
 	protected void setCellStates(){

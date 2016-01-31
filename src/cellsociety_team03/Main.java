@@ -113,7 +113,7 @@ public class Main extends Application{
 	 */
 	private void setUpGame(File file){
 		Map<String,String> params = parseXML(file);
-//		String type = params.get("Type");
+//		String type = params.get("Title");
 		
 //		primaryGame = new Game(type, params);
 //		gameRoot = primaryGame.getGameRoot();
