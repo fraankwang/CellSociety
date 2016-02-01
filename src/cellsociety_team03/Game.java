@@ -28,6 +28,7 @@ public class Game {
 		myGameType = params.get("Title");
 		myParameters = params;
 		
+		System.out.println("Initializing grid");
 		initializeGrid();
 		initializeGameLoop();
 	}
@@ -40,7 +41,7 @@ public class Game {
 		if (myGameType.equals("Fire")){
 			myGrid = new FireGrid(myParameters); 
 
-		} else if (myGameType.equals("Game of Life")){
+		} else if (myGameType.equals("GameOfLife")){
 			myGrid = new GameOfLifeGrid(myParameters);
 			
 		} else if (myGameType.equals("Segregation")){
@@ -50,7 +51,9 @@ public class Game {
 			myGrid = new PredatorPreyGrid(myParameters);
 		}
 		
+		System.out.println(myGameType + "Grid initialized");
 		myGameRoot = myGrid.getRoot();
+		System.out.println("myGameRoot initialized");
 	}
 	
 	private void initializeGameLoop(){

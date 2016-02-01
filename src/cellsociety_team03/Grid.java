@@ -77,11 +77,12 @@ public abstract class Grid {
 		
 		for (int r = 0; r < myCells.length; r++){
 			for (int c = 0; c < myCells[0].length; c++){
-				myCells[r][c] = new SimpleCell(State.EMPTY, CELL_SIZE, new Rectangle(50, 50));
+				myCells[r][c] = new SimpleCell(State.BURNING, CELL_SIZE, new Rectangle(30, 30));
+				if (r % 3 == 0) myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30)); 
 			}
 		}
 		
-		
+		System.out.println("Cells initialized");
 		createBoard();
 	}
 	
@@ -92,15 +93,17 @@ public abstract class Grid {
 		myGridPane = new GridPane();
 		
 		// TODO: figure out dimensions to resize myGridPane to fit with UI
-		myGridPane.setPrefSize(500, 500);
+		myGridPane.setPrefSize(150, 150);
 		
 		for (int r = 0; r < myCells.length; r++){
 			for (int c = 0; c < myCells[0].length; c++){
-				myGridPane.add(myCells[r][c].getMyShape(),r,c);
+				myGridPane.add(myCells[r][c].getMyShape(),c,r);
 			}
 		}
 		
+		System.out.println("GridPane initialized and added to root");
 		myRoot.getChildren().add(myGridPane);
+		
 	}
 
 	private void handleMouseInput(ActionEvent e){
