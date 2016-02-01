@@ -18,12 +18,12 @@ public class PredatorPreyGrid extends Grid {
 	
 	public PredatorPreyGrid(Map<String, String> params) {
 		super(params);
-		fishBreed = Integer.parseInt(params.get("fishBreed"));
-		sharkBreed = Integer.parseInt(params.get("sharkBreed"));
-		sharkHealth = Integer.parseInt(params.get("sharkHealth"));
-		sharkPercentage = Double.parseDouble(params.get("sharkPercentage"));
-		fishPercentage = Double.parseDouble(params.get("fishPercentage"));
-		emptyPercentage = Double.parseDouble(params.get("emptyPercentage"));
+		fishBreed = Integer.parseInt(params.get("fishbreed"));
+		sharkBreed = Integer.parseInt(params.get("sharkbreed"));
+		sharkHealth = Integer.parseInt(params.get("sharkhealth"));
+		sharkPercentage = Double.parseDouble(params.get("sharkpercentage"));
+		fishPercentage = Double.parseDouble(params.get("fishpercentage"));
+		emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
 	}
 	
 	protected void setCellStates(){

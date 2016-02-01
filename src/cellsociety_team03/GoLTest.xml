@@ -1,8 +1,7 @@
-<Title>GameOfLife</Title>
-<GameParameters>
-	<nonemptypercentage>33</nonemptypercentage>
-	<emptypercentage>66</emptypercentage>
-	<rows>10</rows>
-	<columns>10</columns>
-	<delay>50</delay>
-</GameParameters>
+<Title>GameOfLife
+<nonemptypercentage>33.3</nonemptypercentage>
+<emptypercentage>66.6</emptypercentage>
+<rows>10</rows>
+<columns>10</columns>
+<delay>50</delay>
+</Title>

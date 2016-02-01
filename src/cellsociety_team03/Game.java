@@ -24,9 +24,10 @@ public class Game {
 	 * @param type
 	 * @param params
 	 */
-	public Game(String type, Map<String,String> params){
-		myGameType = type;
+	public Game(Map<String,String> params){
+		myGameType = params.get("Title");
 		myParameters = params;
+		
 		initializeGrid();
 		initializeGameLoop();
 	}
@@ -38,10 +39,13 @@ public class Game {
 	public void initializeGrid(){
 		if (myGameType.equals("Fire")){
 			myGrid = new FireGrid(myParameters); 
+
 		} else if (myGameType.equals("Game of Life")){
 			myGrid = new GameOfLifeGrid(myParameters);
+			
 		} else if (myGameType.equals("Segregation")){
 			myGrid = new SegregationGrid(myParameters);
+			
 		} else if (myGameType.equals("PredatorPrey")){
 			myGrid = new PredatorPreyGrid(myParameters);
 		}
