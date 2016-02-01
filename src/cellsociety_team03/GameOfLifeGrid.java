@@ -13,8 +13,8 @@ public class GameOfLifeGrid extends Grid {
 	
 	public GameOfLifeGrid(Map<String, String> params) {
 		super(params);
-		nonEmptyPercentage = Double.parseDouble(params.get("nonEmptyPercentage"));
-		emptyPercentage = Double.parseDouble(params.get("emptyPercentage"));
+		nonEmptyPercentage = Double.parseDouble(params.get("nonemptypercentage"));
+		emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
 	}
 
 	protected void setCellStates(){

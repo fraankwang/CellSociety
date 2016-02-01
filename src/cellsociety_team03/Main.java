@@ -6,7 +6,6 @@ package cellsociety_team03;
 
 import java.io.File;
 import java.util.*;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -113,10 +112,9 @@ public class Main extends Application{
 	 */
 	private void setUpGame(File file){
 		Map<String,String> params = parseXML(file);
-//		String type = params.get("Title");
-		
-//		primaryGame = new Game(type, params);
-//		gameRoot = primaryGame.getGameRoot();
+
+		primaryGame = new Game(params);
+		gameRoot = primaryGame.getGameRoot();
 	}
 	
 	/**
@@ -125,10 +123,8 @@ public class Main extends Application{
 	 * @return
 	 */
 	private Map<String,String> parseXML(File file){
-		Map<String,String> myParams = new HashMap<String,String>();
-//		TODO parse XML and convert to Map<String,String>
-		
-		
-		return myParams;
+		Parser parser = new Parser();
+		return parser.parse(file);
 	}
+
 }

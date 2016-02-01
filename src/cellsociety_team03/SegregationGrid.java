@@ -14,9 +14,9 @@ public class SegregationGrid extends Grid {
 	
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
-		similarityPercentage = Double.parseDouble(params.get("similarityPercentage"));
-		redPercentage = Double.parseDouble(params.get("redPercentage"));
-		bluePercentage = Double.parseDouble(params.get("bluePercentage"));
+		similarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
+		redPercentage = Double.parseDouble(params.get("redpercentage"));
+		bluePercentage = Double.parseDouble(params.get("bluepercentage"));
 	}
 	
 	protected void setCellStates(){

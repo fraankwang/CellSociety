@@ -9,15 +9,17 @@ import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 
 public abstract class Grid {
-	GridCell[][] myCells;
-	int myColumns;
-	int myRows;
-	long delay;
-	Group myRoot;
-	GridPane myGridPane;
-	Map<String,String> myParameters;
+	protected GridCell[][] myCells;
+	private int myColumns;
+	private int myRows;
+	private long delay;
+	private Group myRoot;
+	private GridPane myGridPane;
+	private Map<String,String> myParameters;
+	private int CELL_SIZE = 50;
 	
 	/**
 	 * Reads the parameters passed to the constructor
@@ -29,10 +31,9 @@ public abstract class Grid {
 		myRows = Integer.parseInt(params.get("rows"));
 		myColumns = Integer.parseInt(params.get("columns"));
 		delay = Long.parseLong(params.get("delay"));
+		myRoot = new Group();
 		
-		// read params
-			// initializes Cells
-			// TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
+		// TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 		
 		initializeCells();
 	}
@@ -71,7 +72,16 @@ public abstract class Grid {
 	 */
 	private void initializeCells(){
 		myCells = new GridCell[myRows][myColumns];
-		// read myParameters to determine initial set up
+		
+		// TODO read myParameters to determine initial set up
+		
+		for (int r = 0; r < myCells.length; r++){
+			for (int c = 0; c < myCells[0].length; c++){
+				myCells[r][c] = new SimpleCell(State.EMPTY, CELL_SIZE, new Rectangle(50, 50));
+			}
+		}
+		
+		
 		createBoard();
 	}
 	
@@ -89,6 +99,8 @@ public abstract class Grid {
 				myGridPane.add(myCells[r][c].getMyShape(),r,c);
 			}
 		}
+		
+		myRoot.getChildren().add(myGridPane);
 	}
 
 	private void handleMouseInput(ActionEvent e){

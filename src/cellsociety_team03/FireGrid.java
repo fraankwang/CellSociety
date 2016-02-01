@@ -12,7 +12,8 @@ public class FireGrid extends Grid {
 	
 	public FireGrid(Map<String, String> params) {
 		super(params);
-		probCatch = Double.parseDouble(params.get("probCatch"));
+		probCatch = Double.parseDouble(params.get("probcatch"));
+		
 	}
 	
 	protected void setCellStates(){
