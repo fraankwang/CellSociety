@@ -70,7 +70,23 @@ public abstract class Grid {
 	/**
 	 * Initializes and populates myCells given the initial grid set up parameters
 	 */
-	protected abstract void initializeCells();
+	private void initializeCells(){
+		myCells = new GridCell[myRows][myColumns];
+		
+		// TODO read myParameters to determine initial set up
+		
+		for (int r = 0; r < myCells.length; r++){
+			for (int c = 0; c < myCells[0].length; c++){
+				initializeCell(r,c); 
+			}
+		}
+		
+		System.out.println("Cells initialized");
+		createBoard();
+	}
+	
+	
+	protected abstract void initializeCell(int row, int column);
 	
 	/**
 	 * Updates the visible Pane by mapping the the cells from myCells in the same location in the 2D array
