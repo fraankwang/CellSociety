@@ -78,7 +78,8 @@ public class Main extends Application{
 		exitButton.setOnAction(e-> handleButton(e));
 		
 		splashRoot.getChildren().addAll(startButton,stopButton,resetButton,newGameButton,exitButton);
-		primaryRoot.getChildren().addAll(splashRoot, gameRoot);
+		
+		primaryRoot.getChildren().add(splashRoot);
 	}
 	
 	/**
@@ -114,7 +115,12 @@ public class Main extends Application{
 		Map<String,String> params = parseXML(file);
 
 		primaryGame = new Game(params);
+		System.out.println("Game created");
 		gameRoot = primaryGame.getGameRoot();
+		System.out.println("Got initialized gameRoot from Game.java");
+		
+		primaryRoot.getChildren().add(gameRoot);
+		gameRoot.setTranslateY(50);
 	}
 	
 	/**
