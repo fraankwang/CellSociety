@@ -37,13 +37,15 @@ public class Parser {
 					String val = new String(ch,start,length);
 					val = val.replace("\r","").replace("\n","");
 					
-					if (!myParams.containsKey(key)) myParams.put(key,val);
+					if (!myParams.containsKey(key)) {
+					    myParams.put(key,val);
+					}
 				}
 				
 			};
 			
 			
-			InputStream inputStream= new FileInputStream(file);
+			InputStream inputStream = new FileInputStream(file);
 			Reader reader = new InputStreamReader(inputStream,"UTF-8");
 			
 			InputSource is = new InputSource(reader);

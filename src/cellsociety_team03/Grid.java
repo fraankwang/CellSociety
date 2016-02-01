@@ -19,7 +19,7 @@ public abstract class Grid {
 	private Group myRoot;
 	private GridPane myGridPane;
 	private Map<String,String> myParameters;
-	private int CELL_SIZE = 50;
+	private int CELL_SIZE = 50; //TODO: set dynamically based on board size
 	
 	/**
 	 * Reads the parameters passed to the constructor
@@ -62,6 +62,7 @@ public abstract class Grid {
 		for (int r = 0; r < myCells.length; r++){
 			for (int c = 0; c < myCells[0].length; c++){
 				myCells[r][c].transitionStates();
+	                        
 			}
 		}
 	}
@@ -77,8 +78,10 @@ public abstract class Grid {
 		
 		for (int r = 0; r < myCells.length; r++){
 			for (int c = 0; c < myCells[0].length; c++){
-				myCells[r][c] = new SimpleCell(State.BURNING, CELL_SIZE, new Rectangle(30, 30));
-				if (r % 3 == 0) myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30)); 
+				myCells[r][c] = new SimpleCell(State.EMPTY, CELL_SIZE, new Rectangle(30, 30));
+				if (r % 5 == 0) myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30));
+	                        if (r % 3 == 0) myCells[r][c] = new SimpleCell(State.BURNING, CELL_SIZE, new Rectangle(30, 30)); 
+
 			}
 		}
 		
@@ -97,7 +100,7 @@ public abstract class Grid {
 		
 		for (int r = 0; r < myCells.length; r++){
 			for (int c = 0; c < myCells[0].length; c++){
-				myGridPane.add(myCells[r][c].getMyShape(),c,r);
+				myGridPane.add(myCells[r][c].getMyShape(),c,r); //TODO: c, r??
 			}
 		}
 		
@@ -106,6 +109,15 @@ public abstract class Grid {
 		
 	}
 
+	protected boolean cellInBounds(int r, int c){
+	    boolean farTop = r < 0;
+	    boolean farBottom = r > this.getMyCells().length - 1;
+	    boolean farLeft = c < 0;
+	    boolean farRight = c > this.getMyCells()[0].length - 1;
+	    
+	    return !(farTop | farBottom | farLeft | farRight);
+	}
+	
 	private void handleMouseInput(ActionEvent e){
 		
 	}

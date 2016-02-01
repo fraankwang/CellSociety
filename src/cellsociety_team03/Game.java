@@ -77,4 +77,8 @@ public class Game {
 		return this.myGameRoot;
 	}
 	
+	public Grid getMyGrid(){
+	    return this.myGrid;
+	}
+	
 }
