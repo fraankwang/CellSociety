@@ -6,6 +6,7 @@ package cellsociety_team03;
 
 import java.util.Map;
 import java.util.Random;
+import javafx.scene.shape.Rectangle;
 
 
 public class FireGrid extends Grid {
@@ -18,6 +19,16 @@ public class FireGrid extends Grid {
 
     }
 
+    //TODO: implement based on xml
+    @Override 
+    protected void initializeCell(int r, int c){
+        myCells[r][c] = new SimpleCell(State.EMPTY, CELL_SIZE, new Rectangle(30, 30));
+        if (r % 5 == 0)
+            myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30));
+        if (r % 3 == 0)
+            myCells[r][c] = new SimpleCell(State.BURNING, CELL_SIZE, new Rectangle(30, 30));
+    }
+    
     @Override
     protected void setCellState (GridCell cell, int r, int c) {
         if (cell.getMyCurrentState() == State.BURNING) {
