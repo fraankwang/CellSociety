@@ -18,20 +18,9 @@ public class GameOfLifeGrid extends Grid {
         emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
     }
 
-    protected void setCellStates () {
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                // TODO: Cell State determining algorithms
-                this.setCellState(r, c);
-            }
-        }
-
-    }
-
-    protected void setCellState (int r, int c) {
-        GridCell cell = this.getMyCells()[r][c];
+    @Override
+    protected void setCellState (GridCell cell, int r, int c) {
         int numNeighborsAlive = this.numNeighborsAlive(r,c);
-        System.out.println("set Next state numNeighborsAlive" + numNeighborsAlive);
 
         // TODO: can combine these if statements, but I thought it is clearer this way?
         if (cell.getMyCurrentState() == State.DEAD) {
@@ -51,17 +40,24 @@ public class GameOfLifeGrid extends Grid {
         }
     }
 
+    /**
+     * Calculates the number of "neighbor" cells alive
+     * @param r The row index of the cell in question
+     * @param c The column index of the cell in question
+     * @return The number of alive cells surrounding the cell in question
+     */
     private int numNeighborsAlive (int r, int c) {
         int numNeighborsAlive = 0;
 
         // TODO: put these arrays elsewhere
-        int[] neighbors = { -1, 0, 1 };
+        int[] rNeighbors = { -1, -1, -1,  0, 0,  1, 1, 1 };
+        int[] cNeighbors = { -1,  0,  1, -1, 1, -1, 0, 1 };
         int r2;
         int c2;
-        for (int i = 0; i < neighbors.length; i++) {
-            for (int j = 0; j < neighbors.length; j++) {
-                r2 = r + neighbors[i];
-                c2 = c + neighbors[j];
+        for (int i = 0; i < rNeighbors.length; i++) {
+            for (int j = 0; j < cNeighbors.length; j++) {
+                r2 = r + rNeighbors[i];
+                c2 = c + cNeighbors[j];
                 if (this.cellInBounds(r2, c2) &&
                     this.getMyCells()[r2][c2].getMyCurrentState() == State.ALIVE) {
                     numNeighborsAlive++;

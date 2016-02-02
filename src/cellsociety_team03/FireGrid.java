@@ -18,30 +18,26 @@ public class FireGrid extends Grid {
 
     }
 
-    protected void setCellStates () {
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                // TODO: Cell State determining algorithms
-                this.setCellState(r, c);
-            }
-        }
-
-    }
-
-    protected void setCellState (int r, int c) {
-        GridCell cell = this.getMyCells()[r][c];
-        boolean neighborIsBurning = this.neighborIsBurning(r, c);
-
-        // TODO: can combine these if statements, but I thought it is clearer this way?
+    @Override
+    protected void setCellState (GridCell cell, int r, int c) {
         if (cell.getMyCurrentState() == State.BURNING) {
             cell.setMyNextState(State.EMPTY);
-        }else if (this.willCatch(cell, r, c)){
+        }
+        else if (this.willCatch(cell, r, c)) {
             cell.setMyNextState(State.BURNING);
-        }else{
+        }
+        else {
             cell.setMyNextState(cell.getMyCurrentState());
         }
     }
 
+    /**
+     * Determines if any of a cell's neighbor cells are currently burning
+     * 
+     * @param r The row index of the cell in question
+     * @param c The column index of the cell in question
+     * @return A boolean indicating whether one of the neighbor cells is burning
+     */
     private boolean neighborIsBurning (int r, int c) {
         // TODO: remove duplicated code with game of life grid
         boolean neighborIsBurning = false;
@@ -64,28 +60,32 @@ public class FireGrid extends Grid {
     }
 
     /**
-     * Determines whether a tree will catch on fire based on prob Catch
+     * Determines whether a cell will catch on fire
      * 
-     * @param probCatch
-     * @return
+     * @param cell The cell in question
+     * @param r The row index of the cell in question
+     * @param c The column index of the cell in question
+     * @return A boolean indicating whether to set the cell's next state to burning
      */
     private boolean willCatch (GridCell cell, int r, int c) {
-        System.out.println(neighborIsBurning(r,c) + " " + probCatchRandom() + " " + probCatch);
-       return cell.getMyCurrentState() == State.TREE && neighborIsBurning(r,c) && probCatchRandom();
+        return cell.getMyCurrentState() == State.TREE && neighborIsBurning(r, c) &&
+               probCatchRandom();
     }
-    
+
     /**
+     * Returns a boolean if a random number generated is greater than probCatch
      * TODO: can't think of better name
-     * @return
+     * 
+     * @return The boolean
      */
-    private boolean probCatchRandom(){
+    private boolean probCatchRandom () {
         Random r = new Random();
         double value = r.nextDouble();
 
         return (value >= getProbCatch());
     }
 
-   private double getProbCatch(){
-       return probCatch;
-   }
+    private double getProbCatch () {
+        return probCatch;
+    }
 }
