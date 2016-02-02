@@ -1,7 +1,7 @@
 <Title>Segregation
 <similaritypercentage>50.0</similaritypercentage>
-<redpercentage>50.0</redpercentage>
-<bluepercentage>50.0</bluepercentage>
+<redpercentage>45.0</redpercentage>
+<bluepercentage>45.0</bluepercentage>
 <emptypercentage>10.0</emptypercentage>
 <rows>10</rows>
 <columns>10</columns>
