@@ -77,14 +77,16 @@ public abstract class Grid {
 		
 		for (int r = 0; r < myCells.length; r++){
 			for (int c = 0; c < myCells[0].length; c++){
-				myCells[r][c] = new SimpleCell(State.BURNING, CELL_SIZE, new Rectangle(30, 30));
-				if (r % 3 == 0) myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30)); 
+				initializeCell(r,c); 
 			}
 		}
 		
 		System.out.println("Cells initialized");
 		createBoard();
 	}
+	
+	
+	protected abstract void initializeCell(int row, int column);
 	
 	/**
 	 * Updates the visible Pane by mapping the the cells from myCells in the same location in the 2D array
