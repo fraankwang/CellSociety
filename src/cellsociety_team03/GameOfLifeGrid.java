@@ -22,9 +22,18 @@ public class GameOfLifeGrid extends Grid {
     // TODO: implement based on xml
     @Override
     protected void initializeCell (int r, int c) {
-        myCells[r][c] = new SimpleCell(State.DEAD, CELL_SIZE, new Rectangle(30, 30));
-        if (r % 5 == 0)
-            myCells[r][c] = new SimpleCell(State.ALIVE, CELL_SIZE, new Rectangle(30, 30));
+        int s = myInitialStates[r][c];
+        State state = State.DEAD;
+        switch(s){
+            case 0:
+                state = State.DEAD;
+                break;
+            case 1:
+                state = State.ALIVE;
+                break;
+        }
+        myCells[r][c] = new SimpleCell(state, CELL_SIZE, new Rectangle(30, 30));
+       
     }
 
     @Override
@@ -32,7 +41,7 @@ public class GameOfLifeGrid extends Grid {
         int numNeighborsAlive = this.numNeighborsAlive(r, c);
 
         // TODO: can combine these if statements, but I thought it is clearer this way?
-        if (cell.getMyCurrentState() == State.DEAD) {
+        if (cell.getMyCurrentState() == State.ALIVE) {
             if (numNeighborsAlive == 2 || numNeighborsAlive == 3) {
                 cell.setMyNextState(State.ALIVE);
             }
@@ -40,12 +49,12 @@ public class GameOfLifeGrid extends Grid {
                 cell.setMyNextState(State.DEAD);
             }
         }
-        else if (cell.getMyCurrentState() == State.ALIVE) {
+        else if (cell.getMyCurrentState() == State.DEAD) {
             if (numNeighborsAlive == 3) {
-                cell.setMyNextState(State.DEAD);
+                cell.setMyNextState(State.ALIVE);
             }
             else {
-                cell.setMyNextState(State.ALIVE);
+                cell.setMyNextState(State.DEAD);
             }
         }
         else {

@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Grid {
     protected GridCell[][] myCells;
+    protected int[][] myInitialStates;
     private int myColumns;
     private int myRows;
     private long delay;
@@ -31,6 +32,7 @@ public abstract class Grid {
         myParameters = params;
         myRows = Integer.parseInt(params.get("rows"));
         myColumns = Integer.parseInt(params.get("columns"));
+        myInitialStates = createInitialStatesArray(params.get("initialStates"));
         delay = Long.parseLong(params.get("delay"));
         myRoot = new Group();
 
@@ -84,6 +86,24 @@ public abstract class Grid {
         }
     }
 
+    
+    private int[][] createInitialStatesArray(String param){
+        int[][] initialStates = new int[myRows][myColumns];
+        System.out.println(param);
+        String[] parsed = param.split(",");
+        System.out.println(parsed);
+        System.out.println(parsed.toString());
+        for(int r = 0; r<parsed.length; r++){
+            String s = parsed[r];
+            for(int c = 0; c<s.length(); c++){
+                int state = Character.getNumericValue(s.charAt(c));
+                initialStates[r][c] = state;
+            }
+        }
+        
+        return initialStates;
+        
+    }
     /**
      * Initializes and populates myCells given the initial grid set up parameters
      */

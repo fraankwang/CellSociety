@@ -22,11 +22,26 @@ public class FireGrid extends Grid {
     //TODO: implement based on xml
     @Override 
     protected void initializeCell(int r, int c){
-        myCells[r][c] = new SimpleCell(State.EMPTY, CELL_SIZE, new Rectangle(30, 30));
+        int s = myInitialStates[r][c];
+        State state = State.EMPTY;
+        switch(s){
+            case 0:
+                state = State.EMPTY;
+                break;
+            case 1:
+                state = State.TREE;
+                break;
+            case 2:
+                state = State.BURNING;
+                break;
+        }
+        myCells[r][c] = new SimpleCell(state, CELL_SIZE, new Rectangle(30, 30));
+        /*
         if (r % 5 == 0)
             myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30));
         if (r % 3 == 0)
             myCells[r][c] = new SimpleCell(State.BURNING, CELL_SIZE, new Rectangle(30, 30));
+            */
     }
     
     @Override
