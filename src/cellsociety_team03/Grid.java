@@ -12,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 
 
 public abstract class Grid {
+
     protected GridCell[][] myCells;
     private int myColumns;
     private int myRows;
@@ -36,7 +37,7 @@ public abstract class Grid {
 
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 
-        initializeCells();
+        //initializeCells();
     }
 
     /**
@@ -87,7 +88,7 @@ public abstract class Grid {
     /**
      * Initializes and populates myCells given the initial grid set up parameters
      */
-    private void initializeCells () {
+    protected void initializeCells () {
         myCells = new GridCell[myRows][myColumns];
 
         // TODO read myParameters to determine initial set up
@@ -173,5 +174,4 @@ public abstract class Grid {
     public void setRoot (Group root) {
         this.myRoot = root;
     }
-
 }
