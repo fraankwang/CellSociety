@@ -2,5 +2,5 @@
 <rows>10</rows>
 <columns>10</columns>
 <delay>50</delay>
-<probcatch>33.0</probcatch>
+<probcatch>.33</probcatch>
 </Title>

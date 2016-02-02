@@ -14,6 +14,7 @@ public abstract class GridCell {
     public GridCell (State currentState, int size, Shape s) {
         myCurrentState = currentState;
         myShape = s;
+        myShape.setStroke(Color.BLACK);        
         myColor = myCurrentState.getColor();
         myShape.setFill(myColor);
         mySize = size;
@@ -38,6 +39,7 @@ public abstract class GridCell {
     public void transitionStates(){
     	this.myCurrentState = this.myNextState;
     	this.myNextState = null;
+    	this.setMyColor(myColor);
     }
 
     public Shape getMyShape () {
@@ -46,7 +48,8 @@ public abstract class GridCell {
 
     public void setMyColor (Color myColor) {
         this.myColor = myColor;
-        this.getMyShape().setFill(this.myColor);
+        //this.getMyShape().setFill(this.myColor);
+        this.getMyShape().setFill(this.getMyCurrentState().getColor());
     }
 
 }

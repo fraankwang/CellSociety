@@ -28,6 +28,7 @@ public class Main extends Application{
 	
 	private Button startButton;
 	private Button stopButton;
+	private Button stepButton;
 	private Button resetButton;
 	private Button newGameButton;
 	private Button exitButton;
@@ -45,7 +46,7 @@ public class Main extends Application{
 		initialize();
 		
 		// TODO: figure out primaryScene's dimensions
-		primaryScene = new Scene(primaryRoot,500,500,Color.WHITE);
+		primaryScene = new Scene(primaryRoot,500,500,Color.WHITE);		
 		primaryStage.setScene(primaryScene);
 		primaryStage.show();
 	}
@@ -66,18 +67,23 @@ public class Main extends Application{
 		
 		startButton = new Button("Start");
 		stopButton = new Button("Stop");
+		stepButton = new Button("Step");
 		resetButton = new Button("Reset");
 		newGameButton = new Button("New Game");
 		exitButton = new Button("Exit");
 		
 		//set asynchronous functions to handle button clicks
+		//TODO: should we give each a unique handler instead? If not, we should put
+		//buttons in an array to minimize duplicated code
 		startButton.setOnAction(e-> handleButton(e));
 		stopButton.setOnAction(e-> handleButton(e));
+	        stepButton.setOnAction(e-> handleButton(e));
+
 		resetButton.setOnAction(e-> handleButton(e));
 		newGameButton.setOnAction(e-> handleButton(e));
 		exitButton.setOnAction(e-> handleButton(e));
 		
-		splashRoot.getChildren().addAll(startButton,stopButton,resetButton,newGameButton,exitButton);
+		splashRoot.getChildren().addAll(startButton,stopButton,stepButton,resetButton,newGameButton,exitButton);
 		
 		primaryRoot.getChildren().add(splashRoot);
 	}
@@ -91,7 +97,9 @@ public class Main extends Application{
 			if (primaryGame != null) primaryGame.startGame();
 		} else if (e.getSource() == stopButton) {
 			if (primaryGame != null) primaryGame.stopGame();
-		} else if (e.getSource() == resetButton){
+		} else if (e.getSource() == stepButton) {
+                    if (primaryGame != null) primaryGame.getMyGrid().step(1.0/60);
+                }else if (e.getSource() == resetButton){
 			if (primaryGame != null) primaryGame.initializeGrid();
 		} else if (e.getSource() == newGameButton){
 			FileChooser fileChooser = new FileChooser();
