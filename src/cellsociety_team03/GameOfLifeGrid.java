@@ -69,14 +69,13 @@ public class GameOfLifeGrid extends Grid {
         int r2;
         int c2;
         for (int i = 0; i < rNeighbors.length; i++) {
-            for (int j = 0; j < cNeighbors.length; j++) {
-                r2 = r + rNeighbors[i];
-                c2 = c + cNeighbors[j];
-                if (this.cellInBounds(r2, c2) &&
-                    this.getMyCells()[r2][c2].getMyCurrentState() == State.ALIVE) {
-                    numNeighborsAlive++;
-                }
+            r2 = r + rNeighbors[i];
+            c2 = c + cNeighbors[i];
+            if (this.cellInBounds(r2, c2) &&
+                this.getMyCells()[r2][c2].getMyCurrentState() == State.ALIVE) {
+                numNeighborsAlive++;
             }
+
         }
 
         return numNeighborsAlive;
