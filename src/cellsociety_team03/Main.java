@@ -7,17 +7,14 @@ package cellsociety_team03;
 import java.io.File;
 import java.util.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -25,35 +22,29 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 
+        // Model
+        private Game primaryGame;
+
+        // View
 	private Stage primaryStage;
-	private Game primaryGame;
 	private Scene primaryScene;
-	private Group primaryRoot;
-	private BorderPane primaryPane;
-	private HBox splashRoot;
-	private Group gameRoot;
-	
-	private Button startButton;
-	private Button stopButton;
-	private Button stepButton;
-	private Button resetButton;
-	private Button newGameButton;
-	private Button exitButton;
+        private BorderPane primaryPane;
+
+		
 	
 	/**
-	 * Sets primaryStage (which displays primaryScene) and primaryScene (which displays primaryRoot)
-	 * primaryRoot contains two roots, splashRoot (start/stop/reset/newGame buttons - always present)
+	 * Sets primaryStage (which displays primaryScene) and primaryScene (which displays primaryRoot).
+	 * primaryRoot contains a BorderPane with two groups: toolbar (start/stop/reset/newGame buttons - always present)
 	 * and gameRoot, which contains varying Node elements depending on game type and Grid type (not always present)
 	 */
 	@Override
 	public void start(Stage s) throws Exception {
 		primaryStage = s;
-		primaryRoot = new Group();
 		
-		initialize();
+		Group primaryRoot = initializeRoot();
 		
 		// TODO: figure out primaryScene's dimensions
-		primaryScene = new Scene(primaryRoot,500,500,Color.WHITE);		
+		primaryScene = new Scene(primaryRoot, 500, 500, Color.WHITE);		
 		primaryStage.setScene(primaryScene);
 		primaryStage.show();
 	}
@@ -62,105 +53,143 @@ public class Main extends Application{
         launch(args);
     }
 	
+	
 	/**
-	 * Initializes both splashRoot and gameRoot to be added to primaryRoot.
-	 * Creates new HBox to hold all the game buttons that stay visible the entire time.
-	 * Each of the buttons will call the handleButton function which sets off additional actions
+	 * Initializes the main root with a BorderPane 
+	 * The BorderPane is initialized with an HBox toolbar on top to hold all the game buttons that stay visible the entire time.
+	 * @return
 	 */
-	private void initialize(){
-		//create horizontally aligned box with spacing of 50
-	        splashRoot = new HBox(50);
-		gameRoot = new Group();
+	private Group initializeRoot(){	        
 	        primaryPane = new BorderPane();
+	        
+	        HBox toolbar = createToolbar(); 
+		primaryPane.setTop(toolbar);
+	              
+	        primaryPane.setPrefSize(500, 500 + toolbar.getPrefHeight());
 
-		
-		startButton = new Button("Start");
-		stopButton = new Button("Stop");
-		stepButton = new Button("Step");
-		resetButton = new Button("Reset");
-		newGameButton = new Button("New Game");
-		//exitButton = new Button("Exit");
-		
-		//set asynchronous functions to handle button clicks
-		//TODO: should we give each a unique handler instead? If not, we should put
-		//buttons in an array to minimize duplicated code
-		startButton.setOnAction(e-> handleButton(e));
-		stopButton.setOnAction(e-> handleButton(e));
-	        stepButton.setOnAction(e-> handleButton(e));
-
-		resetButton.setOnAction(e-> handleButton(e));
-		newGameButton.setOnAction(e-> handleButton(e));
-		//exitButton.setOnAction(e-> handleButton(e));
-		
-		splashRoot.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-		splashRoot.getChildren().addAll(startButton,stopButton,stepButton,resetButton,newGameButton);
-		
-		
-		primaryPane.setTop(splashRoot);
-		primaryPane.setPrefWidth(500);
+		Group primaryRoot = new Group();
 		primaryRoot.getChildren().add(primaryPane);
-		//primaryRoot.getChildren().add(splashRoot);
-	}
-	
-	/**
-	 * Determine which button is pressed and do corresponding action in primaryGame or parse new XML
-	 * @param e
-	 */
-	private void handleButton(ActionEvent e){
-		if (e.getSource() == startButton){
-			if (primaryGame != null) primaryGame.startGame();
-		} else if (e.getSource() == stopButton) {
-			if (primaryGame != null) primaryGame.stopGame();
-		} else if (e.getSource() == stepButton) {
-                    if (primaryGame != null) primaryGame.getMyGrid().step(1.0/60);
-                }else if (e.getSource() == resetButton){
-			if (primaryGame != null) {
-			    primaryGame.initializeGrid();
-			    gameRoot = primaryGame.getGameRoot();
-			    this.switchToGame(gameRoot);
-			   
-			}
-			
-		} else if (e.getSource() == newGameButton){
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Select an XML file");
-			fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml"));
-			File file = fileChooser.showOpenDialog(primaryStage);
-			if (file != null) {
-			    setUpGame(file);
-			}
 
-		} else if (e.getSource() == exitButton){
-			primaryStage.close();
-		}
+		return primaryRoot;
 	}
 	
 	/**
-	 * Takes a given file and specifies gameRoot by constructing a new Game and returning its created gameRoot variable 
-	 * @param file
+	 * Creates a toolbar to display in the top of the screen
+	 * @return The HBox toolbar
+	 */
+	private HBox createToolbar(){
+	    HBox toolbar = new HBox();
+	    
+	    List<Button> buttons = createGameButtons();
+
+            toolbar.getChildren().addAll(buttons);
+            toolbar.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+            for(Button b : buttons){
+               HBox.setMargin(b, new Insets(2, 10, 2, 10));
+            }
+            
+            
+            return toolbar;
+
+	}
+	
+	/**
+	 * Creates a list of buttons to display in the toolbar
+	 * @return The list of buttons
+	 */
+	private List<Button> createGameButtons(){
+	    List<Button> list = new ArrayList<Button>();
+	    
+	    Button startButton = new Button("Start");
+	    startButton.setOnAction(e -> startGame());
+            Button stopButton = new Button("Stop");
+            stopButton.setOnAction(e -> stopGame());
+            Button stepButton = new Button("Step");
+            stepButton.setOnAction(e -> stepGame());
+            Button resetButton = new Button("Reset");
+            resetButton.setOnAction(e -> resetGame());
+            Button newGameButton = new Button("New Game");
+            newGameButton.setOnAction(e -> chooseNewGame());
+
+            
+            list.add(startButton);
+            list.add(stopButton);
+            list.add(stepButton);
+            list.add(resetButton);
+            list.add(newGameButton);
+            
+            
+            return list;
+	}
+	
+	/**
+	 * Event handler for starting the current game
+	 */
+	private void startGame(){
+	    primaryGame.startGame();
+	}
+	
+	/**
+	 * Event handler for stopping the current game
+	 */
+	private void stopGame(){
+	    primaryGame.stopGame();
+	}
+	
+	/**
+	 * Event handler for a single step through a game
+	 */
+	private void stepGame(){
+	    primaryGame.getMyGrid().step(1.0/60);
+	}
+	
+	/**
+	 * Event handler for resetting the current game
+	 */
+	private void resetGame(){
+	    primaryGame.initializeGrid();
+            switchToGame(primaryGame);
+	}
+	
+	/**
+	 * Event handler for choosing a new game to start
+	 */
+	private void chooseNewGame(){
+	    FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select an XML file");
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml"));
+            File file = fileChooser.showOpenDialog(primaryStage);
+            if (file != null) {
+                setUpGame(file);
+            }
+	}
+	
+	/**
+	 * Constructs a new game based on a given file and switches to it
+	 * @param file The file containing the game parameters
 	 */
 	private void setUpGame(File file){
 		Map<String,String> params = parseXML(file);
-
 		primaryGame = new Game(params);
-		System.out.println("Game created");
-		gameRoot = primaryGame.getGameRoot();
-		System.out.println("Got initialized gameRoot from Game.java");
-		
-		this.switchToGame(gameRoot);
-		//primaryRoot.getChildren().add(gameRoot);
-		///gameRoot.setTranslateY(50);
+		switchToGame(primaryGame);
 	}
 	
-	private void switchToGame(Node gameRoot){
-	    BorderPane.setMargin(gameRoot, new Insets(12,12,12,12));
-	    primaryPane.setCenter(gameRoot);
-
-	}
 	/**
-	 * Takes @param file and converts XML data to a Map of Grid parameters and their initial values
-	 * @param file
-	 * @return
+	 * Switches to a new game by displaying the game root in the center of the BorderPane
+	 * @param primaryGame The game to be displayed
+	 */
+	private void switchToGame(Game primaryGame){
+	    BorderPane.setMargin(primaryGame.getGameRoot(), new Insets(12,12,12,12));
+	    primaryPane.setPrefWidth(500); //change to primaryGame.getMyGrid().getWidth
+	    //do I have to change scene's width/height too?
+	   
+	    primaryPane.setCenter(primaryGame.getGameRoot());
+	}
+	
+	/**
+	 * Takes a file and converts XML data to a Map of Grid parameters and their initial values
+	 * @param file The file to parse
+	 * @return A map of grid parameter keys and values
 	 */
 	private Map<String,String> parseXML(File file){
 		Parser parser = new Parser();
