@@ -1,10 +1,10 @@
 package cellsociety_team03;
 
-public class Location {
+public class Offset {
     private int myRow;
     private int myCol;
     
-    public Location (int r, int c) {
+    public Offset (int r, int c) {
         myRow = r;
         myCol = c;
     }
@@ -13,16 +13,16 @@ public class Location {
         return myRow;
     }
 
-    public void setRow (int r) {
-        this.myRow = r;
+    public void setRow (int myRow) {
+        this.myRow = myRow;
     }
 
     public int getCol () {
         return myCol;
     }
 
-    public void setCol (int c) {
-        this.myCol = c;
+    public void setCol (int myCol) {
+        this.myCol = myCol;
     }
 
 }

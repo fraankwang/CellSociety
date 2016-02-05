@@ -1,4 +1,6 @@
 <Title>PredatorPrey
+<width>500</width>
+<height>500</height>
 <fishbreed>2</fishbreed>
 <sharkbreed>4</sharkbreed>
 <sharkhealth>3</sharkhealth>

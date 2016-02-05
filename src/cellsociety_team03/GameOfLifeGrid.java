@@ -19,20 +19,32 @@ public class GameOfLifeGrid extends Grid {
         emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
     }
 
-    // TODO: implement based on xml
     @Override
     protected void initializeCell (int r, int c) {
-        myCells[r][c] = new SimpleCell(State.DEAD, CELL_SIZE, new Rectangle(30, 30));
-        if (r % 5 == 0)
-            myCells[r][c] = new SimpleCell(State.ALIVE, CELL_SIZE, new Rectangle(30, 30));
+        State state = State.DEAD;
+
+        int s = getMyInitialStates()[r][c];
+        switch (s) {
+            case 0:
+                state = State.DEAD;
+                break;
+            case 1:
+                state = State.ALIVE;
+                break;
+        }
+
+        getMyCells()[r][c] =
+                new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+
     }
 
     @Override
-    protected void setCellState (GridCell cell, int r, int c) {
-        int numNeighborsAlive = this.numNeighborsAlive(r, c);
+    protected void setCellState (GridCell cell) {
 
-        // TODO: can combine these if statements, but I thought it is clearer this way?
-        if (cell.getMyCurrentState() == State.DEAD) {
+        int numNeighborsAlive = this.numNeighborsAlive(cell);
+
+        // Can combine these if statements, but I think it's more readable this way
+        if (cell.getMyCurrentState() == State.ALIVE) {
             if (numNeighborsAlive == 2 || numNeighborsAlive == 3) {
                 cell.setMyNextState(State.ALIVE);
             }
@@ -40,17 +52,15 @@ public class GameOfLifeGrid extends Grid {
                 cell.setMyNextState(State.DEAD);
             }
         }
-        else if (cell.getMyCurrentState() == State.ALIVE) {
+        else if (cell.getMyCurrentState() == State.DEAD) {
             if (numNeighborsAlive == 3) {
-                cell.setMyNextState(State.DEAD);
-            }
-            else {
                 cell.setMyNextState(State.ALIVE);
             }
+            else {
+                cell.setMyNextState(State.DEAD);
+            }
         }
-        else {
-            System.out.println("uhoh");
-        }
+
     }
 
     /**
@@ -60,25 +70,17 @@ public class GameOfLifeGrid extends Grid {
      * @param c The column index of the cell in question
      * @return The number of alive cells surrounding the cell in question
      */
-    private int numNeighborsAlive (int r, int c) {
+    private int numNeighborsAlive (GridCell cell) {
         int numNeighborsAlive = 0;
 
-        // TODO: put these arrays elsewhere
-        int[] rNeighbors = { -1, -1, -1, 0, 0, 1, 1, 1 };
-        int[] cNeighbors = { -1, 0, 1, -1, 1, -1, 0, 1 };
-        int r2;
-        int c2;
-        for (int i = 0; i < rNeighbors.length; i++) {
-            r2 = r + rNeighbors[i];
-            c2 = c + cNeighbors[i];
-            if (this.cellInBounds(r2, c2) &&
-                this.getMyCells()[r2][c2].getMyCurrentState() == State.ALIVE) {
+        for (GridCell neighbor : getNeighbors(cell)) {
+            if (neighbor.getMyCurrentState() == State.ALIVE) {
                 numNeighborsAlive++;
             }
-
         }
 
         return numNeighborsAlive;
+
     }
 
 }

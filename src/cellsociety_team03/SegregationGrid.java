@@ -35,7 +35,7 @@ public class SegregationGrid extends Grid {
 		addStatesToList(bluePercentage, State.BLUE);
 		addStatesToList(emptyPercentage, State.EMPTY);
 		Collections.shuffle(stateList);
-		initializeCells();
+		initialize();
 		
 	}
 	
@@ -50,24 +50,27 @@ public class SegregationGrid extends Grid {
 
 	@Override
 	protected void initializeCell(int row, int column) {
-		myCells[row][column] = new SimpleCell(stateList.remove(0), CELL_SIZE, new Rectangle(30,30));
+		getMyCells()[row][column] = new SimpleCell(stateList.remove(0), row, column, new Rectangle(getMyCellSize(),getMyCellSize()));
 	}
 
 	@Override
-	protected void setCellState(GridCell cell, int r, int c) {
+	protected void setCellState(GridCell cell) {
 		if(!cell.getMyCurrentState().equals(State.EMPTY) && cell.getMyNextState() == null) {
-			List<State> neighbors = getNeighborStates(r,c);
-			double total = neighbors.size();
+			List<GridCell> neighbors = getNeighbors(cell);
 			double sameCount = 0;
-			for(State state : neighbors) {
-				if(cell.getMyCurrentState().equals(state)) {
+			double nonEmptyCount = 0;
+			for(GridCell neighbor : neighbors) {
+				if(cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
 					sameCount++;
+				}
+				if(!(neighbor.getMyCurrentState() == State.EMPTY)){
+				    nonEmptyCount++;
 				}
 			}
 			
 			
-			if(!isContent((sameCount/total)*100)){
-				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", r, c);
+			if(!isContent((sameCount/nonEmptyCount)*100)){
+				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", cell.getMyGridLocation().getRow(), cell.getMyGridLocation().getCol());
 				move(cell);
 				
 				
@@ -80,8 +83,8 @@ public class SegregationGrid extends Grid {
 	}
 	//TODO: Make better search for empty spots algorithm???
 	private void move(GridCell cell) {
-		for (int r = 0; r < myCells.length; r++) {
-			for (int c = 0; c < myCells[0].length; c++) {
+		for (int r = 0; r < getMyCells().length; r++) {
+			for (int c = 0; c < getMyCells()[0].length; c++) {
 				GridCell newCell = getMyCells()[r][c];
 				if(newCell.getMyCurrentState().equals(State.EMPTY) && newCell.getMyNextState()==null) {
 					newCell.setMyNextState(cell.getMyCurrentState());
@@ -107,8 +110,8 @@ public class SegregationGrid extends Grid {
 	    for(int x = 0; x < rMod.length; x++){
 	    	r2 = r+rMod[x];
 	    	c2 = c+cMod[x];
-	    	if(cellInBounds(r2,c2) && !myCells[r2][c2].getMyCurrentState().equals(State.EMPTY)){
-	    		neighborStates.add(myCells[r2][c2].getMyCurrentState());
+	    	if(cellInBounds(r2,c2) && !getMyCells()[r2][c2].getMyCurrentState().equals(State.EMPTY)){
+	    		neighborStates.add(getMyCells()[r2][c2].getMyCurrentState());
 	    	}
 	    }
 	    

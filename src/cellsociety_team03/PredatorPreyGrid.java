@@ -33,7 +33,7 @@ public class PredatorPreyGrid extends Grid {
     }
 
     @Override
-    protected void setCellState (GridCell cell, int r, int c) {
+    protected void setCellState (GridCell cell) {
         // TODO Auto-generated method stub
 
     }

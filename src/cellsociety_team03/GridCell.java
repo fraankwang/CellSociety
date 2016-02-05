@@ -7,19 +7,53 @@ import javafx.scene.shape.Shape;
 public abstract class GridCell {
     private State myCurrentState;
     private State myNextState;
-    private Color myColor;
-    private int mySize;
-    private Shape myShape; // TODO: can we figure out a way to make it Node?
+    private Location myGridLocation;
+    private Shape myShape;
 
-    public GridCell (State currentState, int size, Shape s) {
-        myCurrentState = currentState;
+    /**
+     * Constructor
+     * 
+     * @param initialState The initial state of the cell
+     * @param r The row of the grid in which the cell in located
+     * @param c The column of the grid in which the cell in located
+     * @param s The shape of the cell
+     */
+    public GridCell (State initialState, int r, int c, Shape s) {
+        myCurrentState = initialState;
         myShape = s;
-        myShape.setStroke(Color.BLACK);        
-        myColor = myCurrentState.getColor();
-        myShape.setFill(myColor);
-        mySize = size;
+        initializeShape();
+        setMyGridLocation(new Location(r, c));
+       
+    }
+    
+    /**
+     * Sets the initial color of the cell and gives it a border
+     */
+    private void initializeShape(){
+        this.getMyShape().setStroke(Color.BLACK);        
+        setMyColor();
+    }
+    
+    /**
+     * Changes the cell's currentState to its nextState, sets next state to null, and updates shape UI
+     */
+    public void transitionStates(){
+        this.myCurrentState = this.myNextState;
+        this.myNextState = null;
+        this.setMyColor();
+    }
+    
+    /**
+     * Sets the cell's shape's color based on the cell's current state
+     */
+    private void setMyColor () {
+        this.getMyShape().setFill(this.getMyCurrentState().getColor());
     }
 
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+    
     public State getMyCurrentState () {
         return myCurrentState;
     }
@@ -36,20 +70,16 @@ public abstract class GridCell {
         this.myNextState = myNextState;
     }
     
-    public void transitionStates(){
-    	this.myCurrentState = this.myNextState;
-    	this.myNextState = null;
-    	this.setMyColor(myColor);
-    }
-
     public Shape getMyShape () {
         return myShape;
     }
+   
+    public Location getMyGridLocation () {
+        return myGridLocation;
+    }
 
-    public void setMyColor (Color myColor) {
-        this.myColor = myColor;
-        //this.getMyShape().setFill(this.myColor);
-        this.getMyShape().setFill(this.getMyCurrentState().getColor());
+    private void setMyGridLocation (Location myGridLocation) {
+        this.myGridLocation = myGridLocation;
     }
 
 }
