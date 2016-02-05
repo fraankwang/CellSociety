@@ -7,17 +7,17 @@ import javafx.scene.shape.Shape;
 public abstract class GridCell {
     private State myCurrentState;
     private State myNextState;
+    private Location myGridLocation;
     private Color myColor;
-    private int mySize; //TODO: no reason to include size
     private Shape myShape; // TODO: can we figure out a way to make it Node?
 
-    public GridCell (State currentState, int size, Shape s) {
+    public GridCell (State currentState, int r, int c, Shape s) {
         myCurrentState = currentState;
         myShape = s;
         myShape.setStroke(Color.BLACK);        
         myColor = myCurrentState.getColor();
         myShape.setFill(myColor);
-        mySize = size;
+        setMyGridLocation(new Location(r, c));
        
     }
 
@@ -51,6 +51,14 @@ public abstract class GridCell {
         this.myColor = myColor;
         //this.getMyShape().setFill(this.myColor);
         this.getMyShape().setFill(this.getMyCurrentState().getColor());
+    }
+
+    public Location getMyGridLocation () {
+        return myGridLocation;
+    }
+
+    public void setMyGridLocation (Location myGridLocation) {
+        this.myGridLocation = myGridLocation;
     }
 
 }

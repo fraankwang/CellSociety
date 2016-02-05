@@ -50,24 +50,24 @@ public class SegregationGrid extends Grid {
 
 	@Override
 	protected void initializeCell(int row, int column) {
-		getMyCells()[row][column] = new SimpleCell(stateList.remove(0), getMyCellSize(), new Rectangle(getMyCellSize(),getMyCellSize()));
+		getMyCells()[row][column] = new SimpleCell(stateList.remove(0), row, column, new Rectangle(getMyCellSize(),getMyCellSize()));
 	}
 
 	@Override
-	protected void setCellState(GridCell cell, int r, int c) {
+	protected void setCellState(GridCell cell) {
 		if(!cell.getMyCurrentState().equals(State.EMPTY) && cell.getMyNextState() == null) {
-			List<State> neighbors = getNeighborStates(r,c);
+			List<GridCell> neighbors = getNeighbors(cell);
 			double total = neighbors.size();
 			double sameCount = 0;
-			for(State state : neighbors) {
-				if(cell.getMyCurrentState().equals(state)) {
+			for(GridCell neighbor : neighbors) {
+				if(cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
 					sameCount++;
 				}
 			}
 			
 			
 			if(!isContent((sameCount/total)*100)){
-				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", r, c);
+				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", cell.getMyGridLocation().getRow(), cell.getMyGridLocation().getCol());
 				move(cell);
 				
 				

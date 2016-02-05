@@ -37,21 +37,16 @@ public class FireGrid extends Grid {
                 state = State.BURNING;
                 break;
         }
-        getMyCells()[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
-        /*
-        if (r % 5 == 0)
-            myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30));
-        if (r % 3 == 0)
-            myCells[r][c] = new SimpleCell(State.BURNING, CELL_SIZE, new Rectangle(30, 30));
-            */
+        getMyCells()[r][c] = new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+
     }
     
     @Override
-    protected void setCellState (GridCell cell, int r, int c) {
+    protected void setCellState (GridCell cell) {
         if (cell.getMyCurrentState() == State.BURNING) {
             cell.setMyNextState(State.EMPTY);
         }
-        else if (this.willCatch(cell, r, c)) {
+        else if (this.willCatch(cell)) {
             cell.setMyNextState(State.BURNING);
         }
         else {
@@ -79,11 +74,10 @@ public class FireGrid extends Grid {
      * @param c The column index of the cell in question
      * @return A boolean indicating whether one of the neighbor cells is burning
      */
-    private boolean neighborIsBurning (int r, int c) {
-        // TODO: remove duplicated code with game of life grid
+    private boolean neighborIsBurning (GridCell cell) {
         boolean neighborIsBurning = false;
         
-        for (GridCell neighbor : getNeighbors(r, c)) {
+        for (GridCell neighbor : getNeighbors(cell)) {
             
             if (neighbor.getMyCurrentState() == State.BURNING) {
                 neighborIsBurning = true;
@@ -104,8 +98,8 @@ public class FireGrid extends Grid {
      * @param c The column index of the cell in question
      * @return A boolean indicating whether to set the cell's next state to burning
      */
-    private boolean willCatch (GridCell cell, int r, int c) {
-        return cell.getMyCurrentState() == State.TREE && neighborIsBurning(r, c) &&
+    private boolean willCatch (GridCell cell) {
+        return cell.getMyCurrentState() == State.TREE && neighborIsBurning(cell) &&
                probCatchRandom();
     }
 

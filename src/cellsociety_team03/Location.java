@@ -1,28 +1,28 @@
 package cellsociety_team03;
 
 public class Location {
-    private int myX;
-    private int myY;
+    private int myRow;
+    private int myCol;
     
-    public Location (int x, int y) {
-        myX = x;
-        myY = y;
+    public Location (int r, int c) {
+        myRow = r;
+        myCol = c;
     }
 
-    public int getX () {
-        return myX;
+    public int getRow () {
+        return myRow;
     }
 
-    public void setX (int x) {
-        this.myX = x;
+    public void setRow (int r) {
+        this.myRow = r;
     }
 
-    public int getY () {
-        return myY;
+    public int getCol () {
+        return myCol;
     }
 
-    public void setY (int y) {
-        this.myY = y;
+    public void setCol (int c) {
+        this.myCol = c;
     }
 
 }

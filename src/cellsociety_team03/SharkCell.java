@@ -5,8 +5,8 @@ import javafx.scene.shape.Shape;
 
 public class SharkCell extends GridCell {
 
-    public SharkCell (State currentState, int size, Shape s) {
-        super(currentState, size, s);
+    public SharkCell (State currentState, int r, int c, Shape s) {
+        super(currentState, r, c, s);
     }
 
 }

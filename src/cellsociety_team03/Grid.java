@@ -6,13 +6,10 @@ package cellsociety_team03;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
 
 
 public abstract class Grid {
@@ -73,7 +70,7 @@ public abstract class Grid {
         for (int r = 0; r < myCells.length; r++) {
             for (int c = 0; c < myCells[0].length; c++) {
                 GridCell cell = this.getMyCells()[r][c];
-                this.setCellState(cell, r, c);
+                this.setCellState(cell);
             }
         }
 
@@ -84,7 +81,7 @@ public abstract class Grid {
      * @param r
      * @param c
      */
-    protected abstract void setCellState (GridCell cell, int r, int c);
+    protected abstract void setCellState (GridCell cell);
 
     /**
      * Loop through myCells and set each Cell's currentState to its nextState and reset nextState to
@@ -159,6 +156,7 @@ public abstract class Grid {
     }
 
     protected boolean cellInBounds (int r, int c) {
+       
         boolean farTop = r < 0;
         boolean farBottom = r > this.getMyCells().length - 1;
         boolean farLeft = c < 0;
@@ -183,7 +181,10 @@ public abstract class Grid {
         return offsets;
     }
     
-    protected List<GridCell> getNeighbors(int r, int c){
+    protected List<GridCell> getNeighbors(GridCell cell){
+        int r = cell.getMyGridLocation().getRow();
+        int c = cell.getMyGridLocation().getCol();
+        
         List<Offset> offsets = neighborOffsets();
         List<GridCell> neighbors = new ArrayList<GridCell>();
         

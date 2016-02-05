@@ -32,13 +32,14 @@ public class GameOfLifeGrid extends Grid {
                 state = State.ALIVE;
                 break;
         }
-        getMyCells()[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
+        getMyCells()[r][c] = new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
        
     }
 
     @Override
-    protected void setCellState (GridCell cell, int r, int c) {
-        int numNeighborsAlive = this.numNeighborsAlive(r, c);
+    protected void setCellState (GridCell cell) {
+        
+        int numNeighborsAlive = this.numNeighborsAlive(cell);
 
         // TODO: can combine these if statements, but I thought it is clearer this way?
         if (cell.getMyCurrentState() == State.ALIVE) {
@@ -70,10 +71,10 @@ public class GameOfLifeGrid extends Grid {
      * @param c The column index of the cell in question
      * @return The number of alive cells surrounding the cell in question
      */
-    private int numNeighborsAlive (int r, int c) {
+    private int numNeighborsAlive (GridCell cell) {
         int numNeighborsAlive = 0;
 
-        for(GridCell neighbor : getNeighbors(r, c)){
+        for(GridCell neighbor : getNeighbors(cell)){
             if(neighbor.getMyCurrentState() == State.ALIVE){
                 numNeighborsAlive++;
             }
