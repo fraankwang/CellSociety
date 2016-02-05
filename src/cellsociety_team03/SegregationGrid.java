@@ -46,28 +46,78 @@ public class SegregationGrid extends Grid {
 		
 	}
 
-	protected void setCellStates(){
-		for (int r = 0; r < myCells.length; r++){
-			for (int c = 0; c < myCells[0].length; c++){
-				// TODO: Cell State determining algorithms
-			}		
-		}
-		
-		
-	}
 
 
 	@Override
 	protected void initializeCell(int row, int column) {
-		myCells[row][column] = new SimpleCell(stateList.remove(0), 50, new Rectangle(30,30));
+		myCells[row][column] = new SimpleCell(stateList.remove(0), CELL_SIZE, new Rectangle(30,30));
 	}
 
 	@Override
 	protected void setCellState(GridCell cell, int r, int c) {
-		// TODO Auto-generated method stub
+		if(!cell.getMyCurrentState().equals(State.EMPTY) && cell.getMyNextState() == null) {
+			List<State> neighbors = getNeighborStates(r,c);
+			double total = neighbors.size();
+			double sameCount = 0;
+			for(State state : neighbors) {
+				if(cell.getMyCurrentState().equals(state)) {
+					sameCount++;
+				}
+			}
+			
+			
+			if(!isContent((sameCount/total)*100)){
+				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", r, c);
+				move(cell);
+				
+				
+			}
+			else{
+				cell.setMyNextState(cell.getMyCurrentState());
+			}
+		}
 		
 	}
+	//TODO: Make better search for empty spots algorithm???
+	private void move(GridCell cell) {
+		for (int r = 0; r < myCells.length; r++) {
+			for (int c = 0; c < myCells[0].length; c++) {
+				GridCell newCell = getMyCells()[r][c];
+				if(newCell.getMyCurrentState().equals(State.EMPTY) && newCell.getMyNextState()==null) {
+					newCell.setMyNextState(cell.getMyCurrentState());
+					cell.setMyNextState(State.EMPTY);
+					
+					System.out.printf("moved to (%d,%d) ", r, c);
+					System.out.printf("which now has state of %S\n", newCell.getMyNextState());
+					return;
+				}
+
+			}
+		}
+		cell.setMyNextState(cell.getMyCurrentState());
+		System.out.println("stayed in place.");
+	}
+
+	private List<State> getNeighborStates(int r, int c) {
+		List<State> neighborStates = new ArrayList<State>();
+		int[] rMod = { -1, -1, -1, 0, 0, 1, 1, 1 };
+	    int[] cMod = { -1, 0, 1, -1, 1, -1, 0, 1 };
+	    int r2;
+	    int c2;
+	    for(int x = 0; x < rMod.length; x++){
+	    	r2 = r+rMod[x];
+	    	c2 = c+cMod[x];
+	    	if(cellInBounds(r2,c2) && !myCells[r2][c2].getMyCurrentState().equals(State.EMPTY)){
+	    		neighborStates.add(myCells[r2][c2].getMyCurrentState());
+	    	}
+	    }
+	    
+	    return neighborStates;
+	}
 		
+	private boolean isContent(double percent) {
+		return percent >= similarityPercentage;
+	}
 	
 
 }
