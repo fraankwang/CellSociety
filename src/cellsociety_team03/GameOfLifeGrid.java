@@ -19,12 +19,12 @@ public class GameOfLifeGrid extends Grid {
         emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
     }
 
-    // TODO: implement based on xml
     @Override
     protected void initializeCell (int r, int c) {
-        int s = getMyInitialStates()[r][c];
         State state = State.DEAD;
-        switch(s){
+
+        int s = getMyInitialStates()[r][c];
+        switch (s) {
             case 0:
                 state = State.DEAD;
                 break;
@@ -32,16 +32,18 @@ public class GameOfLifeGrid extends Grid {
                 state = State.ALIVE;
                 break;
         }
-        getMyCells()[r][c] = new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
-       
+
+        getMyCells()[r][c] =
+                new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+
     }
 
     @Override
     protected void setCellState (GridCell cell) {
-        
+
         int numNeighborsAlive = this.numNeighborsAlive(cell);
 
-        // TODO: can combine these if statements, but I thought it is clearer this way?
+        // Can combine these if statements, but I think it's more readable this way
         if (cell.getMyCurrentState() == State.ALIVE) {
             if (numNeighborsAlive == 2 || numNeighborsAlive == 3) {
                 cell.setMyNextState(State.ALIVE);
@@ -58,12 +60,9 @@ public class GameOfLifeGrid extends Grid {
                 cell.setMyNextState(State.DEAD);
             }
         }
-        else {
-            System.out.println("uhoh");
-        }
+
     }
 
-    
     /**
      * Calculates the number of "neighbor" cells alive
      * 
@@ -74,16 +73,14 @@ public class GameOfLifeGrid extends Grid {
     private int numNeighborsAlive (GridCell cell) {
         int numNeighborsAlive = 0;
 
-        for(GridCell neighbor : getNeighbors(cell)){
-            if(neighbor.getMyCurrentState() == State.ALIVE){
+        for (GridCell neighbor : getNeighbors(cell)) {
+            if (neighbor.getMyCurrentState() == State.ALIVE) {
                 numNeighborsAlive++;
             }
         }
-        
+
         return numNeighborsAlive;
-        
+
     }
-    
-    
 
 }

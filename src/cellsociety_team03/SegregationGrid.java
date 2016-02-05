@@ -35,7 +35,7 @@ public class SegregationGrid extends Grid {
 		addStatesToList(bluePercentage, State.BLUE);
 		addStatesToList(emptyPercentage, State.EMPTY);
 		Collections.shuffle(stateList);
-		initializeCells();
+		initialize();
 		
 	}
 	
@@ -57,16 +57,19 @@ public class SegregationGrid extends Grid {
 	protected void setCellState(GridCell cell) {
 		if(!cell.getMyCurrentState().equals(State.EMPTY) && cell.getMyNextState() == null) {
 			List<GridCell> neighbors = getNeighbors(cell);
-			double total = neighbors.size();
 			double sameCount = 0;
+			double nonEmptyCount = 0;
 			for(GridCell neighbor : neighbors) {
 				if(cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
 					sameCount++;
 				}
+				if(!(neighbor.getMyCurrentState() == State.EMPTY)){
+				    nonEmptyCount++;
+				}
 			}
 			
 			
-			if(!isContent((sameCount/total)*100)){
+			if(!isContent((sameCount/nonEmptyCount)*100)){
 				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", cell.getMyGridLocation().getRow(), cell.getMyGridLocation().getCol());
 				move(cell);
 				

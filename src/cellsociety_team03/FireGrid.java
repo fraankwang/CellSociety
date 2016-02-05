@@ -21,12 +21,12 @@ public class FireGrid extends Grid {
 
     }
 
-    //TODO: implement based on xml
-    @Override 
-    protected void initializeCell(int r, int c){
-        int s = getMyInitialStates()[r][c];
+    @Override
+    protected void initializeCell (int r, int c) {
         State state = State.EMPTY;
-        switch(s){
+
+        int s = getMyInitialStates()[r][c];
+        switch (s) {
             case 0:
                 state = State.EMPTY;
                 break;
@@ -36,11 +36,16 @@ public class FireGrid extends Grid {
             case 2:
                 state = State.BURNING;
                 break;
+            default:
+                // TODO: display error message
+
         }
-        getMyCells()[r][c] = new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+
+        getMyCells()[r][c] =
+                new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
 
     }
-    
+
     @Override
     protected void setCellState (GridCell cell) {
         if (cell.getMyCurrentState() == State.BURNING) {
@@ -55,10 +60,10 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    protected List<Offset> neighborOffsets(){
-        
+    protected List<Offset> neighborOffsets () {
+
         List<Offset> offsets = new ArrayList<Offset>();
-        System.out.println("inheritance");
+
         offsets.add(NeighborOffset.TOP.getOffset());
         offsets.add(NeighborOffset.LEFT.getOffset());
         offsets.add(NeighborOffset.RIGHT.getOffset());
@@ -66,7 +71,7 @@ public class FireGrid extends Grid {
 
         return offsets;
     }
-    
+
     /**
      * Determines if any of a cell's neighbor cells are currently burning
      * 
@@ -76,16 +81,14 @@ public class FireGrid extends Grid {
      */
     private boolean neighborIsBurning (GridCell cell) {
         boolean neighborIsBurning = false;
-        
+
         for (GridCell neighbor : getNeighbors(cell)) {
-            
+
             if (neighbor.getMyCurrentState() == State.BURNING) {
                 neighborIsBurning = true;
             }
 
         }
-        
-       
 
         return neighborIsBurning;
     }
@@ -116,6 +119,9 @@ public class FireGrid extends Grid {
         return (value >= getProbCatch());
     }
 
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
     private double getProbCatch () {
         return probCatch;
     }

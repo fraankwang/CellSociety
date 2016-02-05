@@ -4,7 +4,6 @@
 
 package cellsociety_team03;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.*;
 import javafx.application.Application;
@@ -151,7 +150,7 @@ public class Main extends Application {
      * Event handler for a single step through a game
      */
     private void stepGame () {
-        primaryGame.getMyGrid().step(1.0 / 60);
+        primaryGame.getMyGrid().step();
     }
 
     /**
@@ -196,14 +195,22 @@ public class Main extends Application {
         // TODO: move to css?
         float inset = Float.parseFloat(Constants.RESOURCES.getString("borderPaneInsets"));
         BorderPane.setMargin(game.getGameRoot(), new Insets(inset, inset, inset, inset));
-        primaryPane.setPrefSize(game.getMyGrid().getMyGridSize().getWidth(), game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT); // change to primaryGame.getMyGrid().getWidth
+        //primaryPane.setPrefSize(game.getMyGrid().getMyGridSize().getWidth(), game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT); // change to primaryGame.getMyGrid().getWidth
         primaryPane.setCenter(game.getGameRoot());
 
-        // Change stage/scene's width/height too?
-        /*
-        primaryStage.setWidth(game.getMyGrid().getMyGridSize().getWidth());
-        primaryStage.setHeight(game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT);
-        */
+        if(game.getMyGrid().getMyGridSize().width > primaryStage.getWidth()){
+            primaryStage.setWidth(game.getMyGrid().getMyGridSize().getWidth());
+
+        }
+        
+        if(game.getMyGrid().getMyGridSize().height > primaryStage.getHeight()){
+            primaryStage.setHeight(game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT);
+
+        }
+       
+        //primaryStage.setWidth(game.getMyGrid().getMyGridSize().getWidth());
+        //primaryStage.setHeight(game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT);
+
     }
 
     /**
