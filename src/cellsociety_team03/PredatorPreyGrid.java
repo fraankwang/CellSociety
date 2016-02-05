@@ -34,7 +34,7 @@ public class PredatorPreyGrid extends Grid {
         addStatesToList(fishPercentage, State.FISH);
         addStatesToList(emptyPercentage, State.EMPTY);
         
-        initializeCells();
+        initialize();
     }
     
     @Override
@@ -42,32 +42,33 @@ public class PredatorPreyGrid extends Grid {
     	State state = getInitializeList().remove(0);
     	GridCell toAdd;
     	if(state == State.SHARK){
-    		toAdd = new SharkCell(State.SHARK, CELL_SIZE, new Rectangle(30,30),sharkHealth,sharkBreed);
+    		toAdd = new SharkCell(State.SHARK, row, column, new Rectangle(getMyCellSize(), getMyCellSize()),sharkHealth,sharkBreed);
     	}
     	else if(state == State.FISH){
-    		toAdd = new FishCell(State.FISH, CELL_SIZE, new Rectangle(30,30),fishBreed);
+    		toAdd = new FishCell(State.FISH, row, column, new Rectangle(getMyCellSize(), getMyCellSize()),fishBreed);
     	}
     	else {
-    		toAdd = new SimpleCell(State.EMPTY, CELL_SIZE, new Rectangle(30,30));
+    		toAdd = new SimpleCell(State.EMPTY, row, column, new Rectangle(getMyCellSize(), getMyCellSize()));
     	}
     	
-    	myCells[row][column] = toAdd;
+    	getMyCells()[row][column] = toAdd;
     }
     
     @Override
+
     protected void setCellStates () { 
-    	 for (int r = 0; r < myCells.length; r++) {
-             for (int c = 0; c < myCells[0].length; c++) {
-            	 if(myCells[r][c] instanceof SharkCell) {
-            		 setSharkCellState((SharkCell)myCells[r][c]);
+    	 for (int r = 0; r < getMyCells().length; r++) {
+             for (int c = 0; c < getMyCells()[0].length; c++) {
+            	 if(getMyCells()[r][c] instanceof SharkCell) {
+            		 setSharkCellState((SharkCell)getMyCells()[r][c]);
             	 }
              }
     	 }
     }
     
 
-    private void setSharkCellState(SharkCell shark, int row, int column) {
-    	List<GridCell> neighbors = getNeighborCells(row,column);
+    private void setSharkCellState(SharkCell shark) {
+    	List<GridCell> neighbors = getNeighbors(shark);
     	shark.update();
     	GridCell toMove = shark;
 		for(GridCell cell : neighbors){
@@ -81,10 +82,10 @@ public class PredatorPreyGrid extends Grid {
 		}
 		move(shark,toMove);
 	}
-
-	@Override
-    protected void setCellState (GridCell cell, int r, int c) {
-    	List<GridCell> neighbors = getNeighborCells(r,c);
+    
+    protected void setCellState (GridCell cell) {
+        // TODO Auto-generated method stub
+    	List<GridCell> neighbors = getNeighbors(cell);
     	GridCell toMove = cell;
     	if(cell instanceof SharkCell) {
     		((SharkCell) cell).update();
@@ -102,7 +103,7 @@ public class PredatorPreyGrid extends Grid {
     	}
     	else if(cell instanceof FishCell){
     		if(cell.getMyNextState() == State.DEAD) {
-    			myCells[r][c] = new SimpleCell(State.EMPTY, CELL_SIZE, new Rectangle(30,30));
+    			getMyCells()[cell.getMyGridLocation().getRow()][cell.getMyGridLocation().getCol()] = new SimpleCell(State.EMPTY, cell.getMyGridLocation().getRow(), cell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
     		}
     		else {
     			
@@ -115,35 +116,17 @@ public class PredatorPreyGrid extends Grid {
     }
     
     
-	private List<GridCell> getNeighborCells(int r, int c) {
-		List<GridCell> neighborStates = new ArrayList<GridCell>();
-		int[] rMod = { -1, 0, 1, 0};
-	    int[] cMod = { 0, 1, 0, -1};
-	    int r2;
-	    int c2;
-	    for(int x = 0; x < rMod.length; x++){
-	    	r2 = r+rMod[x];
-	    	c2 = c+cMod[x];
-	    	
-	    	if(r2 < 0){
-	    		r2 += getRows();
-	    	}
-	    	else if(r2 >= getRows()) {
-	    		r2 = 0;
-	    	}
-	    	
-	    	if(c2 < 0){
-	    		c2 += getColumns();
-	    	}
-	    	else if(c2 >= getColumns()){
-	    		c2 = 0;
-	    	}
-	    	
-	    	neighborStates.add(myCells[r2][c2]);
-	    	
-	    }
-	    
-	    return neighborStates;
-	}
+    @Override
+    protected List<Offset> neighborOffsets () {
+
+        List<Offset> offsets = new ArrayList<Offset>();
+
+        offsets.add(NeighborOffset.TOP.getOffset());
+        offsets.add(NeighborOffset.LEFT.getOffset());
+        offsets.add(NeighborOffset.RIGHT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM.getOffset());
+
+        return offsets;
+    }
 
 }
