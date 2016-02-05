@@ -70,7 +70,6 @@ public class SegregationGrid extends Grid {
 			
 			
 			if(!isContent((sameCount/nonEmptyCount)*100)){
-				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", cell.getMyGridLocation().getRow(), cell.getMyGridLocation().getCol());
 				move(cell);
 				
 				
@@ -101,22 +100,6 @@ public class SegregationGrid extends Grid {
 		System.out.println("stayed in place.");
 	}
 
-	private List<State> getNeighborStates(int r, int c) {
-		List<State> neighborStates = new ArrayList<State>();
-		int[] rMod = { -1, -1, -1, 0, 0, 1, 1, 1 };
-	    int[] cMod = { -1, 0, 1, -1, 1, -1, 0, 1 };
-	    int r2;
-	    int c2;
-	    for(int x = 0; x < rMod.length; x++){
-	    	r2 = r+rMod[x];
-	    	c2 = c+cMod[x];
-	    	if(cellInBounds(r2,c2) && !getMyCells()[r2][c2].getMyCurrentState().equals(State.EMPTY)){
-	    		neighborStates.add(getMyCells()[r2][c2].getMyCurrentState());
-	    	}
-	    }
-	    
-	    return neighborStates;
-	}
 		
 	private boolean isContent(double percent) {
 		return percent >= similarityPercentage;
