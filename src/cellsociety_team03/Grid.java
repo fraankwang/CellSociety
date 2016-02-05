@@ -190,4 +190,8 @@ public abstract class Grid {
     public void setRoot (Group root) {
         this.myRoot = root;
     }
+    
+    protected List<State> getInitializeList() {
+    	return initializeList;
+    }
 }

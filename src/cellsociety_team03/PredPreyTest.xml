@@ -5,7 +5,7 @@
 <sharkpercentage>25.0</sharkpercentage>
 <fishpercentage>25.0</fishpercentage>
 <emptypercentage>50.0</emptypercentage>
-<rows>10</rows>
-<columns>10</columns>
+<rows>4</rows>
+<columns>4</columns>
 <delay>50</delay>
 </Title>
