@@ -1,4 +1,4 @@
-package cellsociety_team03;
+package constants;
 
 public enum NeighborOffset {
     TOP_LEFT            (new Offset(-1, -1)), 

@@ -1,10 +1,10 @@
-package cellsociety_team03;
+package grids;
 
-public class Offset {
+public class Location {
     private int myRow;
     private int myCol;
     
-    public Offset (int r, int c) {
+    public Location (int r, int c) {
         myRow = r;
         myCol = c;
     }
@@ -13,16 +13,16 @@ public class Offset {
         return myRow;
     }
 
-    public void setRow (int myRow) {
-        this.myRow = myRow;
+    public void setRow (int r) {
+        this.myRow = r;
     }
 
     public int getCol () {
         return myCol;
     }
 
-    public void setCol (int myCol) {
-        this.myCol = myCol;
+    public void setCol (int c) {
+        this.myCol = c;
     }
 
 }

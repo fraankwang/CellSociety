@@ -1,4 +1,4 @@
-package cellsociety_team03;
+package constants;
 import javafx.scene.paint.Color;
 
 public enum State {
@@ -9,8 +9,10 @@ public enum State {
     TREE 	(Color.GREEN), 
     BURNED	(Color.BROWN),
     RED		(Color.RED),
-    BLUE	(Color.BLUE);
-    
+    BLUE	(Color.BLUE),
+    SHARK	(Color.GRAY),
+	FISH	(Color.YELLOW);
+	
     Color myColor;
     State(Color color){
     	myColor = color;

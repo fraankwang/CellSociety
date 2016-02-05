@@ -1,14 +1,16 @@
+package grids;
+
 /**
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
-
-package cellsociety_team03;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
+import cells.GridCell;
+import cells.SimpleCell;
+import constants.State;
 import javafx.scene.shape.Rectangle;
 
 
@@ -20,8 +22,8 @@ public class SegregationGrid extends Grid {
 	private double bluePercentage;
 	private double emptyPercentage;
 	
-	private List<State> stateList = new ArrayList<State>();
 
+	private List<State> stateList = new ArrayList<State>();
 	
 	
 	public SegregationGrid(Map<String, String> params) {
@@ -34,18 +36,10 @@ public class SegregationGrid extends Grid {
 		addStatesToList(redPercentage, State.RED);
 		addStatesToList(bluePercentage, State.BLUE);
 		addStatesToList(emptyPercentage, State.EMPTY);
+		
 		Collections.shuffle(stateList);
 		initialize();
-		
 	}
-	
-	private void addStatesToList(double percentage, State state) {
-		for(int x = 0; x < percentage; x++){
-			stateList.add(state);
-		}
-		
-	}
-
 
 
 	@Override
@@ -69,18 +63,24 @@ public class SegregationGrid extends Grid {
 			}
 			
 			
+
+
 			if(!isContent((sameCount/nonEmptyCount)*100)){
 				move(cell);
-				
-				
 			}
 			else{
 				cell.setMyNextState(cell.getMyCurrentState());
 			}
 		}
+		else {
+			if((cell.getMyNextState()== null)){
+				cell.setMyNextState(cell.getMyCurrentState());
+			}
+		}
 		
 	}
-	//TODO: Make better search for empty spots algorithm???
+	
+	//TODO: Make better search for empty spots algorithm??? most likely make it random instead of just first open spot
 	private void move(GridCell cell) {
 		for (int r = 0; r < getMyCells().length; r++) {
 			for (int c = 0; c < getMyCells()[0].length; c++) {
@@ -88,19 +88,14 @@ public class SegregationGrid extends Grid {
 				if(newCell.getMyCurrentState().equals(State.EMPTY) && newCell.getMyNextState()==null) {
 					newCell.setMyNextState(cell.getMyCurrentState());
 					cell.setMyNextState(State.EMPTY);
-					
-					System.out.printf("moved to (%d,%d) ", r, c);
-					System.out.printf("which now has state of %S\n", newCell.getMyNextState());
 					return;
 				}
 
 			}
 		}
 		cell.setMyNextState(cell.getMyCurrentState());
-		System.out.println("stayed in place.");
 	}
 
-		
 	private boolean isContent(double percent) {
 		return percent >= similarityPercentage;
 	}

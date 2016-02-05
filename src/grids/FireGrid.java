@@ -2,12 +2,17 @@
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-package cellsociety_team03;
+package grids;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import cells.GridCell;
+import cells.SimpleCell;
+import constants.NeighborOffset;
+import constants.Offset;
+import constants.State;
 import javafx.scene.shape.Rectangle;
 
 
