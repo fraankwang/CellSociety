@@ -4,10 +4,11 @@
 
 package cellsociety_team03;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.awt.Dimension;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 
@@ -24,12 +25,14 @@ public abstract class Grid {
     private int myRows;
     
     // View
-    private GridCell[][] myCells;
+    private GridCell[][] getMyCells;
     private Dimension myGridSize;
     private int myCellSize;
     private Group myRoot;
     private GridPane myGridPane;
-        
+
+	private List<State> initializeList;
+
     /**
      * Constructor
      * Initializes Grid based on parameters from xml
@@ -50,7 +53,7 @@ public abstract class Grid {
         }
         
         myRoot = new Group();
-
+        initializeList = new ArrayList<State>();
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 
         initialize();
@@ -71,10 +74,10 @@ public abstract class Grid {
      * Initializes and populates myCells given the initial grid setup parameters
      */
     private void initializeCells () {
-        myCells = new GridCell[myRows][myColumns];
-
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
+        getMyCells = new GridCell[myRows][myColumns];
+        Collections.shuffle(initializeList);
+        for (int r = 0; r < getMyCells.length; r++) {
+            for (int c = 0; c < getMyCells[0].length; c++) {
                 initializeCell(r, c);
             }
         }
@@ -95,9 +98,9 @@ public abstract class Grid {
         myGridPane = new GridPane();
         myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
 
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                myGridPane.add(myCells[r][c].getMyShape(), c, r);
+        for (int r = 0; r < getMyCells.length; r++) {
+            for (int c = 0; c < getMyCells[0].length; c++) {
+                myGridPane.add(getMyCells[r][c].getMyShape(), c, r);
             }
         }
 
@@ -136,7 +139,7 @@ public abstract class Grid {
      * 1. Each Cell determines its own next State
      * 2. Each Cell is set to its next State
      * 
-     * @param elapsedTime
+     * 
      */
     public void step () {
         setCellStates();
@@ -147,8 +150,8 @@ public abstract class Grid {
      * Loops through each cell in the grid and updates its next state
      */
     protected void setCellStates () {
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
+        for (int r = 0; r < getMyCells.length; r++) {
+            for (int c = 0; c < getMyCells[0].length; c++) {
                 GridCell cell = this.getMyCells()[r][c];
                 this.setCellState(cell);
             }
@@ -166,9 +169,9 @@ public abstract class Grid {
      * Loop through myCells and set transition each cell to its next state
      */
     private void updateCellStates () {
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                myCells[r][c].transitionStates();
+        for (int r = 0; r < getMyCells.length; r++) {
+            for (int c = 0; c < getMyCells[0].length; c++) {
+                getMyCells[r][c].transitionStates();
 
             }
         }
@@ -190,6 +193,16 @@ public abstract class Grid {
         return !(farTop | farBottom | farLeft | farRight);
     }
     
+
+    protected void addStatesToList(double percentage, State state) {
+		int total = getRows()*getColumns();
+		int numberOfStates = (int)(total*percentage)/100;
+		for(int x = 0; x < numberOfStates; x++){
+			initializeList.add(state);
+		}
+		
+	}
+
     /**
      * Returns a list of offsets to check to find a GridCell's neighbors
      * @return The list of offsets
@@ -208,6 +221,7 @@ public abstract class Grid {
         offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
 
         return offsets;
+
     }
     
     /**
@@ -226,7 +240,7 @@ public abstract class Grid {
             int neighborRow = r + offset.getRow();
             int neighborCol = c + offset.getCol();
             if(cellInBounds(neighborRow, neighborCol)){
-                neighbors.add(myCells[neighborRow][neighborCol]);
+                neighbors.add(getMyCells[neighborRow][neighborCol]);
             }
         }
         
@@ -239,11 +253,11 @@ public abstract class Grid {
     // =========================================================================
     
     public GridCell[][] getMyCells () {
-        return myCells;
+        return getMyCells;
     }
 
     public void setMyCells (GridCell[][] myCells) {
-        this.myCells = myCells;
+        this.getMyCells = myCells;
     }
 
     public int getColumns () {
@@ -268,6 +282,10 @@ public abstract class Grid {
 
     public void setRoot (Group root) {
         this.myRoot = root;
+    }
+    
+    protected List<State> getInitializeList() {
+    	return initializeList;
     }
 
     public Dimension getMyGridSize () {
