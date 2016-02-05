@@ -2,12 +2,16 @@
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-package cellsociety_team03;
+package grids;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import cells.GridCell;
+import constants.NeighborOffset;
+import constants.Offset;
+import constants.State;
 import java.awt.Dimension;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;

@@ -1,5 +1,7 @@
-package cellsociety_team03;
+package cells;
 
+import constants.State;
+import grids.Location;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 

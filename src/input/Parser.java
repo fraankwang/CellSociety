@@ -1,4 +1,4 @@
-package cellsociety_team03;
+package input;
 
 import java.io.File;
 import java.io.FileInputStream;

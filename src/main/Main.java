@@ -2,10 +2,13 @@
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-package cellsociety_team03;
+package main;
 
 import java.io.File;
 import java.util.*;
+import constants.Constants;
+import game.Game;
+import input.Parser;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
