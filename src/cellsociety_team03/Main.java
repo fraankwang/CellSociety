@@ -8,10 +8,16 @@ import java.io.File;
 import java.util.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -23,6 +29,7 @@ public class Main extends Application{
 	private Game primaryGame;
 	private Scene primaryScene;
 	private Group primaryRoot;
+	private BorderPane primaryPane;
 	private HBox splashRoot;
 	private Group gameRoot;
 	
@@ -62,15 +69,17 @@ public class Main extends Application{
 	 */
 	private void initialize(){
 		//create horizontally aligned box with spacing of 50
-		splashRoot = new HBox(50);
+	        splashRoot = new HBox(50);
 		gameRoot = new Group();
+	        primaryPane = new BorderPane();
+
 		
 		startButton = new Button("Start");
 		stopButton = new Button("Stop");
 		stepButton = new Button("Step");
 		resetButton = new Button("Reset");
 		newGameButton = new Button("New Game");
-		exitButton = new Button("Exit");
+		//exitButton = new Button("Exit");
 		
 		//set asynchronous functions to handle button clicks
 		//TODO: should we give each a unique handler instead? If not, we should put
@@ -81,11 +90,16 @@ public class Main extends Application{
 
 		resetButton.setOnAction(e-> handleButton(e));
 		newGameButton.setOnAction(e-> handleButton(e));
-		exitButton.setOnAction(e-> handleButton(e));
+		//exitButton.setOnAction(e-> handleButton(e));
 		
-		splashRoot.getChildren().addAll(startButton,stopButton,stepButton,resetButton,newGameButton,exitButton);
+		splashRoot.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+		splashRoot.getChildren().addAll(startButton,stopButton,stepButton,resetButton,newGameButton);
 		
-		primaryRoot.getChildren().add(splashRoot);
+		
+		primaryPane.setTop(splashRoot);
+		primaryPane.setPrefWidth(500);
+		primaryRoot.getChildren().add(primaryPane);
+		//primaryRoot.getChildren().add(splashRoot);
 	}
 	
 	/**
@@ -100,7 +114,13 @@ public class Main extends Application{
 		} else if (e.getSource() == stepButton) {
                     if (primaryGame != null) primaryGame.getMyGrid().step(1.0/60);
                 }else if (e.getSource() == resetButton){
-			if (primaryGame != null) primaryGame.initializeGrid();
+			if (primaryGame != null) {
+			    primaryGame.initializeGrid();
+			    gameRoot = primaryGame.getGameRoot();
+			    this.switchToGame(gameRoot);
+			   
+			}
+			
 		} else if (e.getSource() == newGameButton){
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Select an XML file");
@@ -127,10 +147,16 @@ public class Main extends Application{
 		gameRoot = primaryGame.getGameRoot();
 		System.out.println("Got initialized gameRoot from Game.java");
 		
-		primaryRoot.getChildren().add(gameRoot);
-		gameRoot.setTranslateY(50);
+		this.switchToGame(gameRoot);
+		//primaryRoot.getChildren().add(gameRoot);
+		///gameRoot.setTranslateY(50);
 	}
 	
+	private void switchToGame(Node gameRoot){
+	    BorderPane.setMargin(gameRoot, new Insets(12,12,12,12));
+	    primaryPane.setCenter(gameRoot);
+
+	}
 	/**
 	 * Takes @param file and converts XML data to a Map of Grid parameters and their initial values
 	 * @param file

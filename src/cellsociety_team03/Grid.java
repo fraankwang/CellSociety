@@ -33,13 +33,13 @@ public abstract class Grid {
         myParameters = params;
         myRows = Integer.parseInt(params.get("rows"));
         myColumns = Integer.parseInt(params.get("columns"));
-        myInitialStates = createInitialStatesArray(params.get("initialStates"));
+        if(params.containsKey("initialStates")) myInitialStates = createInitialStatesArray(params.get("initialStates"));
         delay = Long.parseLong(params.get("delay"));
         myRoot = new Group();
 
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 
-        //initializeCells();
+        initializeCells();
     }
 
     /**
