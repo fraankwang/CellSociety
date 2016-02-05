@@ -2,9 +2,12 @@
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-package cellsociety_team03;
+package grids;
 
 import java.util.Map;
+import cells.GridCell;
+import cells.SimpleCell;
+import constants.State;
 import javafx.scene.shape.Rectangle;
 
 

@@ -2,10 +2,14 @@
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-package cellsociety_team03;
+package game;
 
 import java.util.Map;
-
+import grids.FireGrid;
+import grids.GameOfLifeGrid;
+import grids.Grid;
+import grids.PredatorPreyGrid;
+import grids.SegregationGrid;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
@@ -61,6 +65,9 @@ public class Game {
 		System.out.println("myGameRoot initialized");
 	}
 	
+	/**
+	 * Initialize the game loop, using the delay parameter from xml to determine speed
+	 */
 	private void initializeGameLoop(){
 		// "delay" given in milliseconds
 	        double framesPerSecond = 1000 * 1 / Double.parseDouble(myParameters.get("delay"));
@@ -71,12 +78,20 @@ public class Game {
 		gameLoop.getKeyFrames().add(frame);
 	}
 	
+	/**
+	 * Start the game loop
+	 */
 	public void startGame(){
 		if(gameLoop != null) gameLoop.play();
 	}
+	
+	/**
+	 * End the game loop
+	 */
 	public void stopGame(){
 		if(gameLoop != null) gameLoop.stop();
 	}
+	
 	
 	public Group getGameRoot(){
 		return this.myGameRoot;

@@ -1,5 +1,6 @@
-package cellsociety_team03;
+package cells;
 
+import constants.State;
 import javafx.scene.shape.Shape;
 
 public abstract class DataCell extends GridCell {

@@ -1,4 +1,4 @@
-package cellsociety_team03;
+package constants;
 import javafx.scene.paint.Color;
 
 public enum State {

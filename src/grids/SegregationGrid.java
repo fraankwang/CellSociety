@@ -1,14 +1,16 @@
+package grids;
+
 /**
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
-
-package cellsociety_team03;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
+import cells.GridCell;
+import cells.SimpleCell;
+import constants.State;
 import javafx.scene.shape.Rectangle;
 
 
@@ -93,7 +95,6 @@ public class SegregationGrid extends Grid {
 		}
 		cell.setMyNextState(cell.getMyCurrentState());
 	}
-
 
 	private boolean isContent(double percent) {
 		return percent >= similarityPercentage;
