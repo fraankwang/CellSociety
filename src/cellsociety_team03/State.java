@@ -10,8 +10,10 @@ public enum State {
     TREE 	(Color.GREEN), 
     BURNED	(Color.BROWN),
     RED		(Color.RED),
-    BLUE	(Color.BLUE);
-    
+    BLUE	(Color.BLUE),
+    SHARK	(Color.GRAY),
+	FISH	(Color.YELLOW);
+	
     Color myColor;
     State(Color color){
     	myColor = color;

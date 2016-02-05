@@ -4,7 +4,11 @@
 
 package cellsociety_team03;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
@@ -20,6 +24,7 @@ public abstract class Grid {
     private Group myRoot;
     private GridPane myGridPane;
     private Map<String, String> myParameters;
+	private List<State> initializeList;
     protected static int CELL_SIZE = 50; // TODO: set dynamically based on board size
 
     /**
@@ -34,7 +39,7 @@ public abstract class Grid {
         myColumns = Integer.parseInt(params.get("columns"));
         delay = Long.parseLong(params.get("delay"));
         myRoot = new Group();
-
+        initializeList = new ArrayList<State>();
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 
         //initializeCells();
@@ -92,7 +97,7 @@ public abstract class Grid {
         myCells = new GridCell[myRows][myColumns];
 
         // TODO read myParameters to determine initial set up
-
+        Collections.shuffle(initializeList);
         for (int r = 0; r < myCells.length; r++) {
             for (int c = 0; c < myCells[0].length; c++) {
                 initializeCell(r, c);
@@ -103,7 +108,9 @@ public abstract class Grid {
         createBoard();
     }
 
-    protected abstract void initializeCell (int row, int column);
+    protected void initializeCell (int row, int column) {
+    	myCells[row][column] = new SimpleCell(initializeList.remove(0), CELL_SIZE, new Rectangle(30,30));
+    }
 
     /**
      * Updates the visible Pane by mapping the the cells from myCells in the same location in the 2D
@@ -134,6 +141,15 @@ public abstract class Grid {
 
         return !(farTop | farBottom | farLeft | farRight);
     }
+    
+    protected void addStatesToList(double percentage, State state) {
+		int total = getRows()*getColumns();
+		int numberOfStates = (int)(total*percentage)/100;
+		for(int x = 0; x < numberOfStates; x++){
+			initializeList.add(state);
+		}
+		
+	}
 
     private void handleMouseInput (ActionEvent e) {
 

@@ -20,7 +20,7 @@ public class SegregationGrid extends Grid {
 	private double bluePercentage;
 	private double emptyPercentage;
 	
-	private List<State> stateList = new ArrayList<State>();
+
 
 	
 	
@@ -34,24 +34,11 @@ public class SegregationGrid extends Grid {
 		addStatesToList(redPercentage, State.RED);
 		addStatesToList(bluePercentage, State.BLUE);
 		addStatesToList(emptyPercentage, State.EMPTY);
-		Collections.shuffle(stateList);
+
 		initializeCells();
 		
 	}
-	
-	private void addStatesToList(double percentage, State state) {
-		for(int x = 0; x < percentage; x++){
-			stateList.add(state);
-		}
-		
-	}
 
-
-
-	@Override
-	protected void initializeCell(int row, int column) {
-		myCells[row][column] = new SimpleCell(stateList.remove(0), CELL_SIZE, new Rectangle(30,30));
-	}
 
 	@Override
 	protected void setCellState(GridCell cell, int r, int c) {
@@ -67,7 +54,6 @@ public class SegregationGrid extends Grid {
 			
 			
 			if(!isContent((sameCount/total)*100)){
-				System.out.printf("The uncontent cell at (%d, %d) with state of: " + cell.getMyCurrentState() + "has ", r, c);
 				move(cell);
 				
 				
@@ -76,9 +62,15 @@ public class SegregationGrid extends Grid {
 				cell.setMyNextState(cell.getMyCurrentState());
 			}
 		}
+		else {
+			if((cell.getMyNextState()== null)){
+				cell.setMyNextState(cell.getMyCurrentState());
+			}
+		}
 		
 	}
-	//TODO: Make better search for empty spots algorithm???
+	
+	//TODO: Make better search for empty spots algorithm??? most likely make it random instead of just first open spot
 	private void move(GridCell cell) {
 		for (int r = 0; r < myCells.length; r++) {
 			for (int c = 0; c < myCells[0].length; c++) {
@@ -86,16 +78,12 @@ public class SegregationGrid extends Grid {
 				if(newCell.getMyCurrentState().equals(State.EMPTY) && newCell.getMyNextState()==null) {
 					newCell.setMyNextState(cell.getMyCurrentState());
 					cell.setMyNextState(State.EMPTY);
-					
-					System.out.printf("moved to (%d,%d) ", r, c);
-					System.out.printf("which now has state of %S\n", newCell.getMyNextState());
 					return;
 				}
 
 			}
 		}
 		cell.setMyNextState(cell.getMyCurrentState());
-		System.out.println("stayed in place.");
 	}
 
 	private List<State> getNeighborStates(int r, int c) {
