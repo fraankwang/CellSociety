@@ -4,6 +4,7 @@
 
 package cellsociety_team03;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.*;
 import javafx.application.Application;
@@ -23,10 +24,6 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
-    public static final String DEFAULT_RESOURCE_FILE = "resources";
-    private ResourceBundle myResources;
-
     // Model
     private Game primaryGame;
 
@@ -45,14 +42,13 @@ public class Main extends Application {
      */
     @Override
     public void start (Stage s) throws Exception {
-        myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_RESOURCE_FILE);
 
         primaryStage = s;
 
         Group primaryRoot = initializeRoot();
 
-        // TODO: figure out primaryScene's dimensions
-        primaryScene = new Scene(primaryRoot, 500, 500, Color.WHITE);
+        // TODO: put color in resource file??
+        primaryScene = new Scene(primaryRoot, Constants.DEFAULT_SIZE.getWidth(), Constants.DEFAULT_SIZE.getHeight(), Color.WHITE);
         primaryStage.setScene(primaryScene);
         primaryStage.show();
     }
@@ -74,7 +70,7 @@ public class Main extends Application {
         HBox toolbar = createToolbar();
         primaryPane.setTop(toolbar);
 
-        primaryPane.setPrefSize(500, 500 + toolbar.getPrefHeight());
+        primaryPane.setPrefSize(Constants.DEFAULT_SIZE.getWidth(), Constants.DEFAULT_SIZE.getHeight() + toolbar.getPrefHeight());
 
         Group primaryRoot = new Group();
         primaryRoot.getChildren().add(primaryPane);
@@ -96,14 +92,14 @@ public class Main extends Application {
         toolbar.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
         // TODO: maybe this should be css instead
-        float insetHorizontal = Float.parseFloat(myResources.getString("toolbarInsetHorizontal"));
-        float insetVertical = Float.parseFloat(myResources.getString("toolbarInsetVertical"));
+        float insetHorizontal = Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetHorizontal"));
+        float insetVertical = Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetVertical"));
         for (Button b : buttons) {
             HBox.setMargin(b, new Insets(insetHorizontal, insetVertical, insetHorizontal,
                                          insetVertical));
         }
 
-        toolbar.setPrefHeight(Float.parseFloat(myResources.getString("toolbarHeight")));
+        toolbar.setPrefHeight(Constants.TOOLBAR_HEIGHT);
 
         return toolbar;
 
@@ -117,15 +113,15 @@ public class Main extends Application {
     private List<Button> createGameButtons () {
         List<Button> list = new ArrayList<Button>();
 
-        Button startButton = new Button(myResources.getString("toolbarButtonTitleStart"));
+        Button startButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleStart"));
         startButton.setOnAction(e -> startGame());
-        Button stopButton = new Button(myResources.getString("toolbarButtonTitleStop"));
+        Button stopButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleStop"));
         stopButton.setOnAction(e -> stopGame());
-        Button stepButton = new Button(myResources.getString("toolbarButtonTitleStep"));
+        Button stepButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleStep"));
         stepButton.setOnAction(e -> stepGame());
-        Button resetButton = new Button(myResources.getString("toolbarButtonTitleReset"));
+        Button resetButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleReset"));
         resetButton.setOnAction(e -> resetGame());
-        Button newGameButton = new Button(myResources.getString("toolbarButtonTitleNewGame"));
+        Button newGameButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"));
         newGameButton.setOnAction(e -> chooseNewGame());
 
         list.add(startButton);
@@ -171,7 +167,7 @@ public class Main extends Application {
      */
     private void chooseNewGame () {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(myResources.getString("fileChooserTitle"));
+        fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
         //TODO: put these constants in resource file?
         fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml")); 
         File file = fileChooser.showOpenDialog(primaryStage);
@@ -198,12 +194,16 @@ public class Main extends Application {
      */
     private void switchToGame (Game game) {
         // TODO: move to css?
-        float inset = Float.parseFloat(myResources.getString("borderPaneInsets"));
+        float inset = Float.parseFloat(Constants.RESOURCES.getString("borderPaneInsets"));
         BorderPane.setMargin(game.getGameRoot(), new Insets(inset, inset, inset, inset));
-        primaryPane.setPrefWidth(500); // change to primaryGame.getMyGrid().getWidth
-        // do I have to change scene's width/height too?
-
+        primaryPane.setPrefSize(game.getMyGrid().getMyGridSize().getWidth(), game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT); // change to primaryGame.getMyGrid().getWidth
         primaryPane.setCenter(game.getGameRoot());
+
+        // Change stage/scene's width/height too?
+        /*
+        primaryStage.setWidth(game.getMyGrid().getMyGridSize().getWidth());
+        primaryStage.setHeight(game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT);
+        */
     }
 
     /**

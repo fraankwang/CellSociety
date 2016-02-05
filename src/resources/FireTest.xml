@@ -1,4 +1,6 @@
 <Title>Fire
+<width>500</width>
+<height>500</height>
 <rows>10</rows>
 <columns>10</columns>
 <delay>50</delay>

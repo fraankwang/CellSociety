@@ -4,6 +4,7 @@
 
 package cellsociety_team03;
 
+import java.awt.Dimension;
 import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -17,12 +18,12 @@ public abstract class Grid {
     protected int[][] myInitialStates;
     private int myColumns;
     private int myRows;
+    private Dimension myGridSize;
+    private int myCellSize;
     private long delay;
     private Group myRoot;
     private GridPane myGridPane;
     private Map<String, String> myParameters;
-    protected static int CELL_SIZE = 50; // TODO: set dynamically based on board size
-
     /**
      * Reads the parameters passed to the constructor
      * Initializes the 2D Cell array and corresponding GridPane Node
@@ -31,8 +32,11 @@ public abstract class Grid {
      */
     public Grid (Map<String, String> params) {
         myParameters = params;
+        myGridSize = new Dimension(Integer.parseInt(params.get("width")),Integer.parseInt(params.get("height")));
         myRows = Integer.parseInt(params.get("rows"));
         myColumns = Integer.parseInt(params.get("columns"));
+        myCellSize = (int) myGridSize.getWidth() / myRows; //TODO: make different cell widths and heights?
+        
         if(params.containsKey("initialStates")) myInitialStates = createInitialStatesArray(params.get("initialStates"));
         delay = Long.parseLong(params.get("delay"));
         myRoot = new Group();
@@ -193,5 +197,21 @@ public abstract class Grid {
 
     public void setRoot (Group root) {
         this.myRoot = root;
+    }
+
+    public Dimension getMyGridSize () {
+        return myGridSize;
+    }
+
+    protected void setMyGridSize (Dimension myGridSize) {
+        this.myGridSize = myGridSize;
+    }
+
+    protected int getMyCellSize () {
+        return myCellSize;
+    }
+
+    protected void setMyCellSize (int myCellSize) {
+        this.myCellSize = myCellSize;
     }
 }

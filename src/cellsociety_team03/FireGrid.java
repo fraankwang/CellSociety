@@ -35,7 +35,7 @@ public class FireGrid extends Grid {
                 state = State.BURNING;
                 break;
         }
-        myCells[r][c] = new SimpleCell(state, CELL_SIZE, new Rectangle(30, 30));
+        myCells[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
         /*
         if (r % 5 == 0)
             myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30));

@@ -32,7 +32,7 @@ public class GameOfLifeGrid extends Grid {
                 state = State.ALIVE;
                 break;
         }
-        myCells[r][c] = new SimpleCell(state, CELL_SIZE, new Rectangle(30, 30));
+        myCells[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
        
     }
 

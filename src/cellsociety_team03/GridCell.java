@@ -8,7 +8,7 @@ public abstract class GridCell {
     private State myCurrentState;
     private State myNextState;
     private Color myColor;
-    private int mySize;
+    private int mySize; //TODO: no reason to include size
     private Shape myShape; // TODO: can we figure out a way to make it Node?
 
     public GridCell (State currentState, int size, Shape s) {
@@ -18,6 +18,7 @@ public abstract class GridCell {
         myColor = myCurrentState.getColor();
         myShape.setFill(myColor);
         mySize = size;
+       
     }
 
     public State getMyCurrentState () {

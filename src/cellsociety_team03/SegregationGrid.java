@@ -50,7 +50,7 @@ public class SegregationGrid extends Grid {
 
 	@Override
 	protected void initializeCell(int row, int column) {
-		myCells[row][column] = new SimpleCell(stateList.remove(0), CELL_SIZE, new Rectangle(30,30));
+		myCells[row][column] = new SimpleCell(stateList.remove(0), getMyCellSize(), new Rectangle(getMyCellSize(),getMyCellSize()));
 	}
 
 	@Override
