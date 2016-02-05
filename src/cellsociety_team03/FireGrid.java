@@ -4,6 +4,8 @@
 
 package cellsociety_team03;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javafx.scene.shape.Rectangle;
@@ -22,7 +24,7 @@ public class FireGrid extends Grid {
     //TODO: implement based on xml
     @Override 
     protected void initializeCell(int r, int c){
-        int s = myInitialStates[r][c];
+        int s = getMyInitialStates()[r][c];
         State state = State.EMPTY;
         switch(s){
             case 0:
@@ -35,7 +37,7 @@ public class FireGrid extends Grid {
                 state = State.BURNING;
                 break;
         }
-        myCells[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
+        getMyCells()[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
         /*
         if (r % 5 == 0)
             myCells[r][c] = new SimpleCell(State.TREE, CELL_SIZE, new Rectangle(30, 30));
@@ -57,6 +59,19 @@ public class FireGrid extends Grid {
         }
     }
 
+    @Override
+    protected List<Offset> neighborOffsets(){
+        
+        List<Offset> offsets = new ArrayList<Offset>();
+        System.out.println("inheritance");
+        offsets.add(NeighborOffset.TOP.getOffset());
+        offsets.add(NeighborOffset.LEFT.getOffset());
+        offsets.add(NeighborOffset.RIGHT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM.getOffset());
+
+        return offsets;
+    }
+    
     /**
      * Determines if any of a cell's neighbor cells are currently burning
      * 
@@ -67,20 +82,16 @@ public class FireGrid extends Grid {
     private boolean neighborIsBurning (int r, int c) {
         // TODO: remove duplicated code with game of life grid
         boolean neighborIsBurning = false;
-        int[] rNeighbors = { -1, 0, 0, 1 };
-        int[] cNeighbors = { 0, 1, -1, 0 };
-        int r2;
-        int c2;
-        for (int i = 0; i < rNeighbors.length; i++) {
-            for (int j = 0; j < cNeighbors.length; j++) {
-                r2 = r + rNeighbors[i];
-                c2 = c + cNeighbors[j];
-                if (this.cellInBounds(r2, c2) &&
-                    this.getMyCells()[r2][c2].getMyCurrentState() == State.BURNING) {
-                    neighborIsBurning = true;
-                }
+        
+        for (GridCell neighbor : getNeighbors(r, c)) {
+            
+            if (neighbor.getMyCurrentState() == State.BURNING) {
+                neighborIsBurning = true;
             }
+
         }
+        
+       
 
         return neighborIsBurning;
     }

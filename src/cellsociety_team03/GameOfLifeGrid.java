@@ -22,7 +22,7 @@ public class GameOfLifeGrid extends Grid {
     // TODO: implement based on xml
     @Override
     protected void initializeCell (int r, int c) {
-        int s = myInitialStates[r][c];
+        int s = getMyInitialStates()[r][c];
         State state = State.DEAD;
         switch(s){
             case 0:
@@ -32,7 +32,7 @@ public class GameOfLifeGrid extends Grid {
                 state = State.ALIVE;
                 break;
         }
-        myCells[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
+        getMyCells()[r][c] = new SimpleCell(state, getMyCellSize(), new Rectangle(getMyCellSize(), getMyCellSize()));
        
     }
 
@@ -62,6 +62,7 @@ public class GameOfLifeGrid extends Grid {
         }
     }
 
+    
     /**
      * Calculates the number of "neighbor" cells alive
      * 
@@ -72,22 +73,16 @@ public class GameOfLifeGrid extends Grid {
     private int numNeighborsAlive (int r, int c) {
         int numNeighborsAlive = 0;
 
-        // TODO: put these arrays elsewhere
-        int[] rNeighbors = { -1, -1, -1, 0, 0, 1, 1, 1 };
-        int[] cNeighbors = { -1, 0, 1, -1, 1, -1, 0, 1 };
-        int r2;
-        int c2;
-        for (int i = 0; i < rNeighbors.length; i++) {
-            r2 = r + rNeighbors[i];
-            c2 = c + cNeighbors[i];
-            if (this.cellInBounds(r2, c2) &&
-                this.getMyCells()[r2][c2].getMyCurrentState() == State.ALIVE) {
+        for(GridCell neighbor : getNeighbors(r, c)){
+            if(neighbor.getMyCurrentState() == State.ALIVE){
                 numNeighborsAlive++;
             }
-
         }
-
+        
         return numNeighborsAlive;
+        
     }
+    
+    
 
 }

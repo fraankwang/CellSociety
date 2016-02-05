@@ -5,6 +5,9 @@
 package cellsociety_team03;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -14,16 +17,21 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Grid {
 
-    protected GridCell[][] myCells;
-    protected int[][] myInitialStates;
+    // Model
+    private int[][] myInitialStates;
     private int myColumns;
     private int myRows;
+    
+    // View
+    private GridCell[][] myCells;
     private Dimension myGridSize;
     private int myCellSize;
     private long delay;
     private Group myRoot;
     private GridPane myGridPane;
+    
     private Map<String, String> myParameters;
+    
     /**
      * Reads the parameters passed to the constructor
      * Initializes the 2D Cell array and corresponding GridPane Node
@@ -37,7 +45,7 @@ public abstract class Grid {
         myColumns = Integer.parseInt(params.get("columns"));
         myCellSize = (int) myGridSize.getWidth() / myRows; //TODO: make different cell widths and heights?
         
-        if(params.containsKey("initialStates")) myInitialStates = createInitialStatesArray(params.get("initialStates"));
+        if(params.containsKey("initialStates")) setMyInitialStates(createInitialStatesArray(params.get("initialStates")));
         delay = Long.parseLong(params.get("delay"));
         myRoot = new Group();
 
@@ -158,14 +166,39 @@ public abstract class Grid {
 
         return !(farTop | farBottom | farLeft | farRight);
     }
+    
+    protected List<Offset> neighborOffsets(){
+        
+        List<Offset> offsets = new ArrayList<Offset>();
+        
+        offsets.add(NeighborOffset.TOP_LEFT.getOffset());
+        offsets.add(NeighborOffset.TOP.getOffset());
+        offsets.add(NeighborOffset.TOP_RIGHT.getOffset());
+        offsets.add(NeighborOffset.LEFT.getOffset());
+        offsets.add(NeighborOffset.RIGHT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM_LEFT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM.getOffset());
+        offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
 
-    private void handleMouseInput (ActionEvent e) {
-
+        return offsets;
+    }
+    
+    protected List<GridCell> getNeighbors(int r, int c){
+        List<Offset> offsets = neighborOffsets();
+        List<GridCell> neighbors = new ArrayList<GridCell>();
+        
+        for(Offset offset : offsets){
+            int neighborRow = r + offset.getRow();
+            int neighborCol = c + offset.getCol();
+            if(cellInBounds(neighborRow, neighborCol)){
+                neighbors.add(myCells[neighborRow][neighborCol]);
+            }
+        }
+        
+        
+        return neighbors;
     }
 
-    private void handleKeyEntry (ActionEvent e) {
-
-    }
 
     public GridCell[][] getMyCells () {
         return myCells;
@@ -213,5 +246,13 @@ public abstract class Grid {
 
     protected void setMyCellSize (int myCellSize) {
         this.myCellSize = myCellSize;
+    }
+
+    protected int[][] getMyInitialStates () {
+        return myInitialStates;
+    }
+
+    protected void setMyInitialStates (int[][] myInitialStates) {
+        this.myInitialStates = myInitialStates;
     }
 }
