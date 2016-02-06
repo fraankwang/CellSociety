@@ -1,9 +1,13 @@
 package grids;
 
+/**
+ * Convenience class for "location" of a cell with respect to its grid
+ *
+ */
 public class Location {
     private int myRow;
     private int myCol;
-    
+
     public Location (int r, int c) {
         myRow = r;
         myCol = c;
@@ -14,7 +18,7 @@ public class Location {
     }
 
     public void setRow (int r) {
-        this.myRow = r;
+        myRow = r;
     }
 
     public int getCol () {
@@ -22,7 +26,7 @@ public class Location {
     }
 
     public void setCol (int c) {
-        this.myCol = c;
+        myCol = c;
     }
 
 }

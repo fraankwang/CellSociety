@@ -10,7 +10,10 @@ import cells.SimpleCell;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
-
+/**
+ * Grid subclass for Game of Life simulation
+ *
+ */
 public class GameOfLifeGrid extends Grid {
 
     private double nonEmptyPercentage;
@@ -44,7 +47,7 @@ public class GameOfLifeGrid extends Grid {
     @Override
     protected void setCellState (GridCell cell) {
 
-        int numNeighborsAlive = this.numNeighborsAlive(cell);
+        int numNeighborsAlive = numNeighborsAlive(cell);
 
         // Can combine these if statements, but I think it's more readable this way
         if (cell.getMyCurrentState() == State.ALIVE) {
@@ -68,7 +71,7 @@ public class GameOfLifeGrid extends Grid {
 
     /**
      * Calculates the number of "neighbor" cells alive
-     * 
+     *
      * @param r The row index of the cell in question
      * @param c The column index of the cell in question
      * @return The number of alive cells surrounding the cell in question

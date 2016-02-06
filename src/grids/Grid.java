@@ -49,8 +49,8 @@ public abstract class Grid {
                               Integer.parseInt(params.get("height")));
         myRows = Integer.parseInt(params.get("rows"));
         myColumns = Integer.parseInt(params.get("columns"));
-        myCellSize = (int) myGridSize.getWidth() / myRows; // TODO: make different cell widths and
-                                                           // heights?
+     // TODO: make different cell widths and heights?
+        myCellSize = (int) myGridSize.getWidth() / myRows; 
 
         if (params.containsKey("initialStates")) {
             setMyInitialStates(createInitialStatesArray(params.get("initialStates")));

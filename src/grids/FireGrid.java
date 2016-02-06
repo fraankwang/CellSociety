@@ -15,7 +15,10 @@ import constants.Offset;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
-
+/**
+ * Grid subclass for Fire simulation
+ *
+ */
 public class FireGrid extends Grid {
 
     private double probCatch;
@@ -56,7 +59,7 @@ public class FireGrid extends Grid {
         if (cell.getMyCurrentState() == State.BURNING) {
             cell.setMyNextState(State.EMPTY);
         }
-        else if (this.willCatch(cell)) {
+        else if (willCatch(cell)) {
             cell.setMyNextState(State.BURNING);
         }
         else {
@@ -79,7 +82,7 @@ public class FireGrid extends Grid {
 
     /**
      * Determines if any of a cell's neighbor cells are currently burning
-     * 
+     *
      * @param r The row index of the cell in question
      * @param c The column index of the cell in question
      * @return A boolean indicating whether one of the neighbor cells is burning
@@ -100,7 +103,7 @@ public class FireGrid extends Grid {
 
     /**
      * Determines whether a cell will catch on fire
-     * 
+     *
      * @param cell The cell in question
      * @param r The row index of the cell in question
      * @param c The column index of the cell in question
@@ -114,7 +117,7 @@ public class FireGrid extends Grid {
     /**
      * Returns a boolean if a random number generated is greater than probCatch
      * TODO: can't think of better name
-     * 
+     *
      * @return The boolean
      */
     private boolean probCatchRandom () {
