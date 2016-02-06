@@ -17,16 +17,16 @@ public class Offset {
         return myRow;
     }
 
-    public void setRow (int myRow) {
-        this.myRow = myRow;
+    public void setRow (int row) {
+        this.myRow = row;
     }
 
     public int getCol () {
         return myCol;
     }
 
-    public void setCol (int myCol) {
-        this.myCol = myCol;
+    public void setCol (int col) {
+        this.myCol = col;
     }
 
 }

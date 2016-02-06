@@ -10,6 +10,7 @@ import grids.GameOfLifeGrid;
 import grids.Grid;
 import grids.PredatorPreyGrid;
 import grids.SegregationGrid;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
@@ -32,7 +33,7 @@ public class Game {
 
     /**
      * Given parsed XML data, construct appropriate Grid subclass and gameLoop
-     * 
+     *
      * @param params A map containing parsed XML data
      */
     public Game (Map<String, String> params) {
@@ -47,7 +48,7 @@ public class Game {
     /**
      * Initializes a specific grid based on the gameType parameter, and
      * updates myGameRoot after myGrid updates its local root
-     * This function uses only global variables so the user can press the reset 
+     * This function uses only global variables so the user can press the reset
      * button (in the Main class) at any time
      */
     public void initializeGrid () {
@@ -67,7 +68,7 @@ public class Game {
             myGrid = new PredatorPreyGrid(myParameters);
         }
 
-        //TODO: move to different method?
+        // TODO: move to different method?
         myGameRoot = myGrid.getRoot();
     }
 
@@ -81,7 +82,7 @@ public class Game {
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
                                       e -> myGrid.step());
         myGameLoop = new Timeline();
-        myGameLoop.setCycleCount(Timeline.INDEFINITE);
+        myGameLoop.setCycleCount(Animation.INDEFINITE);
         myGameLoop.getKeyFrames().add(frame);
     }
 
@@ -106,13 +107,13 @@ public class Game {
     // =========================================================================
     // Getters and Setters
     // =========================================================================
-    
+
     public Group getGameRoot () {
-        return this.myGameRoot;
+        return myGameRoot;
     }
 
     public Grid getMyGrid () {
-        return this.myGrid;
+        return myGrid;
     }
 
 }

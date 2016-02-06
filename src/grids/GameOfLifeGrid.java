@@ -37,6 +37,8 @@ public class GameOfLifeGrid extends Grid {
             case 1:
                 state = State.ALIVE;
                 break;
+            default:
+                //TODO: display error message
         }
 
         getMyCells()[r][c] =

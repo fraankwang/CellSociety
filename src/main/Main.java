@@ -6,7 +6,9 @@ package main;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import constants.Constants;
 import game.Game;
 import input.Parser;
@@ -67,7 +69,7 @@ public class Main extends Application {
      * Initializes the primary root with a BorderPane
      * The BorderPane is initialized with an HBox toolbar on top to hold all the game buttons that
      * stay visible the entire time.
-     * 
+     *
      * @return The scene's primary root
      */
     private Group initializeRoot () {
@@ -87,7 +89,7 @@ public class Main extends Application {
 
     /**
      * Creates a toolbar to display in the top of the screen
-     * 
+     *
      * @return The HBox toolbar
      */
     private HBox createToolbar () {
@@ -115,7 +117,7 @@ public class Main extends Application {
 
     /**
      * Creates a list of buttons to display in the toolbar
-     * 
+     *
      * @return The list of buttons
      */
     private List<Button> createGameButtons () {
@@ -187,7 +189,7 @@ public class Main extends Application {
 
     /**
      * Constructs a new game based on a given file and switches to it
-     * 
+     *
      * @param file The file containing the game parameters
      */
     private void setUpGame (File file) {
@@ -198,7 +200,7 @@ public class Main extends Application {
 
     /**
      * Switches to a new game by displaying the game root in the center of the BorderPane
-     * 
+     *
      * @param myPrimaryGame The game to be displayed
      */
     private void switchToGame (Game game) {
@@ -211,7 +213,7 @@ public class Main extends Application {
 
     /**
      * Takes a file and converts XML data to a Map of Grid parameters and their initial values
-     * 
+     *
      * @param file The file to parse
      * @return A map of grid parameter keys and values
      */
@@ -222,11 +224,11 @@ public class Main extends Application {
 
     /**
      * Adjusts stage size when grid size changes
-     * 
+     *
      * NOTE: this method does not deal with BorderPane insets, so sizing may be
      * off if insets are not 0. Can't call myPrimaryPane.getWidth() because this
      * is not set until layout
-     * 
+     *
      * @param width New grid width
      * @param height New grid height
      */

@@ -21,11 +21,11 @@ import javafx.scene.shape.Rectangle;
  */
 public class FireGrid extends Grid {
 
-    private double probCatch;
+    private double myProbCatch;
 
     public FireGrid (Map<String, String> params) {
         super(params);
-        probCatch = Double.parseDouble(params.get("probcatch"));
+        myProbCatch = Double.parseDouble(params.get("probcatch"));
 
     }
 
@@ -116,7 +116,6 @@ public class FireGrid extends Grid {
 
     /**
      * Returns a boolean if a random number generated is greater than probCatch
-     * TODO: can't think of better name
      *
      * @return The boolean
      */
@@ -124,13 +123,13 @@ public class FireGrid extends Grid {
         Random r = new Random();
         double value = r.nextDouble();
 
-        return (value >= getProbCatch());
+        return value >= getProbCatch();
     }
 
     // =========================================================================
     // Getters and Setters
     // =========================================================================
     private double getProbCatch () {
-        return probCatch;
+        return myProbCatch;
     }
 }
