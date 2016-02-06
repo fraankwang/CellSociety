@@ -4,8 +4,6 @@ package grids;
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
@@ -23,7 +21,6 @@ public class SegregationGrid extends Grid {
 	private double emptyPercentage;
 	
 
-	private List<State> stateList = new ArrayList<State>();
 	
 	
 	public SegregationGrid(Map<String, String> params) {
@@ -33,23 +30,32 @@ public class SegregationGrid extends Grid {
 		bluePercentage = Double.parseDouble(params.get("bluepercentage"));
 		emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
 		
-		addStatesToList(redPercentage, State.RED);
-		addStatesToList(bluePercentage, State.BLUE);
-		addStatesToList(emptyPercentage, State.EMPTY);
-		
-		Collections.shuffle(stateList);
 		initialize();
 	}
 
+    protected void initializeCell (int r, int c) {
+        State state = State.EMPTY;
 
-	@Override
-	protected void initializeCell(int row, int column) {
-		getMyCells()[row][column] = new SimpleCell(stateList.remove(0), row, column, new Rectangle(getMyCellSize(),getMyCellSize()));
-	}
+        int s = getMyInitialStates()[r][c];
+        switch (s) {
+            case 0:
+                state = State.EMPTY;
+                break;
+            case 1:
+                state = State.RED;
+                break;
+            case 2:
+            	state = State.BLUE;
+        }
+
+        getMyCells()[r][c] =
+                new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+
+    }
 
 	@Override
 	protected void setCellState(GridCell cell) {
-		if(!cell.getMyCurrentState().equals(State.EMPTY) && cell.getMyNextState() == null) {
+		if(!cell.getMyCurrentState().equals(State.EMPTY)) {
 			List<GridCell> neighbors = getNeighbors(cell);
 			double sameCount = 0;
 			double nonEmptyCount = 0;
@@ -61,10 +67,6 @@ public class SegregationGrid extends Grid {
 				    nonEmptyCount++;
 				}
 			}
-			
-			
-
-
 			if(!isContent((sameCount/nonEmptyCount)*100)){
 				move(cell);
 			}
@@ -73,19 +75,23 @@ public class SegregationGrid extends Grid {
 			}
 		}
 		else {
-			if((cell.getMyNextState()== null)){
+			if(cell.getMyNextState() == null){
 				cell.setMyNextState(cell.getMyCurrentState());
 			}
 		}
 		
 	}
 	
-	//TODO: Make better search for empty spots algorithm??? most likely make it random instead of just first open spot
+	/**
+	 * Moves a cell to the first empty location in the Grid that 
+	 * hasn't already been moved into
+	 * @param cell
+	 */
 	private void move(GridCell cell) {
 		for (int r = 0; r < getMyCells().length; r++) {
 			for (int c = 0; c < getMyCells()[0].length; c++) {
 				GridCell newCell = getMyCells()[r][c];
-				if(newCell.getMyCurrentState().equals(State.EMPTY) && newCell.getMyNextState()==null) {
+				if(newCell.getMyCurrentState().equals(State.EMPTY) && (newCell.getMyNextState()==null || newCell.getMyNextState()==State.EMPTY)) {
 					newCell.setMyNextState(cell.getMyCurrentState());
 					cell.setMyNextState(State.EMPTY);
 					return;
@@ -96,6 +102,12 @@ public class SegregationGrid extends Grid {
 		cell.setMyNextState(cell.getMyCurrentState());
 	}
 
+	/**
+	 * Checks to see if a cell is content based on how many
+	 * of its neighbors are the same race.
+	 * @param percent the percentage of neighbors that are the same race
+	 * @return True if the percent is at least the threshold percentage
+	 */
 	private boolean isContent(double percent) {
 		return percent >= similarityPercentage;
 	}

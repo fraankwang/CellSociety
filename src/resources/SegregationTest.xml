@@ -5,7 +5,8 @@
 <redpercentage>50.0</redpercentage>
 <bluepercentage>25.0</bluepercentage>
 <emptypercentage>25.0</emptypercentage>
-<rows>4</rows>
-<columns>4</columns>
+<rows>5</rows>
+<columns>5</columns>
 <delay>50</delay>
+<initialStates>10221,02210,01211,12100,22200</initialStates>
 </Title>
