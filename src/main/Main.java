@@ -4,6 +4,7 @@
 
 package main;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.*;
 import constants.Constants;
@@ -11,6 +12,7 @@ import game.Game;
 import input.Parser;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,12 +29,12 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     // Model
-    private Game primaryGame;
+    private Game myPrimaryGame;
 
     // View
-    private Stage primaryStage;
-    private Scene primaryScene;
-    private BorderPane primaryPane;
+    private Stage myPrimaryStage;
+    private Scene myPrimaryScene;
+    private BorderPane myPrimaryPane;
 
     /**
      * Sets primaryStage (which displays primaryScene) and primaryScene (which displays
@@ -45,14 +47,16 @@ public class Main extends Application {
     @Override
     public void start (Stage s) throws Exception {
 
-        primaryStage = s;
+        myPrimaryStage = s;
 
         Group primaryRoot = initializeRoot();
 
         // TODO: put color in resource file??
-        primaryScene = new Scene(primaryRoot, Constants.DEFAULT_SIZE.getWidth(), Constants.DEFAULT_SIZE.getHeight(), Color.WHITE);
-        primaryStage.setScene(primaryScene);
-        primaryStage.show();
+        myPrimaryScene =
+                new Scene(primaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
+                          Constants.DEFAULT_WINDOW_SIZE.getHeight(), Color.WHITE);
+        myPrimaryStage.setScene(myPrimaryScene);
+        myPrimaryStage.show();
     }
 
     public static void main (String[] args) {
@@ -60,22 +64,23 @@ public class Main extends Application {
     }
 
     /**
-     * Initializes the main root with a BorderPane
+     * Initializes the primary root with a BorderPane
      * The BorderPane is initialized with an HBox toolbar on top to hold all the game buttons that
      * stay visible the entire time.
      * 
-     * @return
+     * @return The scene's primary root
      */
     private Group initializeRoot () {
-        primaryPane = new BorderPane();
+        myPrimaryPane = new BorderPane();
 
         HBox toolbar = createToolbar();
-        primaryPane.setTop(toolbar);
+        myPrimaryPane.setTop(toolbar);
 
-        primaryPane.setPrefSize(Constants.DEFAULT_SIZE.getWidth(), Constants.DEFAULT_SIZE.getHeight() + toolbar.getPrefHeight());
+        myPrimaryPane.setPrefSize(Constants.DEFAULT_WINDOW_SIZE.getWidth(),
+                                  Constants.DEFAULT_WINDOW_SIZE.getHeight());
 
         Group primaryRoot = new Group();
-        primaryRoot.getChildren().add(primaryPane);
+        primaryRoot.getChildren().add(myPrimaryPane);
 
         return primaryRoot;
     }
@@ -86,16 +91,17 @@ public class Main extends Application {
      * @return The HBox toolbar
      */
     private HBox createToolbar () {
-        HBox toolbar = new HBox();
-
         List<Button> buttons = createGameButtons();
 
+        HBox toolbar = new HBox();
         toolbar.getChildren().addAll(buttons);
         toolbar.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
         // TODO: maybe this should be css instead
-        float insetHorizontal = Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetHorizontal"));
-        float insetVertical = Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetVertical"));
+        float insetHorizontal =
+                Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetHorizontal"));
+        float insetVertical =
+                Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetVertical"));
         for (Button b : buttons) {
             HBox.setMargin(b, new Insets(insetHorizontal, insetVertical, insetHorizontal,
                                          insetVertical));
@@ -123,7 +129,8 @@ public class Main extends Application {
         stepButton.setOnAction(e -> stepGame());
         Button resetButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleReset"));
         resetButton.setOnAction(e -> resetGame());
-        Button newGameButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"));
+        Button newGameButton =
+                new Button(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"));
         newGameButton.setOnAction(e -> chooseNewGame());
 
         list.add(startButton);
@@ -139,29 +146,29 @@ public class Main extends Application {
      * Event handler for starting the current game
      */
     private void startGame () {
-        primaryGame.startGame();
+        myPrimaryGame.startGame();
     }
 
     /**
      * Event handler for stopping the current game
      */
     private void stopGame () {
-        primaryGame.stopGame();
+        myPrimaryGame.stopGame();
     }
 
     /**
      * Event handler for a single step through a game
      */
     private void stepGame () {
-        primaryGame.getMyGrid().step();
+        myPrimaryGame.getMyGrid().step();
     }
 
     /**
      * Event handler for resetting the current game
      */
     private void resetGame () {
-        primaryGame.initializeGrid();
-        switchToGame(primaryGame);
+        myPrimaryGame.initializeGrid();
+        switchToGame(myPrimaryGame);
     }
 
     /**
@@ -170,9 +177,9 @@ public class Main extends Application {
     private void chooseNewGame () {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
-        //TODO: put these constants in resource file?
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml")); 
-        File file = fileChooser.showOpenDialog(primaryStage);
+        // TODO: put these constants in resource file?
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml"));
+        File file = fileChooser.showOpenDialog(myPrimaryStage);
         if (file != null) {
             setUpGame(file);
         }
@@ -185,35 +192,21 @@ public class Main extends Application {
      */
     private void setUpGame (File file) {
         Map<String, String> params = parseXML(file);
-        primaryGame = new Game(params);
-        switchToGame(primaryGame);
+        myPrimaryGame = new Game(params);
+        switchToGame(myPrimaryGame);
     }
 
     /**
      * Switches to a new game by displaying the game root in the center of the BorderPane
      * 
-     * @param primaryGame The game to be displayed
+     * @param myPrimaryGame The game to be displayed
      */
     private void switchToGame (Game game) {
-        // TODO: move to css?
-        float inset = Float.parseFloat(Constants.RESOURCES.getString("borderPaneInsets"));
-        BorderPane.setMargin(game.getGameRoot(), new Insets(inset, inset, inset, inset));
-        //primaryPane.setPrefSize(game.getMyGrid().getMyGridSize().getWidth(), game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT); // change to primaryGame.getMyGrid().getWidth
-        primaryPane.setCenter(game.getGameRoot());
+        BorderPane.setAlignment(game.getGameRoot(), Pos.TOP_LEFT);
 
-        if(game.getMyGrid().getMyGridSize().width > primaryStage.getWidth()){
-            primaryStage.setWidth(game.getMyGrid().getMyGridSize().getWidth());
+        myPrimaryPane.setCenter(game.getGameRoot());
 
-        }
-        
-        if(game.getMyGrid().getMyGridSize().height > primaryStage.getHeight()){
-            primaryStage.setHeight(game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT);
-
-        }
-       
-        //primaryStage.setWidth(game.getMyGrid().getMyGridSize().getWidth());
-        //primaryStage.setHeight(game.getMyGrid().getMyGridSize().getHeight() + Constants.TOOLBAR_HEIGHT);
-
+        setStageSizeToMatchGrid(game.getMyGrid().getMyGridSize());
     }
 
     /**
@@ -225,6 +218,38 @@ public class Main extends Application {
     private Map<String, String> parseXML (File file) {
         Parser parser = new Parser();
         return parser.parse(file);
+    }
+
+    /**
+     * Adjusts stage size when grid size changes
+     * 
+     * NOTE: this method does not deal with BorderPane insets, so sizing may be
+     * off if insets are not 0. Can't call myPrimaryPane.getWidth() because this
+     * is not set until layout
+     * 
+     * @param width New grid width
+     * @param height New grid height
+     */
+    private void setStageSizeToMatchGrid (Dimension d) {
+        int width = (int) d.getWidth();
+        int height = (int) d.getHeight();
+
+        if (width < Constants.DEFAULT_WINDOW_SIZE.getWidth()) {
+            myPrimaryStage.setWidth(Constants.DEFAULT_WINDOW_SIZE.getWidth());
+        }
+        else {
+            myPrimaryStage.setWidth(width);
+        }
+
+        int stageHeight = height + Constants.TOOLBAR_HEIGHT;
+        if (stageHeight < Constants.DEFAULT_WINDOW_SIZE.getHeight()) {
+            myPrimaryStage.setHeight(Constants.DEFAULT_WINDOW_SIZE.getHeight());
+        }
+        else {
+            myPrimaryStage.setHeight(stageHeight);
+
+        }
+
     }
 
 }
