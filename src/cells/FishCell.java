@@ -2,21 +2,33 @@ package cells;
 
 
 import constants.State;
+import grids.Location;
 import javafx.scene.shape.Shape;
 
 public class FishCell extends DataCell {
-	private int fishHealth;
+	private int fishBreedTime;
+	private int fishCurrentBreedTime;
 	
-    public FishCell (State currentState, int r, int c, Shape s, int health) {
+    public FishCell (State currentState, int r, int c, Shape s, int breed) {
         super(currentState, r, c, s);
-        fishHealth = health;
+        fishBreedTime = breed;
+        fishCurrentBreedTime = fishBreedTime;
 
+    }
+    
+    public FishCell (FishCell fish, Location location){
+    	super(fish.getMyCurrentState(), location.getRow(), location.getCol(), fish.getMyShape());
+    	fishCurrentBreedTime = getBreedTime();
     }
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+		fishBreedTime--;
 		
+	}
+	
+	private int getBreedTime(){
+		return fishCurrentBreedTime;
 	}
 
 }

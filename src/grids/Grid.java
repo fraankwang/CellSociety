@@ -5,13 +5,11 @@
 package grids;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
 import constants.NeighborOffset;
 import constants.Offset;
-import constants.State;
 import java.awt.Dimension;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
@@ -35,8 +33,6 @@ public abstract class Grid {
     private Group myRoot;
     private GridPane myGridPane;
 
-	private List<State> initializeList;
-
     /**
      * Constructor
      * Initializes Grid based on parameters from xml
@@ -57,7 +53,7 @@ public abstract class Grid {
         }
         
         myRoot = new Group();
-        initializeList = new ArrayList<State>();
+
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 
         initialize();
@@ -79,7 +75,6 @@ public abstract class Grid {
      */
     private void initializeCells () {
         myCells = new GridCell[myRows][myColumns];
-        Collections.shuffle(initializeList);
         for (int r = 0; r < myCells.length; r++) {
             for (int c = 0; c < myCells[0].length; c++) {
                 initializeCell(r, c);
@@ -175,6 +170,8 @@ public abstract class Grid {
     private void updateCellStates () {
         for (int r = 0; r < myCells.length; r++) {
             for (int c = 0; c < myCells[0].length; c++) {
+            	System.out.printf("Cell at (%d, %d) transitioning\n", r, c);
+            	System.out.println(myCells[r][c].getMyCurrentState());
                 myCells[r][c].transitionStates();
 
             }
@@ -197,15 +194,6 @@ public abstract class Grid {
         return !(farTop | farBottom | farLeft | farRight);
     }
     
-
-    protected void addStatesToList(double percentage, State state) {
-		int total = getRows()*getColumns();
-		int numberOfStates = (int)(total*percentage)/100;
-		for(int x = 0; x < numberOfStates; x++){
-			initializeList.add(state);
-		}
-		
-	}
 
     /**
      * Returns a list of offsets to check to find a GridCell's neighbors
@@ -288,10 +276,6 @@ public abstract class Grid {
         this.myRoot = root;
     }
     
-    protected List<State> getInitializeList() {
-    	return initializeList;
-    }
-
     public Dimension getMyGridSize () {
         return myGridSize;
     }
@@ -314,5 +298,9 @@ public abstract class Grid {
 
     protected void setMyInitialStates (int[][] myInitialStates) {
         this.myInitialStates = myInitialStates;
+    }
+    
+    protected GridPane getMyGridPane() {
+    	return myGridPane;
     }
 }

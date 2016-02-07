@@ -5,6 +5,7 @@
 package grids;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import cells.FishCell;
@@ -36,48 +37,94 @@ public class PredatorPreyGrid extends Grid {
         fishPercentage = Double.parseDouble(params.get("fishpercentage"));
         emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
         
-        addStatesToList(sharkPercentage, State.SHARK);
-        addStatesToList(fishPercentage, State.FISH);
-        addStatesToList(emptyPercentage, State.EMPTY);
-        
         initialize();
     }
     
     @Override
-    protected void initializeCell(int row, int column) {
-    	State state = getInitializeList().remove(0);
-    	GridCell toAdd;
-    	if(state == State.SHARK){
-    		toAdd = new SharkCell(State.SHARK, row, column, new Rectangle(getMyCellSize(), getMyCellSize()),sharkHealth,sharkBreed);
-    	}
-    	else if(state == State.FISH){
-    		toAdd = new FishCell(State.FISH, row, column, new Rectangle(getMyCellSize(), getMyCellSize()),fishBreed);
-    	}
-    	else {
-    		toAdd = new SimpleCell(State.EMPTY, row, column, new Rectangle(getMyCellSize(), getMyCellSize()));
-    	}
-    	
-    	getMyCells()[row][column] = toAdd;
+    protected void initializeCell (int r, int c) {
+
+        int s = getMyInitialStates()[r][c];
+        switch (s) {
+            case 0:
+                getMyCells()[r][c] =
+                        new SimpleCell(State.EMPTY, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+                break;
+            case 1:
+            	 getMyCells()[r][c] =
+                 new SharkCell(State.SHARK, r, c, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth, sharkBreed);
+            	 break;
+            case 2:
+            	getMyCells()[r][c] =
+                new FishCell(State.FISH, r, c, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
+        }
+
     }
     
     @Override
-
     protected void setCellStates () { 
-    	 for (int r = 0; r < getMyCells().length; r++) {
-             for (int c = 0; c < getMyCells()[0].length; c++) {
-            	 if(getMyCells()[r][c] instanceof SharkCell) {
-            		 setSharkCellState((SharkCell)getMyCells()[r][c]);
-            	 }
-             }
-    	 }
+    	setSharkCellStates();
+    	setFishCellStates();
+    	for (int r = 0; r < getMyCells().length; r++) {
+            for (int c = 0; c < getMyCells()[0].length; c++) {
+            	if(getMyCells()[r][c].getMyCurrentState() == State.EMPTY){
+            		setCellState(getMyCells()[r][c]);
+            	}
+            }
+    	}
+    	 
     }
     
 
-    private void setSharkCellState(SharkCell shark) {
+    private void setFishCellStates() {
+   	 for (int r = 0; r < getMyCells().length; r++) {
+         for (int c = 0; c < getMyCells()[0].length; c++) {
+        	 if(getMyCells()[r][c] instanceof FishCell) {
+        		 setFishCellState((FishCell)getMyCells()[r][c]);
+        	 }
+         }
+	 }
+	}
+
+	private void setFishCellState(FishCell fishCell) {
+		List<GridCell> neighbors = getNeighbors(fishCell);
+    		if(fishCell.getMyNextState() == State.DEAD) {
+    			//getMyCells()[fishCell.getMyGridLocation().getRow()][fishCell.getMyGridLocation().getCol()];
+    		}
+    		else {
+    			fishCell.update();
+    			int randIndex = (int)Math.random()*neighbors.size();
+    			move(fishCell, neighbors.get(randIndex));
+    		}
+	}
+
+	private void setSharkCellStates() {
+   	 for (int r = 0; r < getMyCells().length; r++) {
+         for (int c = 0; c < getMyCells()[0].length; c++) {
+        	 if(getMyCells()[r][c] instanceof SharkCell && getMyCells()[r][c].getMyNextState() == null) {
+        		 setSharkCellState((SharkCell)getMyCells()[r][c]);
+        	 }
+         }
+	 }
+	}
+
+	private void setSharkCellState(SharkCell shark) {
     	List<GridCell> neighbors = getNeighbors(shark);
     	shark.update();
+    	List<FishCell> edible = new ArrayList<FishCell>();
     	GridCell toMove = shark;
-		for(GridCell cell : neighbors){
+    	if(shark.canEat(neighbors)){
+       		for(GridCell cell : neighbors) {
+    			if(cell instanceof FishCell){
+    				edible.add((FishCell)cell);
+    			}
+    		}
+       		Collections.shuffle(edible);
+       		
+    	}
+    	
+    	
+    	
+    	for(GridCell cell : neighbors){
 			if(cell instanceof FishCell){
 				shark.eat((FishCell)cell);
 				break;
@@ -90,35 +137,58 @@ public class PredatorPreyGrid extends Grid {
 	}
     
     protected void setCellState (GridCell cell) {
-        // TODO Auto-generated method stub
-    	List<GridCell> neighbors = getNeighbors(cell);
-    	GridCell toMove = cell;
-    	if(cell instanceof SharkCell) {
-    		((SharkCell) cell).update();
-    		for(GridCell gc : neighbors){
-    			if(gc instanceof FishCell){
-    				((SharkCell) cell).eat((FishCell)gc);
-    				break;
-    			}
-    			else if(gc.getMyCurrentState() == State.EMPTY && gc.getMyNextState() == null) {
-    				toMove = gc;
-    			}
+    		if(cell.getMyNextState()== null){
+    			cell.setMyNextState(cell.getMyCurrentState());
     		}
-    		move(cell,toMove);
-    		
-    	}
-    	else if(cell instanceof FishCell){
-    		if(cell.getMyNextState() == State.DEAD) {
-    			getMyCells()[cell.getMyGridLocation().getRow()][cell.getMyGridLocation().getCol()] = new SimpleCell(State.EMPTY, cell.getMyGridLocation().getRow(), cell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
-    		}
-    		else {
-    			
-    		}
-    	}
     }
 
     private void move (GridCell origin, GridCell destination) {
+    	int originCol = origin.getMyGridLocation().getCol();
+    	int originRow = origin.getMyGridLocation().getRow();
+    	
+    	int destinationCol = destination.getMyGridLocation().getCol();
+    	int destinationRow = destination.getMyGridLocation().getRow();
+    	
+    	if(origin instanceof SharkCell) {
+    		GridCell destinationCell = getMyCells()[destinationRow][destinationCol];
+    		getMyGridPane().getChildren().remove(destinationCell.getMyShape());
+    		destinationCell = new SharkCell((SharkCell)origin, destination.getMyGridLocation());
+    		getMyCells()[destinationRow][destinationCol] = destinationCell;
+    	
+    		destinationCell.setMyCurrentState(State.EMPTY);
+    		destinationCell.setMyNextState(State.SHARK);
+    		
+    		GridCell originCell = getMyCells()[originRow][originCol];
+    		getMyGridPane().getChildren().remove(originCell.getMyShape());
+    		originCell = new SimpleCell(State.SHARK, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
+    		getMyCells()[originRow][originCol] = originCell;
+    		originCell.setMyNextState(State.EMPTY);
+    	
+    		getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
+    		getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
 
+    	}
+    	
+    	if(origin instanceof FishCell) {
+    		GridCell destinationCell = getMyCells()[destinationRow][destinationCol];
+    		getMyGridPane().getChildren().remove(destinationCell.getMyShape());
+    		destinationCell = new FishCell((FishCell)origin, destination.getMyGridLocation());
+    		getMyCells()[destinationRow][destinationCol] = destinationCell;
+    	
+    		destinationCell.setMyCurrentState(State.EMPTY);
+    		destinationCell.setMyNextState(State.FISH);
+    		
+    		GridCell originCell = getMyCells()[originRow][originCol];
+    		getMyGridPane().getChildren().remove(originCell.getMyShape());
+    		originCell = new SimpleCell(State.FISH, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
+    		getMyCells()[originRow][originCol] = originCell;
+    		originCell.setMyNextState(State.EMPTY);
+    	
+    		getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
+    		getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
+
+    	}
+    	
     }
     
     
@@ -133,6 +203,26 @@ public class PredatorPreyGrid extends Grid {
         offsets.add(NeighborOffset.BOTTOM.getOffset());
 
         return offsets;
+    }
+    
+    @Override
+    protected List<GridCell> getNeighbors(GridCell cell){
+        int r = cell.getMyGridLocation().getRow();
+        int c = cell.getMyGridLocation().getCol();
+        
+        List<Offset> offsets = neighborOffsets();
+        List<GridCell> neighbors = new ArrayList<GridCell>();
+        
+        for(Offset offset : offsets){
+            int neighborRow = r + offset.getRow();
+            int neighborCol = c + offset.getCol();
+            if(cellInBounds(neighborRow, neighborCol)){
+                neighbors.add(getMyCells()[neighborRow][neighborCol]);
+            }
+        }
+        
+        
+        return neighbors;
     }
 
 }

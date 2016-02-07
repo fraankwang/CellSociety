@@ -1,7 +1,11 @@
 package cells;
 
+import java.util.List;
+
 import constants.State;
+import grids.Location;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 
@@ -18,6 +22,12 @@ public class SharkCell extends DataCell {
         sharkMaxBreedTime = breedTime;
         sharkCurrentBreedTime = sharkMaxBreedTime;
 
+    }
+    
+    public SharkCell(SharkCell shark, Location location){
+    	super(shark.getMyCurrentState(), location.getRow(), location.getCol(), shark.getMyShape());
+    	sharkCurrentHealth = shark.getCurrentHealth();
+    	sharkCurrentBreedTime = shark.getTimeUntilBreed();
     }
     
 	@Override
@@ -38,4 +48,18 @@ public class SharkCell extends DataCell {
 	public int getTimeUntilBreed() {
 		return sharkCurrentBreedTime;
 	}
+	
+	public int getCurrentHealth() {
+		return sharkCurrentHealth;
+	}
+	
+	public boolean canEat(List<GridCell> neighbors){
+		for(GridCell cell : neighbors) {
+			if(cell instanceof FishCell){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
