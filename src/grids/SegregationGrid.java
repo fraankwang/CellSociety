@@ -1,8 +1,10 @@
 package grids;
 
+
 /**
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
+
 
 import java.util.List;
 import java.util.Map;
@@ -12,13 +14,13 @@ import constants.State;
 import javafx.scene.shape.Rectangle;
 
 
+/**
+ * Grid subclass for Fire simulation
+ *
+ */
 public class SegregationGrid extends Grid {
 
-
 	private double similarityPercentage;
-	private double redPercentage;
-	private double bluePercentage;
-	private double emptyPercentage;
 	
 
 	
@@ -26,10 +28,6 @@ public class SegregationGrid extends Grid {
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
 		similarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
-		redPercentage = Double.parseDouble(params.get("redpercentage"));
-		bluePercentage = Double.parseDouble(params.get("bluepercentage"));
-		emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
-		
 		initialize();
 	}
 
@@ -96,11 +94,13 @@ public class SegregationGrid extends Grid {
 					cell.setMyNextState(State.EMPTY);
 					return;
 				}
-
 			}
 		}
+
 		cell.setMyNextState(cell.getMyCurrentState());
 	}
+
+
 
 	/**
 	 * Checks to see if a cell is content based on how many

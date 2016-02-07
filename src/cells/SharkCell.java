@@ -10,19 +10,25 @@ import javafx.scene.shape.Shape;
 
 
 public class SharkCell extends DataCell {
-	private int sharkMaxHealth;
-	private int sharkCurrentHealth;
-	private int sharkCurrentBreedTime;
-	private int sharkMaxBreedTime;
-	
-    public SharkCell (State currentState, int r, int c, Shape s, int health, int breedTime) {
-        super(currentState, r, c, s);
+    private int sharkMaxHealth;
+    private int sharkCurrentHealth;
+    private int sharkCurrentBreedTime;
+    private int sharkMaxBreedTime;
+
+    public SharkCell (State currentState,
+                      int row,
+                      int col,
+                      Shape shape,
+                      int health,
+                      int breedTime) {
+        super(currentState, row, col, shape);
         sharkMaxHealth = health;
         sharkCurrentHealth = sharkMaxHealth;
         sharkMaxBreedTime = breedTime;
         sharkCurrentBreedTime = sharkMaxBreedTime;
 
     }
+
     
     public SharkCell(SharkCell shark, Location location){
     	super(shark.getMyCurrentState(), location.getRow(), location.getCol(), shark.getMyShape());

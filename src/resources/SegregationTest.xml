@@ -2,9 +2,6 @@
 <width>500</width>
 <height>500</height>
 <similaritypercentage>50.0</similaritypercentage>
-<redpercentage>50.0</redpercentage>
-<bluepercentage>25.0</bluepercentage>
-<emptypercentage>25.0</emptypercentage>
 <rows>5</rows>
 <columns>5</columns>
 <delay>50</delay>

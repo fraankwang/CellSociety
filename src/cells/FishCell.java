@@ -1,9 +1,9 @@
 package cells;
 
-
 import constants.State;
 import grids.Location;
 import javafx.scene.shape.Shape;
+
 
 public class FishCell extends DataCell {
 	private int fishBreedTime;
@@ -13,13 +13,13 @@ public class FishCell extends DataCell {
         super(currentState, r, c, s);
         fishBreedTime = breed;
         fishCurrentBreedTime = fishBreedTime;
-
     }
     
     public FishCell (FishCell fish, Location location){
     	super(fish.getMyCurrentState(), location.getRow(), location.getCol(), fish.getMyShape());
     	fishCurrentBreedTime = getBreedTime();
     }
+
 
 	@Override
 	public void update() {
@@ -30,5 +30,6 @@ public class FishCell extends DataCell {
 	private int getBreedTime(){
 		return fishCurrentBreedTime;
 	}
+
 
 }

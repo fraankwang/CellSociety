@@ -18,8 +18,11 @@ import constants.State;
 import javafx.scene.shape.Rectangle;
 
 
+/**
+ * Grid subclass for Predator Prey simulation
+ *
+ */
 public class PredatorPreyGrid extends Grid {
-
 
     private int fishBreed;
     private int sharkBreed;
@@ -36,30 +39,33 @@ public class PredatorPreyGrid extends Grid {
         sharkPercentage = Double.parseDouble(params.get("sharkpercentage"));
         fishPercentage = Double.parseDouble(params.get("fishpercentage"));
         emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
-        
+
         initialize();
     }
     
-    @Override
-    protected void initializeCell (int r, int c) {
-
-        int s = getMyInitialStates()[r][c];
-        switch (s) {
-            case 0:
-                getMyCells()[r][c] =
-                        new SimpleCell(State.EMPTY, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
-                break;
-            case 1:
-            	 getMyCells()[r][c] =
-                 new SharkCell(State.SHARK, r, c, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth, sharkBreed);
-            	 break;
-            case 2:
-            	getMyCells()[r][c] =
-                new FishCell(State.FISH, r, c, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
+    protected void initializeCell (int row, int column) {
+        State state = State.EMPTY;
+        GridCell toAdd;
+        if (state == State.SHARK) {
+            toAdd =
+                    new SharkCell(State.SHARK, row, column,
+                                  new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,
+                                  sharkBreed);
+        }
+        else if (state == State.FISH) {
+            toAdd =
+                    new FishCell(State.FISH, row, column,
+                                 new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
+        }
+        else {
+            toAdd =
+                    new SimpleCell(State.EMPTY, row, column,
+                                   new Rectangle(getMyCellSize(), getMyCellSize()));
         }
 
+        getMyCells()[row][column] = toAdd;
     }
-    
+
     @Override
     protected void setCellStates () { 
     	setSharkCellStates();
@@ -190,8 +196,7 @@ public class PredatorPreyGrid extends Grid {
     	}
     	
     }
-    
-    
+
     @Override
     protected List<Offset> neighborOffsets () {
 

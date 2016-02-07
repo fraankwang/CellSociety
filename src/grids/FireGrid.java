@@ -16,47 +16,56 @@ import constants.State;
 import javafx.scene.shape.Rectangle;
 
 
+/**
+ * Grid subclass for Fire simulation
+ *
+ */
 public class FireGrid extends Grid {
+    private static final int MY_STATE_VALUE_EMPTY = 0;
+    private static final int MY_STATE_VALUE_TREE = 1;
+    private static final int MY_STATE_VALUE_BURNING = 2;
 
-    private double probCatch;
+    private double myProbCatch;
 
     public FireGrid (Map<String, String> params) {
         super(params);
-        probCatch = Double.parseDouble(params.get("probcatch"));
+        myProbCatch = Double.parseDouble(params.get("probcatch"));
 
     }
 
     @Override
-    protected void initializeCell (int r, int c) {
+    protected void initializeCell (int row, int col) {
         State state = State.EMPTY;
 
-        int s = getMyInitialStates()[r][c];
+        int s = getMyInitialStates()[row][col];
+
         switch (s) {
-            case 0:
+            case MY_STATE_VALUE_EMPTY:
                 state = State.EMPTY;
                 break;
-            case 1:
+            case MY_STATE_VALUE_TREE:
                 state = State.TREE;
                 break;
-            case 2:
+            case MY_STATE_VALUE_BURNING:
                 state = State.BURNING;
                 break;
             default:
-                // TODO: display error message
+                // Display error message
+                break;
 
         }
 
-        getMyCells()[r][c] =
-                new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+        getMyCells()[row][col] =
+                new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
 
     }
 
     @Override
     protected void setCellState (GridCell cell) {
         if (cell.getMyCurrentState() == State.BURNING) {
-            cell.setMyNextState(State.EMPTY);
+            cell.setMyNextState(State.BURNED);
         }
-        else if (this.willCatch(cell)) {
+        else if (willCatch(cell)) {
             cell.setMyNextState(State.BURNING);
         }
         else {
@@ -79,7 +88,7 @@ public class FireGrid extends Grid {
 
     /**
      * Determines if any of a cell's neighbor cells are currently burning
-     * 
+     *
      * @param r The row index of the cell in question
      * @param c The column index of the cell in question
      * @return A boolean indicating whether one of the neighbor cells is burning
@@ -100,7 +109,7 @@ public class FireGrid extends Grid {
 
     /**
      * Determines whether a cell will catch on fire
-     * 
+     *
      * @param cell The cell in question
      * @param r The row index of the cell in question
      * @param c The column index of the cell in question
@@ -113,21 +122,20 @@ public class FireGrid extends Grid {
 
     /**
      * Returns a boolean if a random number generated is greater than probCatch
-     * TODO: can't think of better name
-     * 
+     *
      * @return The boolean
      */
     private boolean probCatchRandom () {
         Random r = new Random();
         double value = r.nextDouble();
 
-        return (value >= getProbCatch());
+        return value >= getProbCatch();
     }
 
     // =========================================================================
     // Getters and Setters
     // =========================================================================
     private double getProbCatch () {
-        return probCatch;
+        return myProbCatch;
     }
 }
