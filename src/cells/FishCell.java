@@ -32,7 +32,7 @@ public class FishCell extends DataCell {
 		
 	}
 	
-	private int getBreedTime(){
+	public int getBreedTime(){
 		return fishCurrentBreedTime;
 	}
 

@@ -78,14 +78,14 @@ public class PredatorPreyGrid extends Grid {
     
 
     private void setFishCellStates() {
-   	 for (int r = 0; r < getMyCells().length; r++) {
-         for (int c = 0; c < getMyCells()[0].length; c++) {
-        	 if(getMyCells()[r][c] instanceof FishCell && (getMyCells()[r][c].getMyNextState() == null || getMyCells()[r][c].getMyNextState()== State.DEAD)) {
-        		 setFishCellState((FishCell)getMyCells()[r][c]);
-        	 }
-         }
-	 }
-	}
+    	for (int r = 0; r < getMyCells().length; r++) {
+    		for (int c = 0; c < getMyCells()[0].length; c++) {
+    			if(getMyCells()[r][c] instanceof FishCell && (getMyCells()[r][c].getMyNextState() == null || getMyCells()[r][c].getMyNextState()== State.DEAD)) {
+    				setFishCellState((FishCell)getMyCells()[r][c]);
+    			}
+    		}
+    	}
+    }
 
 	private void setFishCellState(FishCell fishCell) {
 		fishCell.update();
@@ -97,12 +97,17 @@ public class PredatorPreyGrid extends Grid {
 			int randIndex = (int)Math.random()*neighbors.size();
 			move(fishCell, neighbors.get(randIndex));
 		}
+		
+		if(fishCell.getBreedTime() == 0){
+			GridCell toSpawn = neighbors.get(2);
+			breed(toSpawn, State.FISH);
+		}
 	}
 
 	private void setSharkCellStates() {
    	 for (int r = 0; r < getMyCells().length; r++) {
          for (int c = 0; c < getMyCells()[0].length; c++) {
-        	 if(getMyCells()[r][c] instanceof SharkCell && getMyCells()[r][c].getMyNextState() == null) {
+        	 if(getMyCells()[r][c] instanceof SharkCell && (getMyCells()[r][c].getMyNextState() == null || getMyCells()[r][c].getMyNextState()== State.DEAD)) {
         		 setSharkCellState((SharkCell)getMyCells()[r][c]);
         	 }
          }
@@ -121,7 +126,7 @@ public class PredatorPreyGrid extends Grid {
     			}
     		}
        		Collections.shuffle(edible);
-       		shark.eat(edible.remove(edible.size()-1));
+       		shark.eat((FishCell)(edible.remove(edible.size()-1)));
        		shark.setMyNextState(shark.getMyCurrentState());
     	}
     	else if(shark.getMyNextState() == State.DEAD) {
@@ -130,6 +135,30 @@ public class PredatorPreyGrid extends Grid {
     	else{
     		move(shark,toMove);
     	}
+    	
+    	if(shark.getTimeUntilBreed() == 0){
+    		GridCell toSpawn = neighbors.get(2);
+    		breed(toSpawn, State.SHARK);
+    	}
+	}
+
+	private void breed(GridCell toSpawn, State fishOrShark) {
+		int row = toSpawn.getMyGridLocation().getRow();
+		int col = toSpawn.getMyGridLocation().getCol();
+		
+		getMyGridPane().getChildren().remove(toSpawn.getMyShape());
+		if(fishOrShark == State.SHARK){
+			toSpawn = new SharkCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
+			toSpawn.setMyNextState(State.SHARK);
+		}
+		else if(fishOrShark == State.FISH){
+			toSpawn = new FishCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
+			toSpawn.setMyNextState(State.FISH);
+		}
+		
+		getMyCells()[row][col] = toSpawn;
+		getMyGridPane().add(toSpawn.getMyShape(), col, row);
+		
 	}
     
     protected void setCellState (GridCell cell) {
