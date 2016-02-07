@@ -207,7 +207,6 @@ public class PredatorPreyGrid extends Grid {
 		if(fishOrShark == State.SHARK){
 			toSpawn = new SharkCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
 			toSpawn.setMyNextState(State.SHARK);
-			System.out.println(row + "," + col);
 		}
 		else if(fishOrShark == State.FISH){
 			toSpawn = new FishCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
