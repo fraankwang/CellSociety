@@ -4,7 +4,9 @@ import constants.State;
 import grids.Location;
 import javafx.scene.shape.Shape;
 
-
+/**
+ * The class for Fish
+ */
 public class FishCell extends DataCell {
 	private int fishBreedTime;
 	private int fishCurrentBreedTime;
@@ -17,7 +19,9 @@ public class FishCell extends DataCell {
     
     public FishCell (FishCell fish, Location location){
     	super(fish.getMyCurrentState(), location.getRow(), location.getCol(), fish.getMyShape());
-    	fishCurrentBreedTime = getBreedTime();
+  
+    	fishCurrentBreedTime = fish.getTimeUntilBreed();
+    	fishBreedTime = fish.getBreedTime();
     }
 
 
@@ -32,8 +36,12 @@ public class FishCell extends DataCell {
 		
 	}
 	
-	public int getBreedTime(){
+	public int getTimeUntilBreed(){
 		return fishCurrentBreedTime;
+	}
+	
+	private int getBreedTime() {
+		return fishBreedTime;
 	}
 
 

@@ -22,15 +22,13 @@ public class SegregationGrid extends Grid {
 
 	private double similarityPercentage;
 	
-
-	
-	
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
 		similarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
 		initialize();
 	}
 
+	@Override
     protected void initializeCell (int r, int c) {
         State state = State.EMPTY;
 

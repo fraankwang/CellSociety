@@ -116,17 +116,17 @@ public abstract class Grid {
      * array
      */
     private void createUI () {
-        GridPane gridPane = new GridPane();
-        gridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
+        myGridPane = new GridPane();
+        myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
 
         for (int r = 0; r < myCells.length; r++) {
             for (int c = 0; c < myCells[0].length; c++) {
-                gridPane.add(myCells[r][c].getMyShape(), c, r);
+                myGridPane.add(myCells[r][c].getMyShape(), c, r);
             }
         }
 
         myRoot = new Group();
-        myRoot.getChildren().add(gridPane);
+        myRoot.getChildren().add(myGridPane);
 
     }
 
