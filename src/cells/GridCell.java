@@ -1,9 +1,14 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package cells;
 
 import constants.State;
 import grids.Location;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+
 
 /**
  * Abstract class for a cell in a grid
@@ -19,15 +24,15 @@ public abstract class GridCell {
      * Constructor
      *
      * @param initialState The initial state of the cell
-     * @param r The row of the grid in which the cell in located
-     * @param c The column of the grid in which the cell in located
-     * @param s The shape of the cell
+     * @param row The row of the grid in which the cell in located
+     * @param col The column of the grid in which the cell in located
+     * @param shape The shape of the cell
      */
-    public GridCell (State initialState, int r, int c, Shape s) {
+    public GridCell (State initialState, int row, int col, Shape shape) {
         myCurrentState = initialState;
-        myShape = s;
+        myShape = shape;
         initializeShape();
-        setMyGridLocation(new Location(r, c));
+        setMyGridLocation(new Location(row, col));
 
     }
 
@@ -65,7 +70,7 @@ public abstract class GridCell {
     }
 
     public void setMyCurrentState (State currentState) {
-        this.myCurrentState = currentState;
+        myCurrentState = currentState;
     }
 
     public State getMyNextState () {
@@ -73,7 +78,7 @@ public abstract class GridCell {
     }
 
     public void setMyNextState (State nextState) {
-        this.myNextState = nextState;
+        myNextState = nextState;
     }
 
     public Shape getMyShape () {
@@ -85,7 +90,7 @@ public abstract class GridCell {
     }
 
     private void setMyGridLocation (Location gridLocation) {
-        this.myGridLocation = gridLocation;
+        myGridLocation = gridLocation;
     }
 
 }

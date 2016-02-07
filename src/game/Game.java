@@ -37,7 +37,7 @@ public class Game {
      * @param params A map containing parsed XML data
      */
     public Game (Map<String, String> params) {
-        myGameType = params.get("Title");
+        myGameType = params.get("gameType");
         myParameters = params;
 
         System.out.println("Initializing grid");
@@ -68,7 +68,6 @@ public class Game {
             myGrid = new PredatorPreyGrid(myParameters);
         }
 
-        // TODO: move to different method?
         myGameRoot = myGrid.getRoot();
     }
 

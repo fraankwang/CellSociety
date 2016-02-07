@@ -1,16 +1,26 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package constants;
 
 /**
- * Convenience method to represent an offset of x rows and y columns in a grid
+ * Convenience class to represent an offset of x rows and y columns in a grid
  *
  */
 public class Offset {
     private int myRow;
     private int myCol;
 
-    public Offset (int r, int c) {
-        myRow = r;
-        myCol = c;
+    /**
+     * Constructor
+     *
+     * @param row The row offset
+     * @param col The column offset
+     */
+    public Offset (int row, int col) {
+        myRow = row;
+        myCol = col;
     }
 
     public int getRow () {
@@ -18,7 +28,7 @@ public class Offset {
     }
 
     public void setRow (int row) {
-        this.myRow = row;
+        myRow = row;
     }
 
     public int getCol () {
@@ -26,7 +36,7 @@ public class Offset {
     }
 
     public void setCol (int col) {
-        this.myCol = col;
+        myCol = col;
     }
 
 }

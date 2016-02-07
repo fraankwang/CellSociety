@@ -1,9 +1,0 @@
-<Title>Fire
-<width>500</width>
-<height>500</height>
-<rows>10</rows>
-<columns>10</columns>
-<delay>50</delay>
-<probcatch>.33</probcatch>
-<initialStates>0001110000,0001122000,2121000010,0012020000,0002200011,0000000000,0000000000,0000000000,0000000000,0000000000</initialStates>
-</Title>

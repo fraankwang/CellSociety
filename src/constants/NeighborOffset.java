@@ -1,3 +1,7 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package constants;
 
 /**

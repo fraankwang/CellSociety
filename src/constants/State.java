@@ -1,18 +1,23 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package constants;
 
 import javafx.scene.paint.Color;
+
 
 /**
  * Convenience enum for cell states and color representations
  *
  */
 public enum State {
-                   EMPTY(Color.WHITE),
                    DEAD(Color.WHITE),
                    ALIVE(Color.BLACK),
-                   BURNING(Color.ORANGE),
+                   EMPTY(Color.WHITE),
+                   BURNED(Color.YELLOW),
                    TREE(Color.GREEN),
-                   BURNED(Color.BROWN),
+                   BURNING(Color.RED),
                    RED(Color.RED),
                    BLUE(Color.BLUE),
                    SHARK(Color.GRAY),

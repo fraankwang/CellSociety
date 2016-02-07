@@ -15,11 +15,15 @@ import constants.Offset;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
+
 /**
  * Grid subclass for Fire simulation
  *
  */
 public class FireGrid extends Grid {
+    private static final int MY_STATE_VALUE_EMPTY = 0;
+    private static final int MY_STATE_VALUE_TREE = 1;
+    private static final int MY_STATE_VALUE_BURNING = 2;
 
     private double myProbCatch;
 
@@ -30,34 +34,36 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    protected void initializeCell (int r, int c) {
+    protected void initializeCell (int row, int col) {
         State state = State.EMPTY;
 
-        int s = getMyInitialStates()[r][c];
+        int s = getMyInitialStates()[row][col];
+
         switch (s) {
-            case 0:
+            case MY_STATE_VALUE_EMPTY:
                 state = State.EMPTY;
                 break;
-            case 1:
+            case MY_STATE_VALUE_TREE:
                 state = State.TREE;
                 break;
-            case 2:
+            case MY_STATE_VALUE_BURNING:
                 state = State.BURNING;
                 break;
             default:
-                // TODO: display error message
+                // Display error message
+                break;
 
         }
 
-        getMyCells()[r][c] =
-                new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+        getMyCells()[row][col] =
+                new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
 
     }
 
     @Override
     protected void setCellState (GridCell cell) {
         if (cell.getMyCurrentState() == State.BURNING) {
-            cell.setMyNextState(State.EMPTY);
+            cell.setMyNextState(State.BURNED);
         }
         else if (willCatch(cell)) {
             cell.setMyNextState(State.BURNING);

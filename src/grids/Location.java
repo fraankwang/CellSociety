@@ -1,3 +1,7 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package grids;
 
 /**
@@ -8,9 +12,15 @@ public class Location {
     private int myRow;
     private int myCol;
 
-    public Location (int r, int c) {
-        myRow = r;
-        myCol = c;
+    /**
+     * Constructor
+     *
+     * @param row The row location
+     * @param col The column location
+     */
+    public Location (int row, int col) {
+        myRow = row;
+        myCol = col;
     }
 
     public int getRow () {

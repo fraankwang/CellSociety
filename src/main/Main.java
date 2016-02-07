@@ -28,6 +28,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 
+/**
+ * Main class of cell society. Sets up GUI
+ *
+ *
+ */
 public class Main extends Application {
 
     // Model
@@ -41,10 +46,11 @@ public class Main extends Application {
     /**
      * Sets primaryStage (which displays primaryScene) and primaryScene (which displays
      * primaryRoot).
-     * primaryRoot contains a BorderPane with two groups: toolbar (start/stop/reset/newGame buttons
-     * - always present)
-     * and gameRoot, which contains varying Node elements depending on game type and Grid type (not
-     * always present)
+     *
+     * Note: PrimaryRoot contains a BorderPane with two groups
+     * - toolbar (start/stop/reset/newGame buttons - always present)
+     * - gameRoot (contains varying Node elements depending on game type
+     * and Grid type - not always present
      */
     @Override
     public void start (Stage s) throws Exception {
@@ -53,7 +59,6 @@ public class Main extends Application {
 
         Group primaryRoot = initializeRoot();
 
-        // TODO: put color in resource file??
         myPrimaryScene =
                 new Scene(primaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
                           Constants.DEFAULT_WINDOW_SIZE.getHeight(), Color.WHITE);
@@ -99,7 +104,6 @@ public class Main extends Application {
         toolbar.getChildren().addAll(buttons);
         toolbar.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-        // TODO: maybe this should be css instead
         float insetHorizontal =
                 Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetHorizontal"));
         float insetVertical =
@@ -179,8 +183,11 @@ public class Main extends Application {
     private void chooseNewGame () {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
-        // TODO: put these constants in resource file?
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml"));
+        fileChooser.getExtensionFilters()
+                .add(new ExtensionFilter(Constants.RESOURCES
+                        .getString("fileExtensionFilterDescription"),
+                                         Constants.RESOURCES
+                                                 .getString("fileExtensionFilterExtension")));
         File file = fileChooser.showOpenDialog(myPrimaryStage);
         if (file != null) {
             setUpGame(file);
@@ -229,12 +236,11 @@ public class Main extends Application {
      * off if insets are not 0. Can't call myPrimaryPane.getWidth() because this
      * is not set until layout
      *
-     * @param width New grid width
-     * @param height New grid height
+     * @param gridDimension The dimension of the new grid
      */
-    private void setStageSizeToMatchGrid (Dimension d) {
-        int width = (int) d.getWidth();
-        int height = (int) d.getHeight();
+    private void setStageSizeToMatchGrid (Dimension gridDimension) {
+        int width = (int) gridDimension.getWidth();
+        int height = (int) gridDimension.getHeight();
 
         if (width < Constants.DEFAULT_WINDOW_SIZE.getWidth()) {
             myPrimaryStage.setWidth(Constants.DEFAULT_WINDOW_SIZE.getWidth());

@@ -16,6 +16,7 @@ import constants.Offset;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
+
 /**
  * Grid subclass for Predator Prey simulation
  *
@@ -38,16 +39,12 @@ public class PredatorPreyGrid extends Grid {
         fishPercentage = Double.parseDouble(params.get("fishpercentage"));
         emptyPercentage = Double.parseDouble(params.get("emptypercentage"));
 
-        addStatesToList(sharkPercentage, State.SHARK);
-        addStatesToList(fishPercentage, State.FISH);
-        addStatesToList(emptyPercentage, State.EMPTY);
-
         initialize();
     }
 
     @Override
     protected void initializeCell (int row, int column) {
-        State state = getInitializeList().remove(0);
+        State state = State.EMPTY;
         GridCell toAdd;
         if (state == State.SHARK) {
             toAdd =
@@ -99,7 +96,6 @@ public class PredatorPreyGrid extends Grid {
 
     @Override
     protected void setCellState (GridCell cell) {
-        // TODO Auto-generated method stub
         List<GridCell> neighbors = getNeighbors(cell);
         GridCell toMove = cell;
         if (cell instanceof SharkCell) {

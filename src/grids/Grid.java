@@ -6,13 +6,11 @@ package grids;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
 import constants.NeighborOffset;
 import constants.Offset;
-import constants.State;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 
@@ -36,8 +34,6 @@ public abstract class Grid {
     private int myCellSize;
     private Group myRoot;
 
-    private List<State> initializeList;
-
     /**
      * Constructor - initializes a Grid based on parameters from xml
      *
@@ -49,19 +45,9 @@ public abstract class Grid {
                               Integer.parseInt(params.get("height")));
         myRows = Integer.parseInt(params.get("rows"));
         myColumns = Integer.parseInt(params.get("columns"));
-     // TODO: make different cell widths and heights?
-        myCellSize = (int) myGridSize.getWidth() / myRows; 
+        myCellSize = (int) myGridSize.getWidth() / myRows;
 
-        if (params.containsKey("initialStates")) {
-            setMyInitialStates(createInitialStatesArray(params.get("initialStates")));
-        }
-        else {
-            // TODO: set up random here
-
-        }
-
-        initializeList = new ArrayList<State>();
-        // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
+        setMyInitialStates(createInitialStatesArray(params.get("initialStates")));
 
         initialize();
     }
@@ -83,7 +69,6 @@ public abstract class Grid {
      */
     private void initializeCells () {
         myCells = new GridCell[myRows][myColumns];
-        Collections.shuffle(initializeList);
         for (int r = 0; r < myCells.length; r++) {
             for (int c = 0; c < myCells[0].length; c++) {
                 initializeCell(r, c);
@@ -192,27 +177,18 @@ public abstract class Grid {
     /**
      * Determines whether a grid index is out of bounds
      *
-     * @param r The row to check
-     * @param c The column to check
+     * @param row The row to check
+     * @param col The column to check
      * @return A boolean indicating whether a cell in that position would be out of bounds
      */
-    protected boolean cellInBounds (int r, int c) {
+    protected boolean cellInBounds (int row, int col) {
 
-        boolean farTop = r < 0;
-        boolean farBottom = r > getMyCells().length - 1;
-        boolean farLeft = c < 0;
-        boolean farRight = c > getMyCells()[0].length - 1;
+        boolean farTop = row < 0;
+        boolean farBottom = row > getMyCells().length - 1;
+        boolean farLeft = col < 0;
+        boolean farRight = col > getMyCells()[0].length - 1;
 
         return !(farTop | farBottom | farLeft | farRight);
-    }
-
-    protected void addStatesToList (double percentage, State state) {
-        int total = getRows() * getColumns();
-        int numberOfStates = (int) (total * percentage) / 100;
-        for (int x = 0; x < numberOfStates; x++) {
-            initializeList.add(state);
-        }
-
     }
 
     /**
@@ -295,10 +271,6 @@ public abstract class Grid {
 
     public void setRoot (Group root) {
         myRoot = root;
-    }
-
-    protected List<State> getInitializeList () {
-        return initializeList;
     }
 
     public Dimension getMyGridSize () {

@@ -10,8 +10,13 @@ public class SharkCell extends DataCell {
     private int sharkCurrentBreedTime;
     private int sharkMaxBreedTime;
 
-    public SharkCell (State currentState, int r, int c, Shape s, int health, int breedTime) {
-        super(currentState, r, c, s);
+    public SharkCell (State currentState,
+                      int row,
+                      int col,
+                      Shape shape,
+                      int health,
+                      int breedTime) {
+        super(currentState, row, col, shape);
         sharkMaxHealth = health;
         sharkCurrentHealth = sharkMaxHealth;
         sharkMaxBreedTime = breedTime;
