@@ -23,7 +23,12 @@ public class FishCell extends DataCell {
 
 	@Override
 	public void update() {
-		fishBreedTime--;
+		if(fishCurrentBreedTime != 0){
+			fishCurrentBreedTime--;
+		}
+		else {
+			fishCurrentBreedTime = fishBreedTime;
+		}
 		
 	}
 	

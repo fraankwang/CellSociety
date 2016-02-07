@@ -4,8 +4,6 @@ import java.util.List;
 
 import constants.State;
 import grids.Location;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 
@@ -13,7 +11,7 @@ public class SharkCell extends DataCell {
     private int sharkMaxHealth;
     private int sharkCurrentHealth;
     private int sharkCurrentBreedTime;
-    private int sharkMaxBreedTime;
+    private int sharkBreedTime;
 
     public SharkCell (State currentState,
                       int row,
@@ -24,8 +22,8 @@ public class SharkCell extends DataCell {
         super(currentState, row, col, shape);
         sharkMaxHealth = health;
         sharkCurrentHealth = sharkMaxHealth;
-        sharkMaxBreedTime = breedTime;
-        sharkCurrentBreedTime = sharkMaxBreedTime;
+        sharkBreedTime = breedTime;
+        sharkCurrentBreedTime = sharkBreedTime;
 
     }
 
@@ -39,10 +37,16 @@ public class SharkCell extends DataCell {
 	@Override
 	public void update() {
 		sharkCurrentHealth--;
-		if(sharkCurrentHealth == 0) {
-			setMyNextState(State.EMPTY);
+		if(sharkCurrentHealth < 0) {
+			setMyNextState(State.DEAD);
 		}
-		sharkCurrentBreedTime--;
+		
+		if(sharkCurrentBreedTime != 0){
+			sharkCurrentBreedTime--;
+		}
+		else {
+			sharkCurrentBreedTime = sharkBreedTime;
+		}
 		
 	}
 
