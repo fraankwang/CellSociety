@@ -28,7 +28,6 @@ public class Parser {
                 String key;
                 String value;
 
-                @Override
                 public void startElement (String uri,
                                           String localName,
                                           String keyName,
@@ -37,7 +36,6 @@ public class Parser {
                     key = keyName;
                 }
 
-                @Override
                 public void characters (char ch[], int start, int length) throws SAXException {
                     String val = new String(ch, start, length);
                     val = val.replace("\r", "").replace("\n", "");
