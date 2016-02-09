@@ -28,17 +28,15 @@ public class PredatorPreyGrid extends Grid {
 	private int sharkBreed;
 	private int sharkHealth;
 
-	private static final int EMPTY_CODE = 0;
-	private static final int SHARK_CODE = 1;
-	private static final int FISH_CODE = 2;
+	private static final int MY_STATE_VALUE_EMPTY = 0;
+	private static final int MY_STATE_VALUE_SHARK = 1;
+	private static final int MY_STATE_VALUE_FISH = 2;
 
 	public PredatorPreyGrid (Map<String, String> params) {
 		super(params);
 		fishBreed = Integer.parseInt(params.get("fishbreed"));
 		sharkBreed = Integer.parseInt(params.get("sharkbreed"));
 		sharkHealth = Integer.parseInt(params.get("sharkhealth"));
-
-		initialize();
 	}
 
 	@Override
@@ -48,16 +46,16 @@ public class PredatorPreyGrid extends Grid {
 
 		int s = getMyInitialStates()[row][col];
 		switch (s) {
-		case EMPTY_CODE:
+		case MY_STATE_VALUE_EMPTY:
 			cell =  new SimpleCell(State.EMPTY, row, col,
 					new Rectangle(getMyCellSize(), getMyCellSize()));;
 					break;
-		case SHARK_CODE:
+		case MY_STATE_VALUE_SHARK:
 			cell = new SharkCell(State.SHARK, row, col,
 					new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,
 					sharkBreed);
 			break;
-		case FISH_CODE:
+		case MY_STATE_VALUE_FISH:
 			cell = new FishCell(State.FISH, row, col,
 					new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
 

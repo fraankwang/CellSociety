@@ -184,10 +184,8 @@ public class Main extends Application {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
         fileChooser.getExtensionFilters()
-                .add(new ExtensionFilter(Constants.RESOURCES
-                        .getString("fileExtensionFilterDescription"),
-                                         Constants.RESOURCES
-                                                 .getString("fileExtensionFilterExtension")));
+                .add(new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
+                                         Constants.RESOURCES.getString("fileExtensionFilterExtension")));
         File file = fileChooser.showOpenDialog(myPrimaryStage);
         if (file != null) {
             setUpGame(file);

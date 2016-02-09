@@ -48,11 +48,10 @@ public abstract class Grid {
         myRows = Integer.parseInt(params.get("rows"));
         myColumns = Integer.parseInt(params.get("columns"));
         myCellSize = (int) myGridSize.getWidth() / myRows;
-
-        
-        
+        myInitialStates = createInitialStatesArray(params.get("initialStates"));
+                
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
-        setMyInitialStates(createInitialStatesArray(params.get("initialStates")));
+
         initialize();
     }
 
@@ -61,7 +60,7 @@ public abstract class Grid {
     // =========================================================================
 
     /**
-     * Initializes the grid model (2d array) and grid view (GridPane)
+     * Initializes the grid model (2d array) and grid UI (GridPane)
      */
     protected void initialize () {
         initializeCells();
@@ -296,10 +295,6 @@ public abstract class Grid {
 
     protected int[][] getMyInitialStates () {
         return myInitialStates;
-    }
-
-    protected void setMyInitialStates (int[][] initialStates) {
-        myInitialStates = initialStates;
     }
     
     protected GridPane getMyGridPane() {

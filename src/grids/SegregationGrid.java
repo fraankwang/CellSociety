@@ -22,10 +22,13 @@ public class SegregationGrid extends Grid {
 
 	private double similarityPercentage;
 	
+	private static final int MY_STATE_VALUE_EMPTY = 0;
+	private static final int MY_STATE_VALUE_RED = 1;
+	private static final int MY_STATE_VALUE_BLUE = 2;
+	
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
 		similarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
-		initialize();
 	}
 
 	@Override
@@ -34,13 +37,13 @@ public class SegregationGrid extends Grid {
 
         int s = getMyInitialStates()[r][c];
         switch (s) {
-            case 0:
+            case MY_STATE_VALUE_EMPTY:
                 state = State.EMPTY;
                 break;
-            case 1:
+            case MY_STATE_VALUE_RED:
                 state = State.RED;
                 break;
-            case 2:
+            case MY_STATE_VALUE_BLUE:
             	state = State.BLUE;
         }
 
