@@ -152,27 +152,34 @@ public class Main extends Application {
      * Event handler for starting the current game
      */
     private void startGame () {
-        myPrimaryGame.startGame();
+    	if (myPrimaryGame != null){
+    		myPrimaryGame.startGame();    		
+    	}
     }
 
     /**
      * Event handler for stopping the current game
      */
     private void stopGame () {
-        myPrimaryGame.stopGame();
+        if (myPrimaryGame != null){
+        	myPrimaryGame.stopGame();
+        }
     }
 
     /**
      * Event handler for a single step through a game
      */
     private void stepGame () {
-        myPrimaryGame.getMyGrid().step();
+        if (myPrimaryGame != null){
+        	myPrimaryGame.getMyGrid().step();        	
+        }
     }
 
     /**
      * Event handler for resetting the current game
      */
     private void resetGame () {
+    	stopGame();
         myPrimaryGame.initializeGrid();
         switchToGame(myPrimaryGame);
     }
@@ -181,6 +188,7 @@ public class Main extends Application {
      * Event handler for choosing a new game to start
      */
     private void chooseNewGame () {
+    	stopGame();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
         fileChooser.getExtensionFilters()
