@@ -137,18 +137,26 @@ public class PredatorPreyGrid extends Grid {
 	private void setFishCellState(FishCell fishCell) {
 		fishCell.update();
 		List<GridCell> neighbors = getNeighbors(fishCell);
+		List<GridCell> validMoves = getValidCellList(neighbors);
 		if(fishCell.getMyNextState() == State.DEAD) {
 			kill(fishCell, State.FISH);
 		}
 		else {
-			GridCell toMove = getRandomValidCell(neighbors);
-			neighbors.remove(toMove);
-			move(fishCell, toMove);
+			if(validMoves.size() > 0){
+				GridCell toMove = getRandomValidCell(validMoves);
+				validMoves.remove(toMove);
+				move(fishCell, toMove);
+			}
+			else{
+				fishCell.setMyNextState(State.FISH);
+			}
 		}
 
 		if(fishCell.getTimeUntilBreed() == 0){
-			GridCell toSpawn = getRandomValidCell(neighbors);
-			breed(toSpawn, State.FISH);
+			if(validMoves.size() > 0){
+				GridCell toSpawn = getRandomValidCell(validMoves);
+				breed(toSpawn, State.FISH);
+			}
 		}
 	}
 
@@ -166,7 +174,7 @@ public class PredatorPreyGrid extends Grid {
 		shark.update();
 		List<GridCell> neighbors = getNeighbors(shark);
 		List<FishCell> edible = new ArrayList<FishCell>();
-		GridCell toMove = getRandomValidCell(neighbors);
+		List<GridCell> validMoves = getValidCellList(neighbors);
 		if(shark.canEat(neighbors)){
 			for(GridCell cell : neighbors) {
 				if(cell instanceof FishCell){
@@ -181,13 +189,21 @@ public class PredatorPreyGrid extends Grid {
 			kill(shark, shark.getMyCurrentState());
 		}
 		else{
-			neighbors.remove(toMove);
-			move(shark,toMove);
+			if(validMoves.size()>0){
+				GridCell toMove = getRandomValidCell(validMoves);
+				validMoves.remove(toMove);
+				move(shark,toMove);
+			}
+			else{
+				shark.setMyNextState(State.SHARK);
+			}
 		}
 
 		if(shark.getTimeUntilBreed() == 0){
-			GridCell toSpawn = getRandomValidCell(neighbors);
-			breed(toSpawn, State.SHARK);
+			if(validMoves.size()>0){
+				GridCell toSpawn = getRandomValidCell(validMoves);;
+				breed(toSpawn, State.SHARK);
+			}
 		}
 	}
 
@@ -294,16 +310,19 @@ public class PredatorPreyGrid extends Grid {
 	 * @param neighbors
 	 * @return
 	 */
-	private GridCell getRandomValidCell(List<GridCell> neighbors){
-		List<GridCell> validMoves = new ArrayList<GridCell>();
+	private GridCell getRandomValidCell(List<GridCell> validCells){
+		Collections.shuffle(validCells);
+		return validCells.get(0);
+	}
+	
+	private List<GridCell> getValidCellList(List<GridCell> neighbors){
+		List<GridCell> validCells = new ArrayList<GridCell>();
 		for(GridCell cell: neighbors){
 			if(cell.getMyCurrentState()==State.EMPTY && cell.getMyNextState() == null){
-				validMoves.add(cell);
+				validCells.add(cell);
 			}
 		}
-		Collections.shuffle(validMoves);
-
-		return validMoves.get(0);
+		return validCells;
 	}
 
 	/**
