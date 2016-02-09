@@ -26,7 +26,6 @@ public class Parser {
             DefaultHandler handler = new DefaultHandler() {
 
                 String key;
-                String value;
 
                 public void startElement (String uri,
                                           String localName,
