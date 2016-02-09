@@ -8,5 +8,5 @@
 <rows>5</rows>
 <columns>5</columns>
 <delay>50</delay>
-<initialStates>20110,02010,00100,02200,01000</initialStates>
+<initialStates>00200,02220,00200,02200,01000</initialStates>
 </root>

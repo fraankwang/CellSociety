@@ -25,7 +25,6 @@ public class SegregationGrid extends Grid {
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
 		similarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
-		initialize();
 	}
 
 	@Override
