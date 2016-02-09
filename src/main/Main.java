@@ -174,6 +174,7 @@ public class Main extends Application {
      */
     private void stepGame () {
         if (myPrimaryGame != null){
+        	stopGame();
         	myPrimaryGame.getMyGrid().step();        	
         }
         
