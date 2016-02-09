@@ -1,7 +1,7 @@
 package cells;
 
+import constants.Location;
 import constants.State;
-import grids.Location;
 import javafx.scene.shape.Shape;
 
 /**

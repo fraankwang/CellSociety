@@ -28,6 +28,7 @@ public class GameOfLifeGrid extends Grid {
 
     public GameOfLifeGrid (Map<String, String> params) {
         super(params);
+        
     }
 
     @Override

@@ -53,6 +53,7 @@ public abstract class Grid {
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 
         initialize();
+        
     }
 
     // =========================================================================
@@ -65,6 +66,7 @@ public abstract class Grid {
     protected void initialize () {
         initializeCells();
         createUI();
+        
     }
 
     /**
@@ -77,6 +79,7 @@ public abstract class Grid {
                 initializeCell(r, c);
             }
         }
+        
     }
 
     /**
@@ -106,6 +109,7 @@ public abstract class Grid {
         }
 
         return initialStates;
+        
     }
 
     /**
@@ -125,6 +129,7 @@ public abstract class Grid {
 
         myRoot = new Group();
         myRoot.getChildren().add(myGridPane);
+        
     }
 
     // =========================================================================
@@ -140,6 +145,7 @@ public abstract class Grid {
     public void step () {
         setCellStates();
         updateCellStates();
+        
     }
 
     /**
@@ -172,6 +178,7 @@ public abstract class Grid {
                 myCells[r][c].transitionStates();
             }
         }
+        
     }
 
     /**
@@ -189,6 +196,7 @@ public abstract class Grid {
         boolean farRight = col > getColumns()-1;
 
         return !(farTop | farBottom | farLeft | farRight);
+        
     }
 
     /**
@@ -236,6 +244,7 @@ public abstract class Grid {
         }
 
         return neighbors;
+        
     }
 
     // =========================================================================

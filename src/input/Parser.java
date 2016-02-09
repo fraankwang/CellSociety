@@ -32,7 +32,6 @@ public class Parser {
                                           String localName,
                                           String keyName,
                                           Attributes attributes) throws SAXException {
-                    // System.out.println("Element name: " + keyName);
                     key = keyName;
                 }
 
@@ -59,5 +58,7 @@ public class Parser {
             e.printStackTrace();
         }
         return myParams;
+        
     }
+    
 }

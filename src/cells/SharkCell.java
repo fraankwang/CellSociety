@@ -2,8 +2,8 @@ package cells;
 
 import java.util.List;
 
+import constants.Location;
 import constants.State;
-import grids.Location;
 import javafx.scene.shape.Shape;
 
 /**

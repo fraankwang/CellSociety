@@ -146,6 +146,7 @@ public class Main extends Application {
         list.add(newGameButton);
 
         return list;
+        
     }
 
     /**
@@ -155,6 +156,7 @@ public class Main extends Application {
     	if (myPrimaryGame != null){
     		myPrimaryGame.startGame();    		
     	}
+    	
     }
 
     /**
@@ -164,6 +166,7 @@ public class Main extends Application {
         if (myPrimaryGame != null){
         	myPrimaryGame.stopGame();
         }
+        
     }
 
     /**
@@ -173,6 +176,7 @@ public class Main extends Application {
         if (myPrimaryGame != null){
         	myPrimaryGame.getMyGrid().step();        	
         }
+        
     }
 
     /**
@@ -182,6 +186,7 @@ public class Main extends Application {
     	stopGame();
         myPrimaryGame.initializeGrid();
         switchToGame(myPrimaryGame);
+        
     }
 
     /**
@@ -195,9 +200,11 @@ public class Main extends Application {
                 .add(new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
                                          Constants.RESOURCES.getString("fileExtensionFilterExtension")));
         File file = fileChooser.showOpenDialog(myPrimaryStage);
+        
         if (file != null) {
             setUpGame(file);
         }
+        
     }
 
     /**
@@ -209,6 +216,7 @@ public class Main extends Application {
         Map<String, String> params = parseXML(file);
         myPrimaryGame = new Game(params);
         switchToGame(myPrimaryGame);
+        
     }
 
     /**
@@ -218,10 +226,9 @@ public class Main extends Application {
      */
     private void switchToGame (Game game) {
         BorderPane.setAlignment(game.getGameRoot(), Pos.TOP_LEFT);
-
         myPrimaryPane.setCenter(game.getGameRoot());
-
         setStageSizeToMatchGrid(game.getMyGrid().getMyGridSize());
+        
     }
 
     /**
@@ -233,6 +240,7 @@ public class Main extends Application {
     private Map<String, String> parseXML (File file) {
         Parser parser = new Parser();
         return parser.parse(file);
+        
     }
 
     /**
