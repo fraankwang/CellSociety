@@ -72,8 +72,8 @@ public abstract class Grid {
      */
     private void initializeCells () {
         myCells = new GridCell[myRows][myColumns];
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
                 initializeCell(r, c);
             }
         }
@@ -106,7 +106,6 @@ public abstract class Grid {
         }
 
         return initialStates;
-
     }
 
     /**
@@ -126,7 +125,6 @@ public abstract class Grid {
 
         myRoot = new Group();
         myRoot.getChildren().add(myGridPane);
-
     }
 
     // =========================================================================
@@ -148,9 +146,9 @@ public abstract class Grid {
      * Loops through each cell in the grid and updates its next state
      */
     protected void setCellStates () {
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                GridCell cell = this.getMyCells()[r][c];
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
+                GridCell cell = myCells[r][c];
                 this.setCellState(cell);
             }
         }
@@ -168,11 +166,10 @@ public abstract class Grid {
     /**
      * Loop through myCells and set transition each cell to its next state
      */
-    private void updateCellStates () {
-        for (GridCell[] myCell : myCells) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                myCell[c].transitionStates();
-
+    private void updateCellStates () {        
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
+                myCells[r][c].transitionStates();
             }
         }
     }
@@ -187,9 +184,9 @@ public abstract class Grid {
     protected boolean cellInBounds (int row, int col) {
 
         boolean farTop = row < 0;
-        boolean farBottom = row > getMyCells().length - 1;
+        boolean farBottom = row > getRows()-1;
         boolean farLeft = col < 0;
-        boolean farRight = col > getMyCells()[0].length - 1;
+        boolean farRight = col > getColumns()-1;
 
         return !(farTop | farBottom | farLeft | farRight);
     }
