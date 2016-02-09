@@ -74,6 +74,7 @@ public class Game {
 
     /**
      * Initialize the game loop, using the delay parameter from xml to determine speed
+     * In each KeyFrame of the animation, myGameLoop calls the step() function from myGrid
      */
     private void initializeGameLoop () {
         // "delay" given in milliseconds
