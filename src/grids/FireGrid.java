@@ -71,6 +71,7 @@ public class FireGrid extends Grid {
         else {
             cell.setMyNextState(cell.getMyCurrentState());
         }
+        
     }
 
     @Override
@@ -84,6 +85,7 @@ public class FireGrid extends Grid {
         offsets.add(NeighborOffset.BOTTOM.getOffset());
 
         return offsets;
+        
     }
 
     /**
@@ -105,6 +107,7 @@ public class FireGrid extends Grid {
         }
 
         return neighborIsBurning;
+        
     }
 
     /**
@@ -130,6 +133,7 @@ public class FireGrid extends Grid {
         double value = r.nextDouble();
 
         return value >= getProbCatch();
+        
     }
 
     // =========================================================================

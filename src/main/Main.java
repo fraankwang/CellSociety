@@ -146,52 +146,66 @@ public class Main extends Application {
         list.add(newGameButton);
 
         return list;
+        
     }
 
     /**
      * Event handler for starting the current game
      */
     private void startGame () {
-        myPrimaryGame.startGame();
+    	if (myPrimaryGame != null){
+    		myPrimaryGame.startGame();    		
+    	}
+    	
     }
 
     /**
      * Event handler for stopping the current game
      */
     private void stopGame () {
-        myPrimaryGame.stopGame();
+        if (myPrimaryGame != null){
+        	myPrimaryGame.stopGame();
+        }
+        
     }
 
     /**
      * Event handler for a single step through a game
      */
     private void stepGame () {
-        myPrimaryGame.getMyGrid().step();
+        if (myPrimaryGame != null){
+        	stopGame();
+        	myPrimaryGame.getMyGrid().step();        	
+        }
+        
     }
 
     /**
      * Event handler for resetting the current game
      */
     private void resetGame () {
+    	stopGame();
         myPrimaryGame.initializeGrid();
         switchToGame(myPrimaryGame);
+        
     }
 
     /**
      * Event handler for choosing a new game to start
      */
     private void chooseNewGame () {
+    	stopGame();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
         fileChooser.getExtensionFilters()
-                .add(new ExtensionFilter(Constants.RESOURCES
-                        .getString("fileExtensionFilterDescription"),
-                                         Constants.RESOURCES
-                                                 .getString("fileExtensionFilterExtension")));
+                .add(new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
+                                         Constants.RESOURCES.getString("fileExtensionFilterExtension")));
         File file = fileChooser.showOpenDialog(myPrimaryStage);
+        
         if (file != null) {
             setUpGame(file);
         }
+        
     }
 
     /**
@@ -203,6 +217,7 @@ public class Main extends Application {
         Map<String, String> params = parseXML(file);
         myPrimaryGame = new Game(params);
         switchToGame(myPrimaryGame);
+        
     }
 
     /**
@@ -212,10 +227,9 @@ public class Main extends Application {
      */
     private void switchToGame (Game game) {
         BorderPane.setAlignment(game.getGameRoot(), Pos.TOP_LEFT);
-
         myPrimaryPane.setCenter(game.getGameRoot());
-
         setStageSizeToMatchGrid(game.getMyGrid().getMyGridSize());
+        
     }
 
     /**
@@ -227,6 +241,7 @@ public class Main extends Application {
     private Map<String, String> parseXML (File file) {
         Parser parser = new Parser();
         return parser.parse(file);
+        
     }
 
     /**

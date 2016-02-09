@@ -40,9 +40,9 @@ public class Game {
         myGameType = params.get("gameType");
         myParameters = params;
 
-        System.out.println("Initializing grid");
         initializeGrid();
         initializeGameLoop();
+        
     }
 
     /**
@@ -69,6 +69,7 @@ public class Game {
         }
 
         myGameRoot = myGrid.getRoot();
+        
     }
 
     /**
@@ -92,6 +93,7 @@ public class Game {
         if (myGameLoop != null) {
             myGameLoop.play();
         }
+        
     }
 
     /**
@@ -101,6 +103,7 @@ public class Game {
         if (myGameLoop != null) {
             myGameLoop.stop();
         }
+        
     }
 
     // =========================================================================

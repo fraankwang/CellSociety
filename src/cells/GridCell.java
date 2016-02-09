@@ -4,8 +4,8 @@
 
 package cells;
 
+import constants.Location;
 import constants.State;
-import grids.Location;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
@@ -42,6 +42,7 @@ public abstract class GridCell {
     private void initializeShape () {
         getMyShape().setStroke(Color.BLACK);
         setMyColor();
+        
     }
 
     /**
@@ -52,6 +53,7 @@ public abstract class GridCell {
         myCurrentState = myNextState;
         myNextState = null;
         setMyColor();
+        
     }
 
     /**
@@ -59,6 +61,7 @@ public abstract class GridCell {
      */
     private void setMyColor () {
         getMyShape().setFill(getMyCurrentState().getColor());
+        
     }
 
     // =========================================================================
