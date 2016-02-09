@@ -4,30 +4,10 @@
 
 package main;
 
-import java.awt.Dimension;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import constants.Constants;
 import game.Game;
-import input.Parser;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
 import view.CellSocietyViewer;
-
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  * Main class of cell society. Sets up GUI
@@ -37,7 +17,8 @@ import view.CellSocietyViewer;
 public class Main extends Application {
 
     /**
-     * 
+     * Begins the game by creating the View which takes in the Game (Model) which
+     * is created within the view.
      */
     public void start (Stage s) throws Exception {
 
@@ -50,7 +31,5 @@ public class Main extends Application {
     public static void main (String[] args) {
         launch(args);
     }
-
-
 
 }

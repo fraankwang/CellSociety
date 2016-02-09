@@ -21,6 +21,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class CellSocietyViewer {
 
@@ -117,18 +119,12 @@ public class CellSocietyViewer {
     private List<Button> createGameButtons () {
         List<Button> list = new ArrayList<Button>();
 
-        Button startButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleStart"));
-        startButton.setOnAction(e -> startGame());
-        Button stopButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleStop"));
-        stopButton.setOnAction(e -> stopGame());
-        Button stepButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleStep"));
-        stepButton.setOnAction(e -> stepGame());
-        Button resetButton = new Button(Constants.RESOURCES.getString("toolbarButtonTitleReset"));
-        resetButton.setOnAction(e -> resetGame());
-        Button newGameButton =
-                new Button(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"));
-        newGameButton.setOnAction(e -> chooseNewGame());
-
+        Button startButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"), event -> startGame());
+        Button stopButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"), event -> stopGame());
+        Button stepButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"), event -> stepGame());
+        Button resetButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"), event -> resetGame());
+        Button newGameButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"), event -> chooseNewGame());
+        
         list.add(startButton);
         list.add(stopButton);
         list.add(stepButton);
@@ -139,14 +135,25 @@ public class CellSocietyViewer {
         
     }
     
-    
+    /**
+     * Creates a button that is set on action based on the parameter given
+     * @param name - label of button
+     * @param handler - ActionEvent the button will do
+     * @return named and Button (which is set on action)
+     */
+    public Button makeButton (String name, EventHandler<ActionEvent> handler) {
+    	Button button = new Button();
+    	button.setText(name);
+    	button.setOnAction(handler);
+    	return button;
+    	
+    }
     
     /**
      * Event handler for starting the current game
      */
     private void startGame () {
     	if (myPrimaryGame != null){
-    		resetGame();
     		myPrimaryGame.startGame();    		
     	}
     	
@@ -188,17 +195,27 @@ public class CellSocietyViewer {
      */
     private void chooseNewGame () {
     	stopGame();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
-        fileChooser.getExtensionFilters()
-                .add(new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
-                                         Constants.RESOURCES.getString("fileExtensionFilterExtension")));
-        File file = fileChooser.showOpenDialog(myPrimaryStage);
-        
+    	
+        File file = getFileFromUser();
         if (file != null) {
             setUpGame(file);
         }
         
+    }
+    
+    /**
+     * Specifies the available files the user can choose and returns it
+     * @return File picked by user
+     */
+    private File getFileFromUser () {
+    	FileChooser fileChooser = new FileChooser();
+    	fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
+    	fileChooser.getExtensionFilters().add(
+    			new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
+    			Constants.RESOURCES.getString("fileExtensionFilterExtension")));
+    	
+    	return fileChooser.showOpenDialog(myPrimaryStage);
+    	
     }
     
     /**
@@ -247,17 +264,16 @@ public class CellSocietyViewer {
      * @param gridDimension The dimension of the new grid
      */
     private void setStageSizeToMatchGrid (Dimension gridDimension) {
-        int width = (int) gridDimension.getWidth();
-        int height = (int) gridDimension.getHeight();
+        int stageWidth = (int) gridDimension.getWidth();
+        int stageHeight = (int) gridDimension.getHeight() + Constants.TOOLBAR_HEIGHT;
 
-        if (width < Constants.DEFAULT_WINDOW_SIZE.getWidth()) {
+        if (stageWidth < Constants.DEFAULT_WINDOW_SIZE.getWidth()) {
             myPrimaryStage.setWidth(Constants.DEFAULT_WINDOW_SIZE.getWidth());
         }
         else {
-            myPrimaryStage.setWidth(width);
+            myPrimaryStage.setWidth(stageWidth);
         }
 
-        int stageHeight = height + Constants.TOOLBAR_HEIGHT;
         if (stageHeight < Constants.DEFAULT_WINDOW_SIZE.getHeight()) {
             myPrimaryStage.setHeight(Constants.DEFAULT_WINDOW_SIZE.getHeight());
         }

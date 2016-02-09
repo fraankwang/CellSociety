@@ -25,8 +25,6 @@ public abstract class Grid {
     private int[][] myInitialStates;
     private int myColumns;
     private int myRows;
-
-    // M/V
     private GridCell[][] myCells;
 
     // View
