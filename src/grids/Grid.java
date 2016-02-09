@@ -25,8 +25,6 @@ public abstract class Grid {
     private int[][] myInitialStates;
     private int myColumns;
     private int myRows;
-
-    // M/V
     private GridCell[][] myCells;
 
     // View
@@ -200,28 +198,6 @@ public abstract class Grid {
     }
 
     /**
-     * Returns a list of offsets to check to find a GridCell's neighbors
-     *
-     * @return The list of offsets
-     */
-    protected List<Offset> neighborOffsets () {
-
-        List<Offset> offsets = new ArrayList<Offset>();
-
-        offsets.add(NeighborOffset.TOP_LEFT.getOffset());
-        offsets.add(NeighborOffset.TOP.getOffset());
-        offsets.add(NeighborOffset.TOP_RIGHT.getOffset());
-        offsets.add(NeighborOffset.LEFT.getOffset());
-        offsets.add(NeighborOffset.RIGHT.getOffset());
-        offsets.add(NeighborOffset.BOTTOM_LEFT.getOffset());
-        offsets.add(NeighborOffset.BOTTOM.getOffset());
-        offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
-
-        return offsets;
-
-    }
-
-    /**
      * Returns a list of a GridCell's neighboring GridCells
      *
      * @param cell The cell of interest
@@ -245,6 +221,28 @@ public abstract class Grid {
 
         return neighbors;
         
+    }
+    
+    /**
+     * Returns a list of offsets to check to find a GridCell's neighbors
+     *
+     * @return The list of offsets
+     */
+    protected List<Offset> neighborOffsets () {
+
+        List<Offset> offsets = new ArrayList<Offset>();
+
+        offsets.add(NeighborOffset.TOP_LEFT.getOffset());
+        offsets.add(NeighborOffset.TOP.getOffset());
+        offsets.add(NeighborOffset.TOP_RIGHT.getOffset());
+        offsets.add(NeighborOffset.LEFT.getOffset());
+        offsets.add(NeighborOffset.RIGHT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM_LEFT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM.getOffset());
+        offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
+
+        return offsets;
+
     }
 
     // =========================================================================
