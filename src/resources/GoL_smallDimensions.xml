@@ -1,0 +1,9 @@
+<root>
+<gameType>GameOfLife</gameType>
+<width>100</width>
+<height>100</height>
+<rows>5</rows>
+<columns>5</columns>
+<delay>150</delay>
+<initialStates>00000,00100,01110,00100,00000</initialStates>
+</root>
