@@ -6,6 +6,7 @@ package cells;
 
 import constants.Location;
 import constants.State;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
@@ -14,7 +15,7 @@ import javafx.scene.shape.Shape;
  * Abstract class for a cell in a grid
  *
  */
-public abstract class GridCell {
+public abstract class GridCell extends StackPane {
     private State myCurrentState;
     private State myNextState;
     private Location myGridLocation;
@@ -59,7 +60,7 @@ public abstract class GridCell {
     /**
      * Sets the cell's shape's color based on the cell's current state
      */
-    private void setMyColor () {
+    public void setMyColor () {
         getMyShape().setFill(getMyCurrentState().getColor());
         
     }

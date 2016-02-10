@@ -79,6 +79,25 @@ public class FireGrid extends Grid {
     }
 
     @Override
+	protected void toggleState(GridCell cell) {
+		if (cell.getMyCurrentState() == State.BURNING) {
+			cell.setMyCurrentState(State.BURNED);
+			
+		}
+		else if (cell.getMyCurrentState() == State.BURNED) {
+			cell.setMyCurrentState(State.TREE);
+			
+		} 
+		else if (cell.getMyCurrentState() == State.TREE) {
+			cell.setMyCurrentState(State.BURNING);
+			
+		}
+		
+		cell.setMyColor();
+		
+	}
+
+	@Override
     protected List<Offset> neighborOffsets () {
 
         List<Offset> offsets = new ArrayList<Offset>();

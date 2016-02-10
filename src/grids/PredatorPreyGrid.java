@@ -83,6 +83,25 @@ public class PredatorPreyGrid extends Grid {
 	}
 
 	@Override
+	protected void toggleState(GridCell cell) {
+		if (cell.getMyCurrentState() == State.EMPTY) {
+			cell.setMyCurrentState(State.SHARK);
+			
+		}
+		else if (cell.getMyCurrentState() == State.SHARK) {
+			cell.setMyCurrentState(State.FISH);
+			
+		} 
+		else if (cell.getMyCurrentState() == State.FISH) {
+			cell.setMyCurrentState(State.EMPTY);
+			
+		} 
+		
+		cell.setMyColor();
+		
+	}
+	
+	@Override
 	protected void setCellState (GridCell cell) {
 		if (cell.getMyNextState()== null){
 			cell.setMyNextState(cell.getMyCurrentState());

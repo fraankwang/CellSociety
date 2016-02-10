@@ -16,6 +16,7 @@ import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 
 
+
 /**
  * Abstract class representing a grid to be used for the simulation
  * In charge of determining how to update itself for each step of the simulation
@@ -113,16 +114,17 @@ public abstract class Grid {
 
     /**
      * Updates the visible GridPane by mapping the the cells from myCells to the same location in
-     * the 2D
-     * array
+     * the 2D array. GridCell's myShape attribute is set to toggle it's state on mouse click
      */
     private void createUI () {
         myGridPane = new GridPane();
         myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
 
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                myGridPane.add(myCells[r][c].getMyShape(), c, r);
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
+            	GridCell cell = myCells[r][c];
+            	cell.getMyShape().setOnMouseClicked(e -> toggleState(cell));
+                myGridPane.add(cell.getMyShape(), c, r);
             }
         }
 
@@ -131,6 +133,12 @@ public abstract class Grid {
         
     }
 
+    /**
+     * Action to be carried out when GridCell's shape is clicked. Abstracted
+     * so subclasses of Grid can toggle between only relevant states.
+     * @param cell - the cell whose states will be toggled
+     */
+    protected abstract void toggleState (GridCell cell);
     // =========================================================================
     // Simulation
     // =========================================================================
@@ -179,7 +187,7 @@ public abstract class Grid {
         }
         
     }
-
+    
     /**
      * Determines whether a grid index is out of bounds
      *

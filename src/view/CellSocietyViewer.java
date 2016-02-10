@@ -60,6 +60,7 @@ public class CellSocietyViewer {
 		myPrimaryScene = new Scene(myPrimaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
 				Constants.DEFAULT_WINDOW_SIZE.getHeight(),
 				Color.WHITE);
+	
 		myPrimaryStage.setScene(myPrimaryScene);
 		myPrimaryStage.show();
 	}
