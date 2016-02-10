@@ -12,24 +12,30 @@ import javafx.scene.paint.Color;
  *
  */
 public enum State {
-                   DEAD(Color.WHITE),
-                   ALIVE(Color.BLACK),
-                   EMPTY(Color.WHITE),
-                   BURNED(Color.YELLOW),
-                   TREE(Color.GREEN),
-                   BURNING(Color.RED),
-                   RED(Color.RED),
-                   BLUE(Color.BLUE),
-                   SHARK(Color.GRAY),
-                   FISH(Color.YELLOW);
+                   DEAD(Color.WHITE, 0),
+                   ALIVE(Color.BLACK, 1),
+                   EMPTY(Color.WHITE, 0),
+                   TREE(Color.GREEN, 1),
+                   BURNING(Color.RED, 2),
+                   BURNED(Color.YELLOW, 3),
+                   RED(Color.RED, 1),
+                   BLUE(Color.BLUE, 2),
+                   SHARK(Color.GRAY, 1),
+                   FISH(Color.YELLOW, 2);
 
     private Color myColor;
+    private int stateValue;
 
-    State (Color color) {
+    State (Color color, int state) {
         myColor = color;
+        stateValue = state;
     }
 
     public Color getColor () {
         return myColor;
+    }
+    
+    public int getStateValue () {
+    	return stateValue;
     }
 }

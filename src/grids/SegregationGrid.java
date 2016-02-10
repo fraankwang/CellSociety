@@ -45,6 +45,9 @@ public class SegregationGrid extends Grid {
                 break;
             case MY_STATE_VALUE_BLUE:
             	state = State.BLUE;
+            default:
+                // Display error message
+                break;
         }
 
         getMyCells()[r][c] =
@@ -113,5 +116,21 @@ public class SegregationGrid extends Grid {
 		return percent >= similarityPercentage;
 	}
 	
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+	
+	private double getSimilarityPercentage () {
+		return similarityPercentage;
+	}
+	
+	@Override
+	public Map<String,String> getMyGameState () {
+		Map<String,String> currentGameState = super.getMyGameState();
+		currentGameState.put("similaritypercentage", Double.toString(getSimilarityPercentage()));
+		
+		return currentGameState;
+		
+	}
 
 }

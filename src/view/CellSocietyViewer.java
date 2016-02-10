@@ -2,12 +2,14 @@ package view;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import constants.Constants;
 import game.Game;
-import input.Parser;
+import inputoutput.Parser;
+import inputoutput.XMLGenerator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -124,13 +126,15 @@ public class CellSocietyViewer {
         Button stepButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"), event -> stepGame());
         Button resetButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"), event -> resetGame());
         Button newGameButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"), event -> chooseNewGame());
+        Button saveXMLButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"), event -> saveXML());
         
         list.add(startButton);
         list.add(stopButton);
         list.add(stepButton);
         list.add(resetButton);
         list.add(newGameButton);
-
+        list.add(saveXMLButton);
+        
         return list;
         
     }
@@ -203,6 +207,17 @@ public class CellSocietyViewer {
         
     }
     
+    private void saveXML () {
+    	XMLGenerator generator = new XMLGenerator();
+    	
+    	if (myPrimaryGame != null) {
+    		Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
+    		currentGameState.put("gameType", myPrimaryGame.getMyGameType());
+    		currentGameState.put("delay", myPrimaryGame.getDelay());
+    		generator.writeXML(currentGameState);
+    	}
+    	
+    }
     /**
      * Specifies the available files the user can choose and returns it
      * @return File picked by user

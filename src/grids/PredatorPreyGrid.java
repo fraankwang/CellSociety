@@ -46,19 +46,21 @@ public class PredatorPreyGrid extends Grid {
 
 		int s = getMyInitialStates()[row][col];
 		switch (s) {
-		case MY_STATE_VALUE_EMPTY:
-			cell =  new SimpleCell(State.EMPTY, row, col,
-					new Rectangle(getMyCellSize(), getMyCellSize()));;
-					break;
-		case MY_STATE_VALUE_SHARK:
-			cell = new SharkCell(State.SHARK, row, col,
-					new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,
-					sharkBreed);
-			break;
-		case MY_STATE_VALUE_FISH:
-			cell = new FishCell(State.FISH, row, col,
-					new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
-
+			case MY_STATE_VALUE_EMPTY:
+				cell =  new SimpleCell(State.EMPTY, row, col,
+						new Rectangle(getMyCellSize(), getMyCellSize()));;
+						break;
+			case MY_STATE_VALUE_SHARK:
+				cell = new SharkCell(State.SHARK, row, col,
+						new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,
+						sharkBreed);
+				break;
+			case MY_STATE_VALUE_FISH:
+				cell = new FishCell(State.FISH, row, col,
+						new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
+			default:
+                // Display error message
+                break;
 		}
 
 		getMyCells()[row][col] = cell;
@@ -370,4 +372,42 @@ public class PredatorPreyGrid extends Grid {
 		
 	}
 
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+	
+	@Override
+	public Map<String,String> getMyGameState () {
+		Map<String,String> currentGameState = super.getMyGameState();
+		currentGameState.put("fishbreed", Integer.toString(getFishBreed()));
+		currentGameState.put("sharkbreed", Integer.toString(getSharkBreed()));
+		currentGameState.put("sharkhealth", Integer.toString(getSharkHealth()));
+		
+		return currentGameState;
+		
+	}
+
+	public int getFishBreed() {
+		return fishBreed;
+	}
+
+	public void setFishBreed(int fishBreed) {
+		this.fishBreed = fishBreed;
+	}
+
+	public int getSharkBreed() {
+		return sharkBreed;
+	}
+
+	public void setSharkBreed(int sharkBreed) {
+		this.sharkBreed = sharkBreed;
+	}
+
+	public int getSharkHealth() {
+		return sharkHealth;
+	}
+
+	public void setSharkHealth(int sharkHealth) {
+		this.sharkHealth = sharkHealth;
+	}
 }

@@ -4,6 +4,7 @@
 
 package game;
 
+import java.util.HashMap;
 import java.util.Map;
 import grids.FireGrid;
 import grids.GameOfLifeGrid;
@@ -111,6 +112,7 @@ public class Game {
     // Getters and Setters
     // =========================================================================
 
+    
     public Group getGameRoot () {
         return myGameRoot;
     }
@@ -119,4 +121,15 @@ public class Game {
         return myGrid;
     }
 
+	public Map<String, String> getMyParameters () {
+		return myParameters;
+	}
+	
+	public String getDelay () {
+		return myParameters.get("delay");
+	}
+
+	public String getMyGameType () {
+		return myGameType;
+	}
 }

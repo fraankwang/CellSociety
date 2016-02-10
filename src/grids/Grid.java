@@ -6,6 +6,7 @@ package grids;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
@@ -249,6 +250,23 @@ public abstract class Grid {
     // Getters and Setters
     // =========================================================================
 
+    /**
+     * Aggregates current game parameters to be saved to an XML file.
+     * Subclasses of Grid override the method by adding additional simulation-specific parameters
+     * Grid does not know the delay time, which is gathered from Game
+     * @return current game state's parameters that are common to all Grid types
+     */
+    public Map<String,String> getMyGameState () {
+    	Map<String,String> gameStateParams = new HashMap<String,String>();
+    	gameStateParams.put("rows", Integer.toString(this.getRows()));
+    	gameStateParams.put("columns", Integer.toString(this.getColumns()));
+    	gameStateParams.put("width", Integer.toString( (int) this.getMyGridSize().getWidth()));
+    	gameStateParams.put("height", Integer.toString( (int) this.getMyGridSize().getHeight()));
+    	gameStateParams.put("initialStates", getCurrentStatesArrayString());
+    	return gameStateParams;
+    	
+    }
+    
     public GridCell[][] getMyCells () {
         return myCells;
     }
@@ -303,5 +321,26 @@ public abstract class Grid {
     
     protected GridPane getMyGridPane() {
     	return myGridPane;
+    }
+    
+    /**
+     * Loops through each GridCell and returns the State value (same translation as 
+     * initialStates parameter from XML file) to be converted to String format
+     * @return
+     */
+    private String getCurrentStatesArrayString () {
+    	String currentStates = "";
+    	
+    	for (int i = 0; i < getRows(); i++) {
+    		for (int j = 0; j < getColumns(); j++) {
+    			GridCell cell = myCells[i][j];
+    			int currentStateValue = cell.getMyCurrentState().getStateValue();
+    			currentStates += Integer.toString(currentStateValue);
+    		}
+    		currentStates += ",";
+    	}
+    	
+    	return currentStates;
+    	
     }
 }
