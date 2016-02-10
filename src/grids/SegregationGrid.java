@@ -45,6 +45,9 @@ public class SegregationGrid extends Grid {
                 break;
             case MY_STATE_VALUE_BLUE:
             	state = State.BLUE;
+            default:
+                // Display error message
+                break;
         }
 
         getMyCells()[r][c] =
@@ -54,30 +57,49 @@ public class SegregationGrid extends Grid {
 
 	@Override
 	protected void setCellState(GridCell cell) {
-		if(!cell.getMyCurrentState().equals(State.EMPTY)) {
+		if (!cell.getMyCurrentState().equals(State.EMPTY)) {
 			List<GridCell> neighbors = getNeighbors(cell);
 			double sameCount = 0;
 			double nonEmptyCount = 0;
-			for(GridCell neighbor : neighbors) {
-				if(cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
+			for (GridCell neighbor : neighbors) {
+				if (cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
 					sameCount++;
 				}
-				if(!(neighbor.getMyCurrentState() == State.EMPTY)){
+				if (!(neighbor.getMyCurrentState() == State.EMPTY)) {
 				    nonEmptyCount++;
 				}
 			}
-			if(!isContent((sameCount/nonEmptyCount)*100)){
+			if (!isContent((sameCount/nonEmptyCount)*100)) {
 				move(cell);
 			}
-			else{
+			else {
 				cell.setMyNextState(cell.getMyCurrentState());
 			}
 		}
 		else {
-			if(cell.getMyNextState() == null){
+			if (cell.getMyNextState() == null){
 				cell.setMyNextState(cell.getMyCurrentState());
 			}
 		}
+		
+	}
+	
+	@Override
+	protected void toggleState(GridCell cell) {
+		if (cell.getMyCurrentState() == State.EMPTY) {
+			cell.setMyCurrentState(State.RED);
+			
+		}
+		else if (cell.getMyCurrentState() == State.RED) {
+			cell.setMyCurrentState(State.BLUE);
+			
+		} 
+		else if (cell.getMyCurrentState() == State.BLUE) {
+			cell.setMyCurrentState(State.EMPTY);
+			
+		} 
+		
+		cell.setMyColor();
 		
 	}
 	
@@ -87,8 +109,8 @@ public class SegregationGrid extends Grid {
 	 * @param cell
 	 */
 	private void move(GridCell cell) {
-		for (int r = 0; r < getMyCells().length; r++) {
-			for (int c = 0; c < getMyCells()[0].length; c++) {
+		for (int r = 0; r < getRows(); r++) {
+			for (int c = 0; c < getColumns(); c++) {
 				GridCell newCell = getMyCells()[r][c];
 				if(newCell.getMyCurrentState().equals(State.EMPTY) && (newCell.getMyNextState()==null || newCell.getMyNextState()==State.EMPTY)) {
 					newCell.setMyNextState(cell.getMyCurrentState());
@@ -113,5 +135,21 @@ public class SegregationGrid extends Grid {
 		return percent >= similarityPercentage;
 	}
 	
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+	
+	private double getSimilarityPercentage () {
+		return similarityPercentage;
+	}
+	
+	@Override
+	public Map<String,String> getMyGameState () {
+		Map<String,String> currentGameState = super.getMyGameState();
+		currentGameState.put("similaritypercentage", Double.toString(getSimilarityPercentage()));
+		
+		return currentGameState;
+		
+	}
 
 }

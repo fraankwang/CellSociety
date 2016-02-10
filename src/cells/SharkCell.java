@@ -2,6 +2,12 @@ package cells;
 
 import java.util.List;
 
+import com.sun.javafx.geom.BaseBounds;
+import com.sun.javafx.geom.transform.BaseTransform;
+import com.sun.javafx.jmx.MXNodeAlgorithm;
+import com.sun.javafx.jmx.MXNodeAlgorithmContext;
+import com.sun.javafx.sg.prism.NGNode;
+
 import constants.Location;
 import constants.State;
 import javafx.scene.shape.Shape;

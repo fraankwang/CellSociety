@@ -1,4 +1,4 @@
-package input;
+package inputoutput;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +17,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class Parser {
 
+	/**
+	 * SAXParser reads each key and creates String based on characters method
+	 * @param file - the file the user selected
+	 * @return mapped parameters to be parsed by the Game and Grid
+	 */
     public Map<String, String> parse (File file) {
         Map<String, String> myParams = new HashMap<String, String>();
         try {

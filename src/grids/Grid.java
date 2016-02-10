@@ -6,6 +6,7 @@ package grids;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
@@ -13,6 +14,7 @@ import constants.NeighborOffset;
 import constants.Offset;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
+
 
 
 /**
@@ -63,7 +65,7 @@ public abstract class Grid {
      */
     protected void initialize () {
         initializeCells();
-        createUI();
+        createGridPane();
         
     }
 
@@ -112,16 +114,17 @@ public abstract class Grid {
 
     /**
      * Updates the visible GridPane by mapping the the cells from myCells to the same location in
-     * the 2D
-     * array
+     * the 2D array. GridCell's myShape attribute is set to toggle it's state on mouse click
      */
-    private void createUI () {
+    private void createGridPane () {
         myGridPane = new GridPane();
         myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
 
-        for (int r = 0; r < myCells.length; r++) {
-            for (int c = 0; c < myCells[0].length; c++) {
-                myGridPane.add(myCells[r][c].getMyShape(), c, r);
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
+            	GridCell cell = myCells[r][c];
+            	cell.getMyShape().setOnMouseClicked(e -> toggleState(cell));
+                myGridPane.add(cell.getMyShape(), c, r);
             }
         }
 
@@ -130,6 +133,12 @@ public abstract class Grid {
         
     }
 
+    /**
+     * Action to be carried out when GridCell's shape is clicked. Abstracted
+     * so subclasses of Grid can toggle between only relevant states.
+     * @param cell - the cell whose states will be toggled
+     */
+    protected abstract void toggleState (GridCell cell);
     // =========================================================================
     // Simulation
     // =========================================================================
@@ -178,25 +187,7 @@ public abstract class Grid {
         }
         
     }
-
-    /**
-     * Determines whether a grid index is out of bounds
-     *
-     * @param row The row to check
-     * @param col The column to check
-     * @return A boolean indicating whether a cell in that position would be out of bounds
-     */
-    protected boolean cellInBounds (int row, int col) {
-
-        boolean farTop = row < 0;
-        boolean farBottom = row > getRows()-1;
-        boolean farLeft = col < 0;
-        boolean farRight = col > getColumns()-1;
-
-        return !(farTop | farBottom | farLeft | farRight);
-        
-    }
-
+    
     /**
      * Returns a list of a GridCell's neighboring GridCells
      *
@@ -249,6 +240,41 @@ public abstract class Grid {
     // Getters and Setters
     // =========================================================================
 
+    /**
+	 * Determines whether a grid index is out of bounds
+	 *
+	 * @param row The row to check
+	 * @param col The column to check
+	 * @return A boolean indicating whether a cell in that position would be out of bounds
+	 */
+	protected boolean cellInBounds (int row, int col) {
+	
+	    boolean farTop = row < 0;
+	    boolean farBottom = row > getRows()-1;
+	    boolean farLeft = col < 0;
+	    boolean farRight = col > getColumns()-1;
+	
+	    return !(farTop | farBottom | farLeft | farRight);
+	    
+	}
+
+	/**
+     * Aggregates current game parameters to be saved to an XML file.
+     * Subclasses of Grid override the method by adding additional simulation-specific parameters
+     * Grid does not know the delay time, which is gathered from Game
+     * @return current game state's parameters that are common to all Grid types
+     */
+    public Map<String,String> getMyGameState () {
+    	Map<String,String> gameStateParams = new HashMap<String,String>();
+    	gameStateParams.put("rows", Integer.toString(this.getRows()));
+    	gameStateParams.put("columns", Integer.toString(this.getColumns()));
+    	gameStateParams.put("width", Integer.toString( (int) this.getMyGridSize().getWidth()));
+    	gameStateParams.put("height", Integer.toString( (int) this.getMyGridSize().getHeight()));
+    	gameStateParams.put("initialStates", getCurrentStatesArrayString());
+    	return gameStateParams;
+    	
+    }
+    
     public GridCell[][] getMyCells () {
         return myCells;
     }
@@ -303,5 +329,26 @@ public abstract class Grid {
     
     protected GridPane getMyGridPane() {
     	return myGridPane;
+    }
+    
+    /**
+     * Loops through each GridCell and returns the State value (same translation as 
+     * initialStates parameter from XML file) to be converted to String format
+     * @return
+     */
+    private String getCurrentStatesArrayString () {
+    	String currentStates = "";
+    	
+    	for (int i = 0; i < getRows(); i++) {
+    		for (int j = 0; j < getColumns(); j++) {
+    			GridCell cell = myCells[i][j];
+    			int currentStateValue = cell.getMyCurrentState().getStateValue();
+    			currentStates += Integer.toString(currentStateValue);
+    		}
+    		currentStates += ",";
+    	}
+    	
+    	return currentStates;
+    	
     }
 }

@@ -24,6 +24,7 @@ public class FireGrid extends Grid {
     private static final int MY_STATE_VALUE_EMPTY = 0;
     private static final int MY_STATE_VALUE_TREE = 1;
     private static final int MY_STATE_VALUE_BURNING = 2;
+    private static final int MY_STATE_VALUE_BURNED = 3;
 
     private double myProbCatch;
 
@@ -49,6 +50,9 @@ public class FireGrid extends Grid {
             case MY_STATE_VALUE_BURNING:
                 state = State.BURNING;
                 break;
+            case MY_STATE_VALUE_BURNED:
+            	state = State.BURNED;
+            
             default:
                 // Display error message
                 break;
@@ -75,6 +79,25 @@ public class FireGrid extends Grid {
     }
 
     @Override
+	protected void toggleState(GridCell cell) {
+		if (cell.getMyCurrentState() == State.BURNING) {
+			cell.setMyCurrentState(State.BURNED);
+			
+		}
+		else if (cell.getMyCurrentState() == State.BURNED) {
+			cell.setMyCurrentState(State.TREE);
+			
+		} 
+		else if (cell.getMyCurrentState() == State.TREE) {
+			cell.setMyCurrentState(State.BURNING);
+			
+		}
+		
+		cell.setMyColor();
+		
+	}
+
+	@Override
     protected List<Offset> neighborOffsets () {
 
         List<Offset> offsets = new ArrayList<Offset>();
@@ -142,4 +165,13 @@ public class FireGrid extends Grid {
     private double getProbCatch () {
         return myProbCatch;
     }
+    
+    @Override
+	public Map<String,String> getMyGameState () {
+		Map<String,String> currentGameState = super.getMyGameState();
+		currentGameState.put("probcatch", Double.toString(getProbCatch()));
+		
+		return currentGameState;
+		
+	}
 }
