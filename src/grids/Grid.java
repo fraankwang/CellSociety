@@ -65,7 +65,7 @@ public abstract class Grid {
      */
     protected void initialize () {
         initializeCells();
-        createUI();
+        createGridPane();
         
     }
 
@@ -116,7 +116,7 @@ public abstract class Grid {
      * Updates the visible GridPane by mapping the the cells from myCells to the same location in
      * the 2D array. GridCell's myShape attribute is set to toggle it's state on mouse click
      */
-    private void createUI () {
+    private void createGridPane () {
         myGridPane = new GridPane();
         myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
 
