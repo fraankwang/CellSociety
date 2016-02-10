@@ -207,6 +207,10 @@ public class CellSocietyViewer {
         
     }
     
+    /**
+     * Calls myGrid in myPrimaryGame to return updated game parameters, then 
+     * adds game parameters that are not visible to myGrid, then generating the .xml file
+     */
     private void saveXML () {
     	XMLGenerator generator = new XMLGenerator();
     	
