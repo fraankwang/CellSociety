@@ -45,9 +45,12 @@ public class XMLGenerator {
             trans.transform(source, result);
             String xmlString = sw.toString();
 
-            String filePath = Constants.RESOURCES.getString("saveXMLFilePath") + 
-            		Integer.toString(fileNameCounter) +
-            		".xml";
+            String filePath = 	Constants.RESOURCES.getString("saveXMLFilePath") + 
+            					params.get("gameType") +
+            					Constants.RESOURCES.getString("Underscore") +
+            					Integer.toString(fileNameCounter) +
+            					Constants.RESOURCES.getString("SavedFileExtension");
+ 
             FileWriter fw = new FileWriter(filePath);
             fileNameCounter++;
             fw.write(xmlString);;

@@ -2,7 +2,6 @@ package view;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -273,6 +275,9 @@ public class CellSocietyViewer {
 			generator.writeXML(currentGameState);
 		}
 		
+		String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
+		Alert savedAlert = new Alert(AlertType.INFORMATION, confirmation, new ButtonType("OK"));
+		savedAlert.showAndWait();
 	}
 
 	/**

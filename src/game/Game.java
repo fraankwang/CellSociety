@@ -4,7 +4,6 @@
 
 package game;
 
-import java.util.HashMap;
 import java.util.Map;
 import grids.FireGrid;
 import grids.GameOfLifeGrid;
