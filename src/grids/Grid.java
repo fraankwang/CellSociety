@@ -189,24 +189,6 @@ public abstract class Grid {
     }
     
     /**
-     * Determines whether a grid index is out of bounds
-     *
-     * @param row The row to check
-     * @param col The column to check
-     * @return A boolean indicating whether a cell in that position would be out of bounds
-     */
-    protected boolean cellInBounds (int row, int col) {
-
-        boolean farTop = row < 0;
-        boolean farBottom = row > getRows()-1;
-        boolean farLeft = col < 0;
-        boolean farRight = col > getColumns()-1;
-
-        return !(farTop | farBottom | farLeft | farRight);
-        
-    }
-
-    /**
      * Returns a list of a GridCell's neighboring GridCells
      *
      * @param cell The cell of interest
@@ -259,6 +241,24 @@ public abstract class Grid {
     // =========================================================================
 
     /**
+	 * Determines whether a grid index is out of bounds
+	 *
+	 * @param row The row to check
+	 * @param col The column to check
+	 * @return A boolean indicating whether a cell in that position would be out of bounds
+	 */
+	protected boolean cellInBounds (int row, int col) {
+	
+	    boolean farTop = row < 0;
+	    boolean farBottom = row > getRows()-1;
+	    boolean farLeft = col < 0;
+	    boolean farRight = col > getColumns()-1;
+	
+	    return !(farTop | farBottom | farLeft | farRight);
+	    
+	}
+
+	/**
      * Aggregates current game parameters to be saved to an XML file.
      * Subclasses of Grid override the method by adding additional simulation-specific parameters
      * Grid does not know the delay time, which is gathered from Game

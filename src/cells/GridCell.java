@@ -32,7 +32,7 @@ public abstract class GridCell extends StackPane {
     public GridCell (State initialState, int row, int col, Shape shape) {
         myCurrentState = initialState;
         myShape = shape;
-        initializeShape();
+        formatShape();
         setMyGridLocation(new Location(row, col));
 
     }
@@ -40,13 +40,21 @@ public abstract class GridCell extends StackPane {
     /**
      * Sets the initial color of the cell and gives it a border
      */
-    private void initializeShape () {
+    private void formatShape () {
         getMyShape().setStroke(Color.BLACK);
         setMyColor();
         
     }
 
     /**
+	 * Sets the cell's shape's color based on the cell's current state
+	 */
+	public void setMyColor () {
+	    getMyShape().setFill(getMyCurrentState().getColor());
+	    
+	}
+
+	/**
      * Changes the cell's currentState to its nextState, sets next state to null, and updates shape
      * UI
      */
@@ -57,14 +65,7 @@ public abstract class GridCell extends StackPane {
         
     }
 
-    /**
-     * Sets the cell's shape's color based on the cell's current state
-     */
-    public void setMyColor () {
-        getMyShape().setFill(getMyCurrentState().getColor());
-        
-    }
-
+    
     // =========================================================================
     // Getters and Setters
     // =========================================================================

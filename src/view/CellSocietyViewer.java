@@ -209,21 +209,6 @@ public class CellSocietyViewer {
     }
     
     /**
-     * Calls myGrid in myPrimaryGame to return updated game parameters, then 
-     * adds game parameters that are not visible to myGrid, then generating the .xml file
-     */
-    private void saveXML () {
-    	XMLGenerator generator = new XMLGenerator();
-    	
-    	if (myPrimaryGame != null) {
-    		Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
-    		currentGameState.put("gameType", myPrimaryGame.getMyGameType());
-    		currentGameState.put("delay", myPrimaryGame.getDelay());
-    		generator.writeXML(currentGameState);
-    	}
-    	
-    }
-    /**
      * Specifies the available files the user can choose and returns it
      * @return File picked by user
      */
@@ -275,6 +260,22 @@ public class CellSocietyViewer {
     }
 
     /**
+	 * Calls myGrid in myPrimaryGame to return updated game parameters, then 
+	 * adds game parameters that are not visible to myGrid, then generating the .xml file
+	 */
+	private void saveXML () {
+		XMLGenerator generator = new XMLGenerator();
+		
+		if (myPrimaryGame != null) {
+			Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
+			currentGameState.put("gameType", myPrimaryGame.getMyGameType());
+			currentGameState.put("delay", myPrimaryGame.getDelay());
+			generator.writeXML(currentGameState);
+		}
+		
+	}
+
+	/**
      * Adjusts stage size when grid size changes
      *
      * NOTE: this method does not deal with BorderPane insets, so sizing may be
