@@ -10,8 +10,6 @@ import javafx.stage.Stage;
 
 /**
  * Main class of cell society. Sets up GUI
- *
- *
  */
 public class Main extends Application {
 
@@ -20,7 +18,6 @@ public class Main extends Application {
      * is created within the view.
      */
     public void start (Stage s) throws Exception {
-
     	CellSocietyViewer view = new CellSocietyViewer(s);
     	view.display();
     	

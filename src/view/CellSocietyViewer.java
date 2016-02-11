@@ -31,7 +31,6 @@ import javafx.event.EventHandler;
 public class CellSocietyViewer {
 
 	private Stage myPrimaryStage;
-	private Scene myPrimaryScene;
 	private BorderPane myPrimaryPane;
 	private Group myPrimaryRoot;
 	private Game myPrimaryGame;
@@ -39,11 +38,9 @@ public class CellSocietyViewer {
 	/**
 	 * Instantiates all UI variables to be displayed
 	 * @param s - the Stage variable to be displayed 
-	 * @param g - the Game variable which must be linked to the view
 	 */
 	public CellSocietyViewer(Stage s) {
 		myPrimaryStage = s;
-		
 		myPrimaryRoot = initializeRoot();
 		
 	}
@@ -58,10 +55,10 @@ public class CellSocietyViewer {
      * which is returned from myPrimaryGame is displayGame()
 	 */
 	public void display() {
-		myPrimaryScene = new Scene(myPrimaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
+		Scene myPrimaryScene = new Scene(myPrimaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
 				Constants.DEFAULT_WINDOW_SIZE.getHeight(),
 				Color.WHITE);
-	
+		
 		myPrimaryStage.setScene(myPrimaryScene);
 		myPrimaryStage.show();
 	}
