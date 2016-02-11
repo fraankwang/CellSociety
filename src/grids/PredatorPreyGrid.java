@@ -73,10 +73,10 @@ public class PredatorPreyGrid extends Grid {
 		setSharkCellStates();		//Shark states have to be set first because they will eat Fish
 		setFishCellStates();		//don't want Fish to move before being eaten
 		
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getColumns(); c++) {
-				if (getMyCells()[r][c].getMyCurrentState() == State.EMPTY) {
-					setCellState(getMyCells()[r][c]);
+		for (int row = 0; row < getRows(); row++) {
+			for (int col = 0; col < getColumns(); col++) {
+				if (getMyCells()[row][col].getMyCurrentState() == State.EMPTY) {
+					setCellState(getMyCells()[row][col]);
 				}
 			}
 		}
@@ -104,7 +104,7 @@ public class PredatorPreyGrid extends Grid {
 	
 	@Override
 	protected void setCellState (GridCell cell) {
-		if (cell.getMyNextState()== null){
+		if (cell.getMyNextState() == null){
 			cell.setMyNextState(cell.getMyCurrentState());
 		}
 		
@@ -129,15 +129,15 @@ public class PredatorPreyGrid extends Grid {
 	 */
 	@Override
 	protected List<GridCell> getNeighbors(GridCell cell){
-		int r = cell.getMyGridLocation().getRow();
-		int c = cell.getMyGridLocation().getCol();
+		int row = cell.getMyGridLocation().getRow();
+		int col = cell.getMyGridLocation().getCol();
 
 		List<Offset> offsets = neighborOffsets();
 		List<GridCell> neighbors = new ArrayList<GridCell>();
 
 		for(Offset offset : offsets){
-			int neighborRow = r + offset.getRow();
-			int neighborCol = c + offset.getCol();
+			int neighborRow = row + offset.getRow();
+			int neighborCol = col + offset.getCol();
 			neighborRow = checkAndSetRowWrapAround(neighborRow);
 			neighborCol = checkAndSetColWrapAround(neighborCol);
 			neighbors.add(getMyCells()[neighborRow][neighborCol]);
@@ -153,10 +153,11 @@ public class PredatorPreyGrid extends Grid {
 	 * and sets their next states
 	 */
 	private void setFishCellStates() {
-		for (int r = 0; r < getMyCells().length; r++) {
-			for (int c = 0; c < getMyCells()[0].length; c++) {
-				if(getMyCells()[r][c] instanceof FishCell && (getMyCells()[r][c].getMyNextState() == null || getMyCells()[r][c].getMyNextState()== State.DEAD)) {
-					setFishCellState((FishCell)getMyCells()[r][c]);
+		for (int row = 0; row < getRows(); row++) {
+			for (int col = 0; col < getColumns(); col++) {
+				GridCell cell = getMyCells()[row][col];
+				if (cell instanceof FishCell && (cell.getMyNextState() == null || cell.getMyNextState()== State.DEAD)) {
+					setFishCellState((FishCell)getMyCells()[row][col]);
 				}
 			}
 		}

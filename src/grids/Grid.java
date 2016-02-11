@@ -74,9 +74,9 @@ public abstract class Grid {
      */
     private void initializeCells () {
         myCells = new GridCell[myRows][myColumns];
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-                initializeCell(r, c);
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                initializeCell(row, col);
             }
         }
         
@@ -100,11 +100,11 @@ public abstract class Grid {
         int[][] initialStates = new int[myRows][myColumns];
         String[] parsed = param.split(",");
 
-        for (int r = 0; r < parsed.length; r++) {
-            String s = parsed[r];
-            for (int c = 0; c < s.length(); c++) {
-                int state = Character.getNumericValue(s.charAt(c));
-                initialStates[r][c] = state;
+        for (int row = 0; row < parsed.length; row++) {
+            String s = parsed[row];
+            for (int col = 0; col < s.length(); col++) {
+                int state = Character.getNumericValue(s.charAt(col));
+                initialStates[row][col] = state;
             }
         }
 
@@ -120,11 +120,11 @@ public abstract class Grid {
         myGridPane = new GridPane();
         myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
 
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-            	GridCell cell = myCells[r][c];
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+            	GridCell cell = myCells[row][col];
             	cell.getMyShape().setOnMouseClicked(e -> toggleState(cell));
-                myGridPane.add(cell.getMyShape(), c, r);
+                myGridPane.add(cell.getMyShape(), col, row);
             }
         }
 
@@ -159,9 +159,9 @@ public abstract class Grid {
      * Loops through each cell in the grid and updates its next state
      */
     protected void setCellStates () {
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-                GridCell cell = myCells[r][c];
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                GridCell cell = myCells[row][col];
                 this.setCellState(cell);
             }
         }
@@ -180,9 +180,9 @@ public abstract class Grid {
      * Loop through myCells and set transition each cell to its next state
      */
     private void updateCellStates () {        
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-                myCells[r][c].transitionStates();
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                myCells[row][col].transitionStates();
             }
         }
         
@@ -195,15 +195,15 @@ public abstract class Grid {
      * @return The list of neighboring GridCells
      */
     protected List<GridCell> getNeighbors (GridCell cell) {
-        int r = cell.getMyGridLocation().getRow();
-        int c = cell.getMyGridLocation().getCol();
+        int row = cell.getMyGridLocation().getRow();
+        int col = cell.getMyGridLocation().getCol();
 
         List<Offset> offsets = neighborOffsets();
         List<GridCell> neighbors = new ArrayList<GridCell>();
 
         for (Offset offset : offsets) {
-            int neighborRow = r + offset.getRow();
-            int neighborCol = c + offset.getCol();
+            int neighborRow = row + offset.getRow();
+            int neighborCol = col + offset.getCol();
 
             if (cellInBounds(neighborRow, neighborCol)) {
                 neighbors.add(myCells[neighborRow][neighborCol]);
@@ -339,9 +339,9 @@ public abstract class Grid {
     private String getCurrentStatesArrayString () {
     	String currentStates = "";
     	
-    	for (int i = 0; i < getRows(); i++) {
-    		for (int j = 0; j < getColumns(); j++) {
-    			GridCell cell = myCells[i][j];
+    	for (int row = 0; row < getRows(); row++) {
+    		for (int col = 0; col < getColumns(); col++) {
+    			GridCell cell = myCells[row][col];
     			int currentStateValue = cell.getMyCurrentState().getStateValue();
     			currentStates += Integer.toString(currentStateValue);
     		}
