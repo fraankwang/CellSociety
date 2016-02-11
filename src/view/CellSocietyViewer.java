@@ -41,9 +41,8 @@ public class CellSocietyViewer {
 	 * @param s - the Stage variable to be displayed 
 	 * @param g - the Game variable which must be linked to the view
 	 */
-	public CellSocietyViewer(Stage s, Game g) {
+	public CellSocietyViewer(Stage s) {
 		myPrimaryStage = s;
-		myPrimaryGame = g;
 		
 		myPrimaryRoot = initializeRoot();
 		
