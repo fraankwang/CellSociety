@@ -4,7 +4,6 @@
 
 package main;
 
-import game.Game;
 import view.CellSocietyViewer;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -22,8 +21,7 @@ public class Main extends Application {
      */
     public void start (Stage s) throws Exception {
 
-    	Game myPrimaryGame = null;
-    	CellSocietyViewer view = new CellSocietyViewer(s, myPrimaryGame);
+    	CellSocietyViewer view = new CellSocietyViewer(s);
     	view.display();
     	
     }
