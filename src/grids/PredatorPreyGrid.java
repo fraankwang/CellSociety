@@ -37,8 +37,6 @@ public class PredatorPreyGrid extends Grid {
 		fishBreed = Integer.parseInt(params.get("fishbreed"));
 		sharkBreed = Integer.parseInt(params.get("sharkbreed"));
 		sharkHealth = Integer.parseInt(params.get("sharkhealth"));
-
-		initialize();
 	}
 
 	@Override
@@ -126,6 +124,10 @@ public class PredatorPreyGrid extends Grid {
 	}
 
 
+	/**
+	 * Iterates through the Fish Cell states that haven't already been updated
+	 * and sets their next states
+	 */
 	private void setFishCellStates() {
 		for (int r = 0; r < getMyCells().length; r++) {
 			for (int c = 0; c < getMyCells()[0].length; c++) {
@@ -136,6 +138,12 @@ public class PredatorPreyGrid extends Grid {
 		}
 	}
 
+	/**
+	 * Sets the state for the Fish Cell passed in. It will kill or move the 
+	 * fish and then breeds if that is possible.
+	 * 
+	 * @param fishCell the Fish Cell that needs to be updated
+	 */
 	private void setFishCellState(FishCell fishCell) {
 		fishCell.update();
 		List<GridCell> neighbors = getNeighbors(fishCell);
@@ -162,6 +170,10 @@ public class PredatorPreyGrid extends Grid {
 		}
 	}
 
+	/**
+	 * Iterates through the Shark Cell states that haven't already been updated
+	 * and sets their next states
+	 */
 	private void setSharkCellStates() {
 		for (int r = 0; r < getMyCells().length; r++) {
 			for (int c = 0; c < getMyCells()[0].length; c++) {
@@ -172,6 +184,12 @@ public class PredatorPreyGrid extends Grid {
 		}
 	}
 
+	/**
+	 * Sets the state for the Shark Cell passed in. It will kill, move, or have the 
+	 * shark eat and then breeds if that is possible. 
+	 * 
+	 * @param shark the Shark Cell that needs to be updated
+	 */
 	private void setSharkCellState(SharkCell shark) {
 		shark.update();
 		List<GridCell> neighbors = getNeighbors(shark);
@@ -306,17 +324,24 @@ public class PredatorPreyGrid extends Grid {
 
 
 	/**
-	 * Gets a random cell from the neighbors that is 
-	 * valid i.e. empty and doesn't have a next state
+	 * Gets a random cell from list
 	 * 
-	 * @param neighbors
-	 * @return
+	 * @param validCells should be cell that is either empty and hasn't had its next state set
+	 * @return a random cell
 	 */
 	private GridCell getRandomValidCell(List<GridCell> validCells){
 		Collections.shuffle(validCells);
 		return validCells.get(0);
 	}
 	
+
+	/**
+	 * Takes the list of neighbors of a cell and returns
+	 * another list of cells that are valid for movement/breeding
+	 * 
+	 * @param neighbors
+	 * @return a list of valid cells
+	 */
 	private List<GridCell> getValidCellList(List<GridCell> neighbors){
 		List<GridCell> validCells = new ArrayList<GridCell>();
 		for(GridCell cell: neighbors){
