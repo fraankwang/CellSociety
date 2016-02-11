@@ -11,8 +11,12 @@ public class FishCell extends DataCell {
 	private int fishBreedTime;
 	private int fishCurrentBreedTime;
 	
-    public FishCell (State currentState, int r, int c, Shape s, int breed) {
-        super(currentState, r, c, s);
+    public FishCell (State currentState, 
+    				int row, 
+    				int col, 
+    				Shape shape, 
+    				int breed) {
+        super(currentState, row, col, shape);
         fishBreedTime = breed;
         fishCurrentBreedTime = fishBreedTime;
     }
