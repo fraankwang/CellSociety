@@ -12,6 +12,7 @@ import cells.FishCell;
 import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
+import constants.Location;
 import constants.NeighborOffset;
 import constants.Offset;
 import constants.State;
@@ -37,7 +38,8 @@ public class PredatorPreyGrid extends Grid {
 		fishBreed = Integer.parseInt(params.get("fishbreed"));
 		sharkBreed = Integer.parseInt(params.get("sharkbreed"));
 		sharkHealth = Integer.parseInt(params.get("sharkhealth"));
-		System.out.println(fishBreed);
+		
+		initialize();
 	}
 
 	@Override
@@ -178,21 +180,7 @@ public class PredatorPreyGrid extends Grid {
 			kill(fishCell, State.FISH);
 		}
 		else {
-			if (validMoves.size() > 0) {
-				GridCell toMove = getRandomValidCell(validMoves);
-				validMoves.remove(toMove);
-				move(fishCell, toMove);
-			}
-			else {
-				fishCell.setMyNextState(State.FISH);
-			}
-		}
-
-		if (fishCell.getTimeUntilBreed() == 0) {
-			if (validMoves.size() > 0) {
-				GridCell toSpawn = getRandomValidCell(validMoves);
-				breed(toSpawn, State.FISH);
-			}
+			moveAndBreed(fishCell, validMoves, fishCell.getTimeUntilBreed());
 		}
 		
 	}
@@ -238,21 +226,7 @@ public class PredatorPreyGrid extends Grid {
 			kill(shark, shark.getMyCurrentState());
 		}
 		else {
-			if (validMoves.size()>0) {
-				GridCell toMove = getRandomValidCell(validMoves);
-				validMoves.remove(toMove);
-				move(shark,toMove);
-			}
-			else {
-				shark.setMyNextState(State.SHARK);
-			}
-		}
-
-		if (shark.getTimeUntilBreed() == 0) {
-			if(validMoves.size()>0){
-				GridCell toSpawn = getRandomValidCell(validMoves);;
-				breed(toSpawn, State.SHARK);
-			}
+			moveAndBreed(shark, validMoves, shark.getTimeUntilBreed());
 		}
 		
 	}
@@ -348,13 +322,24 @@ public class PredatorPreyGrid extends Grid {
 
 	}
 
-	private void removeFromGrid(GridCell cell, State state){
-		
-	}
+
+	private void moveAndBreed(GridCell cell, List<GridCell> validMoves, int timeUntilBreed){
+		if (validMoves.size()>0) {
+			GridCell toMove = getRandomValidCell(validMoves);
+			validMoves.remove(toMove);
+			move(cell,toMove);
+		}
+		else {
+			cell.setMyNextState(cell.getMyCurrentState());
+		}
 
 
-	private void addToGrid(GridCell cell){
-		
+		if (timeUntilBreed == 0) {
+			if(validMoves.size()>0){
+				GridCell toSpawn = getRandomValidCell(validMoves);;
+				breed(toSpawn, cell.getMyCurrentState());
+			}
+		}
 	}
 	
 	
