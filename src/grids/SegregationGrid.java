@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class SegregationGrid extends Grid {
 
-	private double similarityPercentage;
+	private double mySimilarityPercentage;
 	
 	private static final int MY_STATE_VALUE_EMPTY = 0;
 	private static final int MY_STATE_VALUE_RED = 1;
@@ -28,7 +28,7 @@ public class SegregationGrid extends Grid {
 	
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
-		similarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
+		mySimilarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class SegregationGrid extends Grid {
 				if (cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
 					sameCount++;
 				}
-				if (!(neighbor.getMyCurrentState() == State.EMPTY)) {
-				    nonEmptyCount++;
+				if(!(neighbor.getMyCurrentState() == State.EMPTY)){
+				    nonEmptyCount++;	//we don't account for empty cells when calculating similarity percentage
 				}
 			}
 			if (!isContent((sameCount/nonEmptyCount)*100)) {
@@ -106,7 +106,7 @@ public class SegregationGrid extends Grid {
 	/**
 	 * Moves a cell to the first empty location in the Grid that 
 	 * hasn't already been moved into
-	 * @param cell
+	 * @param cell the cell to be moved
 	 */
 	private void move(GridCell cell) {
 		for (int row = 0; row < getRows(); row++) {
@@ -132,7 +132,7 @@ public class SegregationGrid extends Grid {
 	 * @return True if the percent is at least the threshold percentage
 	 */
 	private boolean isContent(double percent) {
-		return percent >= similarityPercentage;
+		return percent >= mySimilarityPercentage;
 	}
 	
     // =========================================================================
@@ -140,7 +140,7 @@ public class SegregationGrid extends Grid {
     // =========================================================================
 	
 	private double getSimilarityPercentage () {
-		return similarityPercentage;
+		return mySimilarityPercentage;
 	}
 	
 	@Override

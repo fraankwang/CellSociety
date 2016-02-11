@@ -15,12 +15,7 @@ public class SharkCell extends DataCell {
     private int sharkCurrentBreedTime;
     private int sharkBreedTime;
 
-    public SharkCell (State currentState,
-                      int row,
-                      int col,
-                      Shape shape,
-                      int health,
-                      int breedTime) {
+    public SharkCell (State currentState, int row, int col, Shape shape, int health, int breedTime) {
         super(currentState, row, col, shape);
         sharkMaxHealth = health;
         sharkCurrentHealth = sharkMaxHealth;
@@ -29,12 +24,18 @@ public class SharkCell extends DataCell {
 
     }
 
+    /**
+     * A constructor used to make a copy of the shark
+     * @param shark
+     * @param location
+     */
     
     public SharkCell(SharkCell shark, Location location){
     	super(shark.getMyCurrentState(), location.getRow(), location.getCol(), shark.getMyShape());
     	sharkCurrentHealth = shark.getCurrentHealth();
     	sharkCurrentBreedTime = shark.getTimeUntilBreed();
     	sharkBreedTime = shark.getBreedTime();
+    	sharkMaxHealth = shark.getMaxHealth();
     }
     
 	@Override
@@ -52,11 +53,19 @@ public class SharkCell extends DataCell {
 		}
 		
 	}
-
+	
+	/**
+	 * Eats the fish and then resets the shark's health
+	 * to max	
+	 *
+	 * @param fish the fish to be eaten
+	 */
 	public void eat(FishCell fish) {
 		sharkCurrentHealth = sharkMaxHealth;
 		fish.setMyNextState(State.DEAD);
 	}
+	
+	
 	/**
 	 * Checks to see if the shark can eat
 	 * @param neighbors
@@ -70,7 +79,11 @@ public class SharkCell extends DataCell {
 		}
 		return false;
 	}
-	
+
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+
 	public int getTimeUntilBreed() {
 		return sharkCurrentBreedTime;
 	}
@@ -83,5 +96,9 @@ public class SharkCell extends DataCell {
 		return sharkBreedTime;
 	}
 	
+	private int getMaxHealth(){
+		return sharkMaxHealth;
+	}
+
 
 }

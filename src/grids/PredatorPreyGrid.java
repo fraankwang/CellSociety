@@ -12,6 +12,7 @@ import cells.FishCell;
 import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
+import constants.Location;
 import constants.NeighborOffset;
 import constants.Offset;
 import constants.State;
@@ -37,6 +38,8 @@ public class PredatorPreyGrid extends Grid {
 		fishBreed = Integer.parseInt(params.get("fishbreed"));
 		sharkBreed = Integer.parseInt(params.get("sharkbreed"));
 		sharkHealth = Integer.parseInt(params.get("sharkhealth"));
+		
+		initialize();
 	}
 
 	@Override
@@ -147,6 +150,10 @@ public class PredatorPreyGrid extends Grid {
 	}
 
 
+	/**
+	 * Iterates through the Fish Cell states that haven't already been updated
+	 * and sets their next states
+	 */
 	private void setFishCellStates() {
 		for (int row = 0; row < getRows(); row++) {
 			for (int col = 0; col < getColumns(); col++) {
@@ -159,6 +166,12 @@ public class PredatorPreyGrid extends Grid {
 		
 	}
 
+	/**
+	 * Sets the state for the Fish Cell passed in. It will kill or move the 
+	 * fish and then breeds if that is possible.
+	 * 
+	 * @param fishCell the Fish Cell that needs to be updated
+	 */
 	private void setFishCellState(FishCell fishCell) {
 		fishCell.update();
 		List<GridCell> neighbors = getNeighbors(fishCell);
@@ -167,25 +180,15 @@ public class PredatorPreyGrid extends Grid {
 			kill(fishCell, State.FISH);
 		}
 		else {
-			if (validMoves.size() > 0) {
-				GridCell toMove = getRandomValidCell(validMoves);
-				validMoves.remove(toMove);
-				move(fishCell, toMove);
-			}
-			else {
-				fishCell.setMyNextState(State.FISH);
-			}
-		}
-
-		if (fishCell.getTimeUntilBreed() == 0) {
-			if (validMoves.size() > 0) {
-				GridCell toSpawn = getRandomValidCell(validMoves);
-				breed(toSpawn, State.FISH);
-			}
+			moveAndBreed(fishCell, validMoves, fishCell.getTimeUntilBreed());
 		}
 		
 	}
 
+	/**
+	 * Iterates through the Shark Cell states that haven't already been updated
+	 * and sets their next states
+	 */
 	private void setSharkCellStates() {
 		for (int r = 0; r < getRows(); r++) {
 			for (int c = 0; c < getColumns(); c++) {
@@ -197,6 +200,12 @@ public class PredatorPreyGrid extends Grid {
 		
 	}
 
+	/**
+	 * Sets the state for the Shark Cell passed in. It will kill, move, or have the 
+	 * shark eat and then breeds if that is possible. 
+	 * 
+	 * @param shark the Shark Cell that needs to be updated
+	 */
 	private void setSharkCellState(SharkCell shark) {
 		shark.update();
 		List<GridCell> neighbors = getNeighbors(shark);
@@ -217,21 +226,7 @@ public class PredatorPreyGrid extends Grid {
 			kill(shark, shark.getMyCurrentState());
 		}
 		else {
-			if (validMoves.size()>0) {
-				GridCell toMove = getRandomValidCell(validMoves);
-				validMoves.remove(toMove);
-				move(shark,toMove);
-			}
-			else {
-				shark.setMyNextState(State.SHARK);
-			}
-		}
-
-		if (shark.getTimeUntilBreed() == 0) {
-			if(validMoves.size()>0){
-				GridCell toSpawn = getRandomValidCell(validMoves);;
-				breed(toSpawn, State.SHARK);
-			}
+			moveAndBreed(shark, validMoves, shark.getTimeUntilBreed());
 		}
 		
 	}
@@ -249,11 +244,11 @@ public class PredatorPreyGrid extends Grid {
 		getMyGridPane().getChildren().remove(toSpawn.getMyShape());
 		if (fishOrShark == State.SHARK) {
 			toSpawn = new SharkCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
-			toSpawn.setMyNextState(State.SHARK);
+			toSpawn.setMyNextState(fishOrShark);
 		}
 		else if (fishOrShark == State.FISH) {
 			toSpawn = new FishCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
-			toSpawn.setMyNextState(State.FISH);
+			toSpawn.setMyNextState(fishOrShark);
 		}
 
 		getMyCells()[row][col] = toSpawn;
@@ -328,19 +323,45 @@ public class PredatorPreyGrid extends Grid {
 	}
 
 
+	private void moveAndBreed(GridCell cell, List<GridCell> validMoves, int timeUntilBreed){
+		if (validMoves.size()>0) {
+			GridCell toMove = getRandomValidCell(validMoves);
+			validMoves.remove(toMove);
+			move(cell,toMove);
+		}
+		else {
+			cell.setMyNextState(cell.getMyCurrentState());
+		}
 
+
+		if (timeUntilBreed == 0) {
+			if(validMoves.size()>0){
+				GridCell toSpawn = getRandomValidCell(validMoves);;
+				breed(toSpawn, cell.getMyCurrentState());
+			}
+		}
+	}
+	
+	
 	/**
-	 * Gets a random cell from the neighbors that is 
-	 * valid i.e. empty and doesn't have a next state
+	 * Gets a random cell from list
 	 * 
-	 * @param neighbors
-	 * @return
+	 * @param validCells should be cell that is either empty and hasn't had its next state set
+	 * @return a random cell
 	 */
 	private GridCell getRandomValidCell(List<GridCell> validCells){
 		Collections.shuffle(validCells);
 		return validCells.get(0);
 	}
 	
+
+	/**
+	 * Takes the list of neighbors of a cell and returns
+	 * another list of cells that are valid for movement/breeding
+	 * 
+	 * @param neighbors
+	 * @return a list of valid cells
+	 */
 	private List<GridCell> getValidCellList(List<GridCell> neighbors){
 		List<GridCell> validCells = new ArrayList<GridCell>();
 		for (GridCell cell: neighbors) {

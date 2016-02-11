@@ -18,5 +18,9 @@ public abstract class DataCell extends GridCell {
         super(currentState, row, col, shape);
     }
 
+    /**
+     * allows the the DataCell to update its persistent information
+     * 
+     */
     public abstract void update ();
 }
