@@ -36,6 +36,12 @@ public class FishCell extends DataCell {
 		
 	}
 	
+
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+
+	
 	public int getTimeUntilBreed(){
 		return fishCurrentBreedTime;
 	}

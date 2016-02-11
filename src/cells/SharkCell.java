@@ -42,6 +42,7 @@ public class SharkCell extends DataCell {
     	sharkCurrentHealth = shark.getCurrentHealth();
     	sharkCurrentBreedTime = shark.getTimeUntilBreed();
     	sharkBreedTime = shark.getBreedTime();
+    	sharkMaxHealth = shark.getMaxHealth();
     }
     
 	@Override
@@ -59,11 +60,19 @@ public class SharkCell extends DataCell {
 		}
 		
 	}
-
+	
+	/**
+	 * Eats the fish and then resets the shark's health
+	 * to max	
+	 *
+	 * @param fish the fish to be eaten
+	 */
 	public void eat(FishCell fish) {
 		sharkCurrentHealth = sharkMaxHealth;
 		fish.setMyNextState(State.DEAD);
 	}
+	
+	
 	/**
 	 * Checks to see if the shark can eat
 	 * @param neighbors
@@ -77,7 +86,11 @@ public class SharkCell extends DataCell {
 		}
 		return false;
 	}
-	
+
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+
 	public int getTimeUntilBreed() {
 		return sharkCurrentBreedTime;
 	}
@@ -90,6 +103,9 @@ public class SharkCell extends DataCell {
 		return sharkBreedTime;
 	}
 	
+	private int getMaxHealth(){
+		return sharkMaxHealth;
+	}
 
 
 }
