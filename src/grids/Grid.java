@@ -15,8 +15,6 @@ import constants.Offset;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 
-
-
 /**
  * Abstract class representing a grid to be used for the simulation
  * In charge of determining how to update itself for each step of the simulation
