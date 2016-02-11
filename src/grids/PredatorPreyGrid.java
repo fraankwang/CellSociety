@@ -122,31 +122,6 @@ public class PredatorPreyGrid extends Grid {
 		return offsets;
 	}
 
-	/**
-	 * Overrides Grid method in order to include
-	 * the wrap around
-	 */
-	@Override
-	protected List<GridCell> getNeighbors(GridCell cell){
-		int r = cell.getMyGridLocation().getRow();
-		int c = cell.getMyGridLocation().getCol();
-
-		List<Offset> offsets = neighborOffsets();
-		List<GridCell> neighbors = new ArrayList<GridCell>();
-
-		for(Offset offset : offsets){
-			int neighborRow = r + offset.getRow();
-			int neighborCol = c + offset.getCol();
-			neighborRow = checkAndSetRowWrapAround(neighborRow);
-			neighborCol = checkAndSetColWrapAround(neighborCol);
-			neighbors.add(getMyCells()[neighborRow][neighborCol]);
-		}
-
-		return neighbors;
-		
-	}
-
-
 	private void setFishCellStates() {
 		for (int r = 0; r < getMyCells().length; r++) {
 			for (int c = 0; c < getMyCells()[0].length; c++) {
@@ -351,45 +326,6 @@ public class PredatorPreyGrid extends Grid {
 		
 	}
 
-	/**
-	 * Checks to see if the row wraps around and
-	 * returns itself it doesn't or does the math
-	 * for the wrap around
-	 * @param row
-	 * @return the number to set the row to
-	 */
-	private int checkAndSetRowWrapAround(int row){
-		if (row < 0) {
-			return row + getRows();
-		}
-		else if (row == getRows()){
-			return 0;
-		}
-		else {
-			return row;
-		}
-		
-	}
-
-	/**
-	 * Checks to see if the col wraps around and
-	 * returns itself it doesn't or does the math
-	 * for the wrap around
-	 * @param col
-	 * @return the number to set the col to
-	 */
-	private int checkAndSetColWrapAround(int col){
-		if(col < 0) {
-			return col + getColumns();
-		}
-		else if(col == getColumns()){
-			return 0;
-		}
-		else{
-			return col;
-		}
-		
-	}
 
     // =========================================================================
     // Getters and Setters

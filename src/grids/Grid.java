@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
+import constants.Location;
 import constants.NeighborOffset;
 import constants.Offset;
 import javafx.scene.Group;
@@ -195,24 +196,38 @@ public abstract class Grid {
      * @return The list of neighboring GridCells
      */
     protected List<GridCell> getNeighbors (GridCell cell) {
-        int r = cell.getMyGridLocation().getRow();
-        int c = cell.getMyGridLocation().getCol();
 
         List<Offset> offsets = neighborOffsets();
         List<GridCell> neighbors = new ArrayList<GridCell>();
 
         for (Offset offset : offsets) {
-            int neighborRow = r + offset.getRow();
-            int neighborCol = c + offset.getCol();
-
-            if (cellInBounds(neighborRow, neighborCol)) {
-                neighbors.add(myCells[neighborRow][neighborCol]);
+            Location neighborLocation = neighborLocationToroidal(cell, offset);
+            
+            if (cellInBounds(neighborLocation)) {
+                neighbors.add(myCells[neighborLocation.getRow()][neighborLocation.getCol()]);
             }
         }
 
         return neighbors;
         
     }
+    
+    /**
+     * Used by getNeighbors for a toroidal grid (I think it also works for finite)
+     * @param cell GridCell
+     * @param offset Offset where potential neighbor is located
+     * @return Location of neighbor at offset from cell
+     */
+    private Location neighborLocationToroidal(GridCell cell, Offset offset){
+       int neighborRow = (cell.getMyGridLocation().getRow() + offset.getRow()) % myRows;
+       int neighborCol = (cell.getMyGridLocation().getCol() + offset.getCol()) % myColumns;
+
+       return new Location(neighborRow, neighborCol);
+    }
+    
+    //TODO: infinite grid
+    //private Location neighborLocationInfinite
+    // or private Location getNeighborsInfinite
     
     /**
      * Returns a list of offsets to check to find a GridCell's neighbors
@@ -247,8 +262,10 @@ public abstract class Grid {
 	 * @param col The column to check
 	 * @return A boolean indicating whether a cell in that position would be out of bounds
 	 */
-	protected boolean cellInBounds (int row, int col) {
-	
+	protected boolean cellInBounds (Location location) {
+	    int row = location.getRow();
+	    int col = location.getCol();
+	    
 	    boolean farTop = row < 0;
 	    boolean farBottom = row > getRows()-1;
 	    boolean farLeft = col < 0;
