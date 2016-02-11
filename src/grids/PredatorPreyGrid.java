@@ -37,6 +37,7 @@ public class PredatorPreyGrid extends Grid {
 		fishBreed = Integer.parseInt(params.get("fishbreed"));
 		sharkBreed = Integer.parseInt(params.get("sharkbreed"));
 		sharkHealth = Integer.parseInt(params.get("sharkhealth"));
+		System.out.println(fishBreed);
 	}
 
 	@Override
@@ -268,11 +269,11 @@ public class PredatorPreyGrid extends Grid {
 		getMyGridPane().getChildren().remove(toSpawn.getMyShape());
 		if (fishOrShark == State.SHARK) {
 			toSpawn = new SharkCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
-			toSpawn.setMyNextState(State.SHARK);
+			toSpawn.setMyNextState(fishOrShark);
 		}
 		else if (fishOrShark == State.FISH) {
 			toSpawn = new FishCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
-			toSpawn.setMyNextState(State.FISH);
+			toSpawn.setMyNextState(fishOrShark);
 		}
 
 		getMyCells()[row][col] = toSpawn;
@@ -346,8 +347,16 @@ public class PredatorPreyGrid extends Grid {
 
 	}
 
+	private void removeFromGrid(GridCell cell, State state){
+		
+	}
 
 
+	private void addToGrid(GridCell cell){
+		
+	}
+	
+	
 	/**
 	 * Gets a random cell from list
 	 * 
