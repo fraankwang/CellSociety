@@ -20,13 +20,11 @@ import javafx.scene.shape.Rectangle;
  */
 public class SegregationGrid extends Grid {
 
-	private static final int MY_EMPTY_CODE = 0;
-	private static final int MY_RED_CODE = 1;
-	private static final int MY_BLUE_CODE = 2;
-	
 	private double mySimilarityPercentage;
 	
-	
+	private static final int MY_STATE_VALUE_EMPTY = 0;
+	private static final int MY_STATE_VALUE_RED = 1;
+	private static final int MY_STATE_VALUE_BLUE = 2;
 	
 	public SegregationGrid(Map<String, String> params) {
 		super(params);
@@ -39,14 +37,17 @@ public class SegregationGrid extends Grid {
 
         int s = getMyInitialStates()[r][c];
         switch (s) {
-            case MY_EMPTY_CODE:
+            case MY_STATE_VALUE_EMPTY:
                 state = State.EMPTY;
                 break;
-            case MY_RED_CODE:
+            case MY_STATE_VALUE_RED:
                 state = State.RED;
                 break;
-            case MY_BLUE_CODE:
+            case MY_STATE_VALUE_BLUE:
             	state = State.BLUE;
+            default:
+                // Display error message
+                break;
         }
 
         getMyCells()[r][c] =
@@ -56,30 +57,49 @@ public class SegregationGrid extends Grid {
 
 	@Override
 	protected void setCellState(GridCell cell) {
-		if(!cell.getMyCurrentState().equals(State.EMPTY)) {
+		if (!cell.getMyCurrentState().equals(State.EMPTY)) {
 			List<GridCell> neighbors = getNeighbors(cell);
 			double sameCount = 0;
 			double nonEmptyCount = 0;
-			for(GridCell neighbor : neighbors) {
-				if(cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
+			for (GridCell neighbor : neighbors) {
+				if (cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
 					sameCount++;
 				}
 				if(!(neighbor.getMyCurrentState() == State.EMPTY)){
 				    nonEmptyCount++;	//we don't account for empty cells when calculating similarity percentage
 				}
 			}
-			if(!isContent((sameCount/nonEmptyCount)*100)){
+			if (!isContent((sameCount/nonEmptyCount)*100)) {
 				move(cell);
 			}
-			else{
+			else {
 				cell.setMyNextState(cell.getMyCurrentState());
 			}
 		}
 		else {
-			if(cell.getMyNextState() == null){
+			if (cell.getMyNextState() == null){
 				cell.setMyNextState(cell.getMyCurrentState());
 			}
 		}
+		
+	}
+	
+	@Override
+	protected void toggleState(GridCell cell) {
+		if (cell.getMyCurrentState() == State.EMPTY) {
+			cell.setMyCurrentState(State.RED);
+			
+		}
+		else if (cell.getMyCurrentState() == State.RED) {
+			cell.setMyCurrentState(State.BLUE);
+			
+		} 
+		else if (cell.getMyCurrentState() == State.BLUE) {
+			cell.setMyCurrentState(State.EMPTY);
+			
+		} 
+		
+		cell.setMyColor();
 		
 	}
 	
@@ -89,8 +109,8 @@ public class SegregationGrid extends Grid {
 	 * @param cell the cell to be moved
 	 */
 	private void move(GridCell cell) {
-		for (int r = 0; r < getMyCells().length; r++) {
-			for (int c = 0; c < getMyCells()[0].length; c++) {
+		for (int r = 0; r < getRows(); r++) {
+			for (int c = 0; c < getColumns(); c++) {
 				GridCell newCell = getMyCells()[r][c];
 				if(newCell.getMyCurrentState().equals(State.EMPTY) && (newCell.getMyNextState()==null || newCell.getMyNextState()==State.EMPTY)) {
 					newCell.setMyNextState(cell.getMyCurrentState());
@@ -115,5 +135,21 @@ public class SegregationGrid extends Grid {
 		return percent >= mySimilarityPercentage;
 	}
 	
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+	
+	private double getSimilarityPercentage () {
+		return mySimilarityPercentage;
+	}
+	
+	@Override
+	public Map<String,String> getMyGameState () {
+		Map<String,String> currentGameState = super.getMyGameState();
+		currentGameState.put("similaritypercentage", Double.toString(getSimilarityPercentage()));
+		
+		return currentGameState;
+		
+	}
 
 }

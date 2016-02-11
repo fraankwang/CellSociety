@@ -28,6 +28,7 @@ public class GameOfLifeGrid extends Grid {
 
     public GameOfLifeGrid (Map<String, String> params) {
         super(params);
+        
     }
 
     @Override
@@ -78,7 +79,22 @@ public class GameOfLifeGrid extends Grid {
 
     }
 
-    /**
+    @Override
+	protected void toggleState(GridCell cell) {
+		if (cell.getMyCurrentState() == State.DEAD) {
+			cell.setMyCurrentState(State.ALIVE);
+			
+		}
+		else if (cell.getMyCurrentState() == State.ALIVE) {
+			cell.setMyCurrentState(State.DEAD);
+			
+		} 
+		
+		cell.setMyColor();
+		
+	}
+
+	/**
      * Calculates the number of "neighbor" cells alive
      *
      * @param r The row index of the cell in question

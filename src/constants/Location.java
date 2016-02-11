@@ -2,7 +2,7 @@
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-package grids;
+package constants;
 
 /**
  * Convenience class for "location" of a cell with respect to its grid
@@ -21,6 +21,7 @@ public class Location {
     public Location (int row, int col) {
         myRow = row;
         myCol = col;
+        
     }
 
     public int getRow () {

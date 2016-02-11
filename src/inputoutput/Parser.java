@@ -1,4 +1,4 @@
-package input;
+package inputoutput;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +17,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class Parser {
 
+	/**
+	 * SAXParser reads each key and creates String based on characters method
+	 * @param file - the file the user selected
+	 * @return mapped parameters to be parsed by the Game and Grid
+	 */
     public Map<String, String> parse (File file) {
         Map<String, String> myParams = new HashMap<String, String>();
         try {
@@ -26,13 +31,11 @@ public class Parser {
             DefaultHandler handler = new DefaultHandler() {
 
                 String key;
-                String value;
 
                 public void startElement (String uri,
                                           String localName,
                                           String keyName,
                                           Attributes attributes) throws SAXException {
-                    // System.out.println("Element name: " + keyName);
                     key = keyName;
                 }
 
@@ -59,5 +62,7 @@ public class Parser {
             e.printStackTrace();
         }
         return myParams;
+        
     }
+    
 }

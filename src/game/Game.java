@@ -40,9 +40,9 @@ public class Game {
         myGameType = params.get("gameType");
         myParameters = params;
 
-        System.out.println("Initializing grid");
         initializeGrid();
         initializeGameLoop();
+        
     }
 
     /**
@@ -69,10 +69,12 @@ public class Game {
         }
 
         myGameRoot = myGrid.getRoot();
+        
     }
 
     /**
      * Initialize the game loop, using the delay parameter from xml to determine speed
+     * In each KeyFrame of the animation, myGameLoop calls the step() function from myGrid
      */
     private void initializeGameLoop () {
         // "delay" given in milliseconds
@@ -92,6 +94,7 @@ public class Game {
         if (myGameLoop != null) {
             myGameLoop.play();
         }
+        
     }
 
     /**
@@ -101,12 +104,14 @@ public class Game {
         if (myGameLoop != null) {
             myGameLoop.stop();
         }
+        
     }
 
     // =========================================================================
     // Getters and Setters
     // =========================================================================
 
+    
     public Group getGameRoot () {
         return myGameRoot;
     }
@@ -115,4 +120,15 @@ public class Game {
         return myGrid;
     }
 
+	public Map<String, String> getMyParameters () {
+		return myParameters;
+	}
+	
+	public String getDelay () {
+		return myParameters.get("delay");
+	}
+
+	public String getMyGameType () {
+		return myGameType;
+	}
 }

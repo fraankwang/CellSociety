@@ -56,11 +56,12 @@ Description
   	    * 0 --> Empty
   	    * 1 --> Tree
   	    * 2 --> Burning
+  	    * 3 --> Burned
   	  * Segregation
   	  	* 0 --> Empty
-  	  	* 1 --> Race 1
-  	  	* 2 --> Race 1
-  	  * Predator-Prey
+  	  	* 1 --> Red
+  	  	* 2 --> Blue
+  	  * Predator Prey
   	    * 0 --> Empty
   	    * 1 --> Shark
   	    * 2 --> Fish
