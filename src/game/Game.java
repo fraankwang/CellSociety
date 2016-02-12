@@ -19,6 +19,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
 import javafx.util.Duration;
 import views.GridView;
 import views.HexagonGridView;
@@ -61,10 +62,18 @@ public class Game {
         initializeGridModel();
         initializeGridView();
         initializeNeighborOffsets();
+        setRoot();
         
-        myGameRoot = myGrid.getView();
+       
         
     }
+    
+    private void setRoot(){
+        Group group = new Group();
+        group.getChildren().add(createScrollPane());
+        myGameRoot = group;
+    }
+    
     /**
      * Initializes a specific grid based on the gameType parameter, and
      * updates myGameRoot after myGrid updates its local root
@@ -144,6 +153,13 @@ public class Game {
                 myGrid.setNeighborOffsets(neighborOffsetsAll());
             }
         }
+    }
+    
+    private ScrollPane createScrollPane(){
+        ScrollPane sp = new ScrollPane();
+        sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
+        sp.setContent(myGrid.getView());
+        return sp;
     }
 
     /**
