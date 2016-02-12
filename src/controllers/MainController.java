@@ -9,7 +9,7 @@ import inputoutput.XMLGenerator;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
-import view.MainView;
+import views.MainView;
 
 
 public class MainController {

@@ -15,6 +15,7 @@ import constants.NeighborOffset;
 import constants.Offset;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
+import views.GridView;
 
 /**
  * Abstract class representing a grid to be used for the simulation
@@ -31,9 +32,8 @@ public abstract class Grid {
     // View
     private Dimension myGridSize;
     private int myCellSize;
-    private Group myRoot;
-    private GridPane myGridPane;
 
+    private GridView myGridView;
 
     /**
      * Constructor - initializes a Grid based on parameters from xml
@@ -64,8 +64,7 @@ public abstract class Grid {
      */
     protected void initialize () {
         initializeCells();
-        createGridPane();
-        
+        //myGridView = new GridView(myCells); // replace with triangle/hexagon/rectangle gridview
     }
 
     /**
@@ -75,7 +74,9 @@ public abstract class Grid {
         myCells = new GridCell[myRows][myColumns];
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
-                initializeCell(row, col);
+                GridCell cell = initializeCell(row, col);
+                cell.getMyShape().setOnMouseClicked(e -> toggleState(cell));
+                myCells[row][col] = cell;
             }
         }
         
@@ -87,7 +88,7 @@ public abstract class Grid {
      * @param row The row of the cell in the grid
      * @param column The column of the cell in the grid
      */
-    protected abstract void initializeCell (int row, int column);
+    protected abstract GridCell initializeCell (int row, int column);
 
     /**
      * Creates an 2d int array based on a comma separated string from xml
@@ -108,27 +109,6 @@ public abstract class Grid {
         }
 
         return initialStates;
-        
-    }
-
-    /**
-     * Updates the visible GridPane by mapping the the cells from myCells to the same location in
-     * the 2D array. GridCell's myShape attribute is set to toggle it's state on mouse click
-     */
-    private void createGridPane () {
-        myGridPane = new GridPane();
-        myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
-
-        for (int row = 0; row < getRows(); row++) {
-            for (int col = 0; col < getColumns(); col++) {
-            	GridCell cell = myCells[row][col];
-            	cell.getMyShape().setOnMouseClicked(e -> toggleState(cell));
-                myGridPane.add(cell.getMyShape(), col, row);
-            }
-        }
-
-        myRoot = new Group();
-        myRoot.getChildren().add(myGridPane);
         
     }
 
@@ -315,13 +295,10 @@ public abstract class Grid {
         myRows = gridHeight;
     }
 
-    public Group getRoot () {
-        return myRoot;
+    public Group getView () {
+        return myGridView.getMyView();
     }
 
-    public void setRoot (Group root) {
-        this.myRoot = root;
-    }
     
     public Dimension getMyGridSize () {
         return myGridSize;
@@ -343,9 +320,6 @@ public abstract class Grid {
         return myInitialStates;
     }
     
-    protected GridPane getMyGridPane() {
-    	return myGridPane;
-    }
     
     /**
      * Loops through each GridCell and returns the State value (same translation as 

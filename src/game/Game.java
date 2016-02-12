@@ -68,7 +68,7 @@ public class Game {
             myGrid = new PredatorPreyGrid(myParameters);
         }
 
-        myGameRoot = myGrid.getRoot();
+        myGameRoot = myGrid.getView();
         
     }
 

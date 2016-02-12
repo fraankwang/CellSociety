@@ -32,7 +32,7 @@ public class GameOfLifeGrid extends Grid {
     }
 
     @Override
-    protected void initializeCell (int row, int col) {
+    protected GridCell initializeCell (int row, int col) {
         State state = State.DEAD;
 
         int s = getMyInitialStates()[row][col];
@@ -49,8 +49,7 @@ public class GameOfLifeGrid extends Grid {
                 break;
         }
 
-        getMyCells()[row][col] =
-                new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
+        return new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
 
     }
 

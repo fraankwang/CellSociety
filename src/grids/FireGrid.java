@@ -35,7 +35,7 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    protected void initializeCell (int row, int col) {
+    protected GridCell initializeCell (int row, int col) {
         State state = State.EMPTY;
 
         int s = getMyInitialStates()[row][col];
@@ -59,8 +59,7 @@ public class FireGrid extends Grid {
 
         }
 
-        getMyCells()[row][col] =
-                new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
+        return new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
 
     }
 
