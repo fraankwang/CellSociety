@@ -194,7 +194,6 @@ public class MainView {
      * 
      * @return File picked by user
      */
-
     public File getFileFromUser () {
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));

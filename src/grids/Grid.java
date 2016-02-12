@@ -90,27 +90,6 @@ public abstract class Grid {
      */
     protected abstract void initializeCell (int row, int column);
 
-//    /**
-//     * Creates an 2d int array based on a comma separated string from xml
-//     *
-//     * @param param The comma separated string
-//     * @return The 2d array
-//     */
-//    private int[][] createInitialStatesArray (String param) {
-//        int[][] initialStates = new int[myRows][myColumns];
-//        String[] parsed = param.split(",");
-//
-//        for (int row = 0; row < parsed.length; row++) {
-//            String s = parsed[row];
-//            for (int col = 0; col < s.length(); col++) {
-//                int state = Character.getNumericValue(s.charAt(col));
-//                initialStates[row][col] = state;
-//            }
-//        }
-//
-//        return initialStates;
-//        
-//    }
 
     /**
      * Updates the visible GridPane by mapping the the cells from myCells to the same location in
