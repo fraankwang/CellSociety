@@ -4,21 +4,13 @@ import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import constants.Constants;
-import constants.Parameters;
 import controllers.MainController;
-import game.Game;
-import inputoutput.Parser;
-import inputoutput.XMLGenerator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -190,8 +182,8 @@ public class MainView {
      * 
      * @return File picked by user
      */
-<<<<<<< HEAD:src/view/CellSocietyViewer.java
-    private File getFileFromUser () {
+
+    public File getFileFromUser () {
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
     	fileChooser.getExtensionFilters().add(
@@ -201,70 +193,12 @@ public class MainView {
     	return fileChooser.showOpenDialog(myPrimaryStage);
     	
     }
+   
     
-    /**
-     * Constructs a new game based on a given file and switches to it
-     *
-     * @param file The file containing the game parameters
-     */
-    private void setUpGame (File file) {
-        Parameters params = parseXML(file);
-        myPrimaryGame = new Game(params);
-        displayPrimaryGame();
-        
-    }
-=======
-    public File getFileFromUser () {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
-        fileChooser.getExtensionFilters().add(
-                                              new ExtensionFilter(Constants.RESOURCES
-                                                      .getString("fileExtensionFilterDescription"),
-                                                                  Constants.RESOURCES
-                                                                          .getString("fileExtensionFilterExtension")));
->>>>>>> 6df4dd85f45c1cf47185cce9faa7c4e441da886e:src/view/MainView.java
-
-        return fileChooser.showOpenDialog(myPrimaryStage);
-
-<<<<<<< HEAD:src/view/CellSocietyViewer.java
-    /**
-     * Takes a file and converts XML data to a Map of Grid parameters and their initial values
-     *
-     * @param file The file to parse
-     * @return A map of grid parameter keys and values
-     */
-    private Parameters parseXML (File file) {
-        Parser parser = new Parser();
-        return parser.parse(file);
-        
-=======
->>>>>>> 6df4dd85f45c1cf47185cce9faa7c4e441da886e:src/view/MainView.java
-    }
 
     // TODO: replace with method to deal with infinite scroll
-    /**
-<<<<<<< HEAD:src/view/CellSocietyViewer.java
-	 * Calls myGrid in myPrimaryGame to return updated game parameters, then 
-	 * adds game parameters that are not visible to myGrid, then generating the .xml file
-	 */
-	private void saveXML () {
-		XMLGenerator generator = new XMLGenerator();
-		
-		if (myPrimaryGame != null) {
-			Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
-			currentGameState.put("gameType", myPrimaryGame.getMyGameType());
-			currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));
-			generator.writeXML(currentGameState);
-		}
-		
-		String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
-		Alert savedAlert = new Alert(AlertType.INFORMATION, confirmation, new ButtonType("OK"));
-		savedAlert.showAndWait();
-	}
-
+  
 	/**
-=======
->>>>>>> 6df4dd85f45c1cf47185cce9faa7c4e441da886e:src/view/MainView.java
      * Adjusts stage size when grid size changes
      *
      * NOTE: this method does not deal with BorderPane insets, so sizing may be
