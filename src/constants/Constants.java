@@ -19,6 +19,7 @@ public class Constants {
     public static final ResourceBundle RESOURCES =
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_RESOURCE_FILE);
     
+    
     /**
      * Private constructor to prevent utility class instantiation
      */

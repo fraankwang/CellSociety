@@ -4,6 +4,7 @@
 
 package cells;
 
+import constants.Constants;
 import constants.Location;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -16,6 +17,10 @@ import states.State;
  *
  */
 public abstract class GridCell extends StackPane {
+    //TODO: move this? 
+    public static final boolean OUTLINED = Constants.RESOURCES.getString("outlined").equals("Yes");
+    
+    
     private State myCurrentState;
     private State myNextState;
     private Location myGridLocation;
@@ -41,7 +46,9 @@ public abstract class GridCell extends StackPane {
      * Sets the initial color of the cell and gives it a border
      */
     private void formatShape () {
-        getMyShape().setStroke(Color.BLACK);
+        if (OUTLINED== true){
+            getMyShape().setStroke(Color.BLACK);
+        }
         setMyColor();
         
     }

@@ -51,16 +51,20 @@ public class Game {
         myGridShape = Constants.RESOURCES.getString("gridShape");
         myNeighborsToConsider = Constants.RESOURCES.getString("neighbors");
 
+        
+        initializeGrid();
+        initializeGameLoop();
+
+    }
+
+    public void initializeGrid(){
         initializeGridModel();
         initializeGridView();
         initializeNeighborOffsets();
         
         myGameRoot = myGrid.getView();
         
-        initializeGameLoop();
-
     }
-
     /**
      * Initializes a specific grid based on the gameType parameter, and
      * updates myGameRoot after myGrid updates its local root
@@ -68,9 +72,8 @@ public class Game {
      * This function uses only global variables so the user can press the reset
      * button (in the Main class) at any time
      */
-    public void initializeGridModel () {
+    private void initializeGridModel () {
 
-        System.out.println(myGameType);
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
 
