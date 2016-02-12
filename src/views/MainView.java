@@ -25,6 +25,14 @@ import javafx.event.EventHandler;
 
 public class MainView {
 
+    // Important numbers that shouldn't be changed by user
+    public static final int TOOLBAR_HEIGHT = 50;
+    public static final int GRID_VIEW_SIZE = 500;
+    public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
+    public static final int WINDOW_WIDTH = 800;
+    public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;
+    public static final int TOOLBAR_BUTTON_INSET_VERTICAL = 2;
+
     private Stage myPrimaryStage;
     private BorderPane myPrimaryPane;
     private Group myPrimaryRoot;
@@ -53,9 +61,7 @@ public class MainView {
      * which is returned from myPrimaryGame is displayGame()
      */
     public void display () {
-        Scene myPrimaryScene = new Scene(myPrimaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
-                                         Constants.DEFAULT_WINDOW_SIZE.getHeight(),
-                                         Color.WHITE);
+        Scene myPrimaryScene = new Scene(myPrimaryRoot, WINDOW_WIDTH, WINDOW_HEIGHT, Color.WHITE);
 
         myPrimaryStage.setScene(myPrimaryScene);
         myPrimaryStage.show();
@@ -73,8 +79,7 @@ public class MainView {
         HBox toolbar = createToolbar();
 
         myPrimaryPane.setTop(toolbar);
-        myPrimaryPane.setPrefSize(Constants.DEFAULT_WINDOW_SIZE.getWidth(),
-                                  Constants.DEFAULT_WINDOW_SIZE.getHeight());
+        myPrimaryPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Group root = new Group();
         root.getChildren().add(myPrimaryPane);
@@ -94,17 +99,15 @@ public class MainView {
         toolbar.getChildren().addAll(buttons);
         toolbar.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-        float insetHorizontal =
-                Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetHorizontal"));
-        float insetVertical =
-                Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetVertical"));
+        int insetHorizontal = TOOLBAR_BUTTON_INSET_HORIZONTAL;
+        int insetVertical = TOOLBAR_BUTTON_INSET_VERTICAL;
 
         for (Button b : buttons) {
             HBox.setMargin(b, new Insets(insetHorizontal, insetVertical, insetHorizontal,
                                          insetVertical));
         }
 
-        toolbar.setPrefHeight(Constants.TOOLBAR_HEIGHT);
+        toolbar.setPrefHeight(TOOLBAR_HEIGHT);
 
         return toolbar;
 
@@ -184,21 +187,21 @@ public class MainView {
      */
 
     public File getFileFromUser () {
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
-    	fileChooser.getExtensionFilters().add(
-    			new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
-    			Constants.RESOURCES.getString("fileExtensionFilterExtension")));
-    	
-    	return fileChooser.showOpenDialog(myPrimaryStage);
-    	
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
+        fileChooser.getExtensionFilters().add(
+                                              new ExtensionFilter(Constants.RESOURCES
+                                                      .getString("fileExtensionFilterDescription"),
+                                                                  Constants.RESOURCES
+                                                                          .getString("fileExtensionFilterExtension")));
+
+        return fileChooser.showOpenDialog(myPrimaryStage);
+
     }
-   
-    
 
     // TODO: replace with method to deal with infinite scroll
-  
-	/**
+
+    /**
      * Adjusts stage size when grid size changes
      *
      * NOTE: this method does not deal with BorderPane insets, so sizing may be
@@ -209,17 +212,17 @@ public class MainView {
      */
     private void setStageSizeToMatchGrid (Dimension gridDimension) {
         int stageWidth = (int) gridDimension.getWidth();
-        int stageHeight = (int) gridDimension.getHeight() + Constants.TOOLBAR_HEIGHT;
+        int stageHeight = (int) gridDimension.getHeight() + TOOLBAR_HEIGHT;
 
-        if (stageWidth < Constants.DEFAULT_WINDOW_SIZE.getWidth()) {
-            myPrimaryStage.setWidth(Constants.DEFAULT_WINDOW_SIZE.getWidth());
+        if (stageWidth < WINDOW_WIDTH) {
+            myPrimaryStage.setWidth(WINDOW_WIDTH);
         }
         else {
             myPrimaryStage.setWidth(stageWidth);
         }
 
-        if (stageHeight < Constants.DEFAULT_WINDOW_SIZE.getHeight()) {
-            myPrimaryStage.setHeight(Constants.DEFAULT_WINDOW_SIZE.getHeight());
+        if (stageHeight < WINDOW_HEIGHT) {
+            myPrimaryStage.setHeight(WINDOW_HEIGHT);
         }
         else {
             myPrimaryStage.setHeight(stageHeight);
@@ -227,8 +230,8 @@ public class MainView {
         }
 
     }
-    
-    public void setController(MainController controller){
+
+    public void setController (MainController controller) {
         myController = controller;
     }
 

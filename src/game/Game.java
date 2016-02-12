@@ -4,6 +4,11 @@
 
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
+import constants.Constants;
+import constants.NeighborOffset;
+import constants.Offset;
 import constants.Parameters;
 import grids.FireGrid;
 import grids.GameOfLifeGrid;
@@ -15,6 +20,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.util.Duration;
+import views.GridView;
+import views.HexagonGridView;
+import views.RectangleGridView;
+import views.TriangleGridView;
 
 
 /**
@@ -27,6 +36,8 @@ public class Game {
     private String myGameType;
     private Grid myGrid;
     private Parameters myParameters;
+    private String myGridShape;
+    private String myNeighborsToConsider;
 
     private Group myGameRoot;
     private Timeline myGameLoop;
@@ -39,10 +50,14 @@ public class Game {
     public Game (Parameters params) {
         myGameType = params.getGameType();
         myParameters = params;
+        myGridShape = Constants.RESOURCES.getString("shape");
+        myNeighborsToConsider = Constants.RESOURCES.getString("neighbors");
 
-        initializeGrid();
+        initializeGridModel();
+        initializeGridView();
+        initializeNeighborOffsets();
         initializeGameLoop();
-        
+
     }
 
     /**
@@ -51,7 +66,8 @@ public class Game {
      * This function uses only global variables so the user can press the reset
      * button (in the Main class) at any time
      */
-    public void initializeGrid () {
+    public void initializeGridModel () {
+
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
 
@@ -69,7 +85,109 @@ public class Game {
         }
 
         myGameRoot = myGrid.getView();
-        
+
+    }
+
+    private void initializeGridView () {
+
+        GridView gridView;
+
+        if (myGridShape.equals("Rectangle")) {
+            gridView = new RectangleGridView(myGrid.getMyCells());
+
+        }
+        else if (myGridShape.equals("Triangle")) {
+            gridView = new TriangleGridView(myGrid.getMyCells());
+
+        }
+        else if (myGridShape.equals("Hexagon")) {
+            if (myNeighborsToConsider.equals("All")) {
+                gridView = new HexagonGridView(myGrid.getMyCells());
+            }
+            else {
+                // TODO: return error
+                // TODO: move errorMessages to resource file
+                String errorMessage = "Invalid neighbors to consider";
+                if (myNeighborsToConsider.equals("Cardinal") |
+                    myNeighborsToConsider.equals("Diagonal")) {
+                    errorMessage =
+                            String.format("Hexagonal grids can't go with %s neighbors",
+                                          myNeighborsToConsider);
+                }
+            }
+
+        }
+
+    }
+
+    private void initializeNeighborOffsets () {
+
+        if (myNeighborsToConsider.equals("Cardinal")) {
+            myGrid.setNeighborOffsets(neighborOffsetsCardinal());
+
+        }
+        else if (myNeighborsToConsider.equals("Diagonal")) {
+            myGrid.setNeighborOffsets(neighborOffsetsDiagonal());
+
+        }
+        else if (myNeighborsToConsider.equals("All")) {
+            if (myGridShape.equals("Hexagon")) {
+                myGrid.setNeighborOffsets(neighborOffsetsAllHexagon());
+            }
+            else {
+                myGrid.setNeighborOffsets(neighborOffsetsAll());
+            }
+        }
+    }
+
+    /**
+     * Returns a list of offsets to check to find a GridCell's neighbors
+     *
+     * @return The list of offsets
+     */
+    public List<Offset> neighborOffsetsCardinal () {
+        List<Offset> offsets = new ArrayList<Offset>();
+
+        offsets.add(NeighborOffset.TOP.getOffset());
+        offsets.add(NeighborOffset.LEFT.getOffset());
+        offsets.add(NeighborOffset.RIGHT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM.getOffset());
+
+        return offsets;
+    }
+
+    public List<Offset> neighborOffsetsDiagonal () {
+        List<Offset> offsets = new ArrayList<Offset>();
+
+        offsets.add(NeighborOffset.TOP_LEFT.getOffset());
+        offsets.add(NeighborOffset.TOP_RIGHT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM_LEFT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
+
+        return offsets;
+    }
+
+    public List<Offset> neighborOffsetsAll () {
+        List<Offset> offsets = neighborOffsetsCardinal();
+
+        offsets.addAll(neighborOffsetsDiagonal());
+
+        return offsets;
+
+    }
+
+    public List<Offset> neighborOffsetsAllHexagon () {
+        List<Offset> offsets1 = neighborOffsetsCardinal();
+        List<Offset> offsets2 = neighborOffsetsCardinal();
+
+        offsets1.add(NeighborOffset.TOP_LEFT.getOffset());
+        offsets1.add(NeighborOffset.TOP_RIGHT.getOffset());
+
+        offsets2.add(NeighborOffset.BOTTOM_LEFT.getOffset());
+        offsets2.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
+
+        return offsets1;
+
     }
 
     /**
@@ -82,7 +200,7 @@ public class Game {
                 MILLISECONDS_PER_SECOND * 1 / myParameters.getDelay();
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
                                       e -> myGrid.step());
-        
+
         myGameLoop = new Timeline();
         myGameLoop.setCycleCount(Animation.INDEFINITE);
         myGameLoop.getKeyFrames().add(frame);
@@ -95,7 +213,7 @@ public class Game {
         if (myGameLoop != null) {
             myGameLoop.play();
         }
-        
+
     }
 
     /**
@@ -105,18 +223,17 @@ public class Game {
         if (myGameLoop != null) {
             myGameLoop.stop();
         }
-        
+
     }
-    
-    public void setTimelineRate(double millisecond){
-        
+
+    public void setTimelineRate (double millisecond) {
+
     }
 
     // =========================================================================
     // Getters and Setters
     // =========================================================================
 
-    
     public Group getGameRoot () {
         return myGameRoot;
     }
@@ -124,12 +241,12 @@ public class Game {
     public Grid getMyGrid () {
         return myGrid;
     }
-	
-	public Double getDelay () {
-		return myParameters.getDelay();
-	}
 
-	public String getMyGameType () {
-		return myGameType;
-	}
+    public Double getDelay () {
+        return myParameters.getDelay();
+    }
+
+    public String getMyGameType () {
+        return myGameType;
+    }
 }
