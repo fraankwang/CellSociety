@@ -188,7 +188,7 @@ public abstract class Grid {
         }
 
         return neighbors;
-        
+ 
     }
     
     /**
