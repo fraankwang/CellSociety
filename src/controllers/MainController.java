@@ -130,4 +130,8 @@ public class MainController {
         savedAlert.showAndWait();
     }
 
+    
+    public void setSpeed (double time){
+    	myPrimaryGame.setTimelineRate(time);
+    }
 }

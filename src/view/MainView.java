@@ -6,21 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 import constants.Constants;
 import controllers.MainController;
+import game.Game;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import constants.Constants;
+import controllers.MainController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.stage.Stage;
 
 
 public class MainView {
@@ -71,7 +77,6 @@ public class MainView {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
-
         myPrimaryPane.setTop(toolbar);
         myPrimaryPane.setPrefSize(Constants.DEFAULT_WINDOW_SIZE.getWidth(),
                                   Constants.DEFAULT_WINDOW_SIZE.getHeight());
@@ -88,7 +93,7 @@ public class MainView {
      * @return The HBox tool bar
      */
     private HBox createToolbar () {
-        List<Button> buttons = createGameButtons();
+        List<Control> buttons = createGameButtons();
 
         HBox toolbar = new HBox();
         toolbar.getChildren().addAll(buttons);
@@ -99,7 +104,7 @@ public class MainView {
         float insetVertical =
                 Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetVertical"));
 
-        for (Button b : buttons) {
+        for (Control b : buttons) {
             HBox.setMargin(b, new Insets(insetHorizontal, insetVertical, insetHorizontal,
                                          insetVertical));
         }
@@ -110,13 +115,19 @@ public class MainView {
 
     }
 
+ 
     /**
      * Creates a list of buttons to display in the tool bar
      *
      * @return The list of buttons
      */
-    private List<Button> createGameButtons () {
-        List<Button> list = new ArrayList<Button>();
+    private List<Control> createGameButtons () {
+        List<Control> list = new ArrayList<Control>();
+    	
+        Slider slider = new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")), 
+        							Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
+
+    	slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
 
         Button startButton =
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
@@ -140,6 +151,7 @@ public class MainView {
         list.add(startButton);
         list.add(stopButton);
         list.add(stepButton);
+        list.add(slider);
         list.add(resetButton);
         list.add(newGameButton);
         list.add(saveXMLButton);

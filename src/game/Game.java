@@ -108,11 +108,14 @@ public class Game {
     }
     
     /**
-     * @param multiplier to be read from the delay slider UI element
+     * Sets the rate of the animation played based on
+     * the speed passed in
+     * 
+     * @param speed the speed to set the animation
      */
-    public void setTimelineRate(double multiplier){
+    public void setTimelineRate (double speed){
+        myGameLoop.setRate(speed);
     }
-
     // =========================================================================
     // Getters and Setters
     // =========================================================================
