@@ -1,0 +1,21 @@
+<root>
+<gameType>Fire</gameType>
+<width>500</width>
+<height>500</height>
+<rows>10</rows>
+<columns>10</columns>
+<delay>50</delay>
+<probcatch>.33</probcatch>
+<initialStates>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+	<row>1111111111</row>
+</initialStates>
+</root>
