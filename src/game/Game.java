@@ -109,7 +109,7 @@ public class Game {
     }
     
     public void setTimelineRate(double millisecond){
-        myGameLoop.setDelay(Duration.millis(millisecond));
+        myGameLoop.setRate(millisecond);
     }
 
     // =========================================================================

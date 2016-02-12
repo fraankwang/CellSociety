@@ -121,7 +121,7 @@ public class MainController {
     }
 
     
-    public void setSpeed(double time){
+    public void setSpeed (double time){
     	myPrimaryGame.setTimelineRate(time);
     }
 }

@@ -77,7 +77,6 @@ public class MainView {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
-        VBox paramBar = createParametersBar();
         myPrimaryPane.setTop(toolbar);
         myPrimaryPane.setPrefSize(Constants.DEFAULT_WINDOW_SIZE.getWidth(),
                                   Constants.DEFAULT_WINDOW_SIZE.getHeight());
@@ -116,22 +115,7 @@ public class MainView {
 
     }
 
-    /**
-     * Creates a formatted bar for the interactive parameters on the side
-     * of the screen
-     * 
-     * @return The Hbox for the interactive parameters
-     */
-    private VBox createParametersBar () {
-    	
-    	VBox paramBar = new VBox();
-
-    	paramBar.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-    	paramBar.setPrefWidth(100);
-    	return paramBar;
-    	
-    }
-    
+ 
     /**
      * Creates a list of buttons to display in the tool bar
      *
@@ -140,9 +124,10 @@ public class MainView {
     private List<Control> createGameButtons () {
         List<Control> list = new ArrayList<Control>();
     	
-        Slider slider = new Slider(0, 30, 15);
+        Slider slider = new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")), 
+        							Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
 
-    	slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()/Game.MILLISECONDS_PER_SECOND));
+    	slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
 
         Button startButton =
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
