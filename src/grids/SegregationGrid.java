@@ -51,7 +51,7 @@ public class SegregationGrid extends Grid {
                 break;
         }
 
-        return new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
+        return new SimpleCell(state, row, col);
 
     }
 
@@ -100,7 +100,6 @@ public class SegregationGrid extends Grid {
 
         }
 
-        cell.setMyColor();
 
     }
 

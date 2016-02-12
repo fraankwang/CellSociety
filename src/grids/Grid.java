@@ -78,7 +78,6 @@ public abstract class Grid {
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 GridCell cell = initializeCell(row, col);
-                cell.getMyShape().setOnMouseClicked(e -> toggleState(cell));
                 myCells[row][col] = cell;
             }
         }
@@ -93,6 +92,12 @@ public abstract class Grid {
      */
     protected abstract GridCell initializeCell (int row, int column);
 
+   
+    public void toggleStateAndUpdateUI (GridCell cell){
+        toggleState(cell);
+        updateCellUI(cell);
+    }
+    
     /**
      * Action to be carried out when GridCell's shape is clicked. Abstracted
      * so subclasses of Grid can toggle between only relevant states.
@@ -100,6 +105,10 @@ public abstract class Grid {
      * @param cell - the cell whose states will be toggled
      */
     protected abstract void toggleState (GridCell cell);
+
+    private void updateCellUI(GridCell cell){
+        myGridView.updateCellShape(cell);
+    }
     // =========================================================================
     // Simulation
     // =========================================================================

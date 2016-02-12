@@ -1,18 +1,27 @@
 package views;
 
 import cells.GridCell;
+import constants.Constants;
 import constants.Location;
+import grids.Grid;
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public abstract class GridView {
+    public static final boolean OUTLINED = Constants.RESOURCES.getString("outlined").equals("Yes");
 
     private Shape[][] myCellShapes;
     private Group myView;
     private int myRows;
     private int myColumns;
     
-    public GridView (GridCell[][] cells) {
+    private Grid myGrid;  //TODO: use interface to specifiy how grid view interacts with grid
+    
+    public GridView (Grid grid) {
+       myGrid = grid;
+       GridCell[][] cells = grid.getMyCells();
        myRows = cells.length;
        myColumns = cells[0].length;
        myCellShapes = new Shape[myRows][myColumns];
@@ -24,17 +33,40 @@ public abstract class GridView {
         for (int row = 0; row < getMyRows(); row++) {
             for (int col = 0; col < getMyColumns(); col++) {
                 GridCell cell = cells[row][col];
-                myCellShapes[row][col] = cell.getMyShape();
+                Shape shape = defaultShape();
+                formatShape(shape, cell);
+               
+                shape.setOnMouseClicked(e -> myGrid.toggleStateAndUpdateUI(cell));
+                myCellShapes[row][col] = shape;
             }
         }
     }
     
+    
+    protected void formatShape(Shape shape, GridCell cell){
+         if (OUTLINED== true){
+                    shape.setStroke(Color.BLACK);
+                }
+         updateShapeUI(shape, cell);
+    }
+
+    protected void setShapeColor(Shape shape, Color color){
+        shape.setFill(color);
+    }
+    
+    protected void updateShapeUI(Shape shape, GridCell cell){
+        setShapeColor(shape, cell.getMyCurrentState().getColor());
+
+    }
+    
+    protected abstract Shape defaultShape();
     protected abstract Group createUI();
    
     
     public void updateCellShape(GridCell cell){
         Location location = cell.getMyGridLocation();
-        myCellShapes[location.getRow()][location.getCol()] = cell.getMyShape();
+        Shape shape = myCellShapes[location.getRow()][location.getCol()];
+        updateShapeUI(shape, cell);
         
         //TODO: might need to update the view too depending on how we implement it 
         // (i.e. do something similar to remove/add that we did for the gridpane
@@ -58,6 +90,14 @@ public abstract class GridView {
  
     protected int getMyColumns () {
         return myColumns;
+    }
+
+    public Grid getMyGrid () {
+        return myGrid;
+    }
+
+    public void setMyGrid (Grid myGrid) {
+        this.myGrid = myGrid;
     }
 
 

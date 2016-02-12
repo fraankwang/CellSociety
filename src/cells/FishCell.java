@@ -13,16 +13,15 @@ public class FishCell extends DataCell {
 	
     public FishCell (State currentState, 
     				int row, 
-    				int col, 
-    				Shape shape, 
+    				int col,  
     				int breed) {
-        super(currentState, row, col, shape);
+        super(currentState, row, col);
         fishBreedTime = breed;
         fishCurrentBreedTime = fishBreedTime;
     }
     
     public FishCell (FishCell fish, Location location){
-    	super(fish.getMyCurrentState(), location.getRow(), location.getCol(), fish.getMyShape());
+    	super(fish.getMyCurrentState(), location.getRow(), location.getCol());
   
     	fishCurrentBreedTime = fish.getTimeUntilBreed();
     	fishBreedTime = fish.getBreedTime();

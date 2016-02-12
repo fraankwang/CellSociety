@@ -4,11 +4,8 @@
 
 package cells;
 
-import constants.Constants;
 import constants.Location;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
 import states.State;
 
 
@@ -17,14 +14,10 @@ import states.State;
  *
  */
 public abstract class GridCell extends StackPane {
-    //TODO: move this? 
-    public static final boolean OUTLINED = Constants.RESOURCES.getString("outlined").equals("Yes");
-    
     
     private State myCurrentState;
     private State myNextState;
     private Location myGridLocation;
-    private Shape myShape;
 
     /**
      * Constructor
@@ -32,44 +25,19 @@ public abstract class GridCell extends StackPane {
      * @param initialState The initial state of the cell
      * @param row The row of the grid in which the cell in located
      * @param col The column of the grid in which the cell in located
-     * @param shape The shape of the cell
      */
-    public GridCell (State initialState, int row, int col, Shape shape) {
+    public GridCell (State initialState, int row, int col) {
         myCurrentState = initialState;
-        myShape = shape;
-        formatShape();
         setMyGridLocation(new Location(row, col));
 
     }
 
     /**
-     * Sets the initial color of the cell and gives it a border
-     */
-    private void formatShape () {
-        if (OUTLINED== true){
-            getMyShape().setStroke(Color.BLACK);
-        }
-        setMyColor();
-        
-    }
-
-    /**
-	 * Sets the cell's shape's color based on the cell's current state
-	 */
-	public void setMyColor () {
-	    getMyShape().setFill(getMyCurrentState().getColor());
-	    
-	}
-
-	/**
-     * Changes the cell's currentState to its nextState, sets next state to null, and updates shape
-     * UI
+     * Changes the cell's currentState to its nextState, sets next state to null
      */
     public void transitionStates () {
         myCurrentState = myNextState;
-        myNextState = null;
-        setMyColor();
-        
+        myNextState = null;        
     }
 
     
@@ -91,10 +59,6 @@ public abstract class GridCell extends StackPane {
 
     public void setMyNextState (State nextState) {
         myNextState = nextState;
-    }
-
-    public Shape getMyShape () {
-        return myShape;
     }
 
     public Location getMyGridLocation () {

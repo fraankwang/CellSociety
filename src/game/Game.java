@@ -106,16 +106,16 @@ public class Game {
         GridView gridView = null;
 
         if (myGridShape.equals("Rectangle")) {
-            gridView = new RectangleGridView(myGrid.getMyCells());
+            gridView = new RectangleGridView(myGrid);
 
         }
         else if (myGridShape.equals("Triangle")) {
-            gridView = new TriangleGridView(myGrid.getMyCells());
+            gridView = new TriangleGridView(myGrid);
 
         }
         else if (myGridShape.equals("Hexagon")) {
             if (myNeighborsToConsider.equals("All")) {
-                gridView = new HexagonGridView(myGrid.getMyCells());
+                gridView = new HexagonGridView(myGrid);
             }
             else {
                 // TODO: return error
