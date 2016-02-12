@@ -4,10 +4,10 @@
 
 package main;
 
-import view.MainView;
 import controllers.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import views.MainView;
 
 /**
  * Main class of cell society. Sets up GUI
