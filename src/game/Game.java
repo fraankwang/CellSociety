@@ -111,7 +111,6 @@ public class Game {
      * @param multiplier to be read from the delay slider UI element
      */
     public void setTimelineRate(double multiplier){
-        myGameLoop.setRate(myGameLoop.getCurrentRate() * multiplier);
     }
 
     // =========================================================================
