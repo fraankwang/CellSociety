@@ -114,19 +114,6 @@ public class PredatorPreyGrid extends Grid {
 
     }
 
-    @Override
-    protected List<Offset> neighborOffsets () {
-
-        List<Offset> offsets = new ArrayList<Offset>();
-
-        offsets.add(NeighborOffset.TOP.getOffset());
-        offsets.add(NeighborOffset.LEFT.getOffset());
-        offsets.add(NeighborOffset.RIGHT.getOffset());
-        offsets.add(NeighborOffset.BOTTOM.getOffset());
-
-        return offsets;
-    }
-
     /**
      * Iterates through the Fish Cell states that haven't already been updated
      * and sets their next states
@@ -221,7 +208,7 @@ public class PredatorPreyGrid extends Grid {
         int row = toSpawn.getMyGridLocation().getRow();
         int col = toSpawn.getMyGridLocation().getCol();
 
-        getMyGridPane().getChildren().remove(toSpawn.getMyShape());
+        //getMyGridPane().getChildren().remove(toSpawn.getMyShape());
         if (fishOrShark == State.SHARK) {
             toSpawn =
                     new SharkCell(State.EMPTY, row, col,
@@ -237,7 +224,7 @@ public class PredatorPreyGrid extends Grid {
         }
 
         getMyCells()[row][col] = toSpawn;
-        getMyGridPane().add(toSpawn.getMyShape(), col, row);
+        //getMyGridPane().add(toSpawn.getMyShape(), col, row);
 
     }
 
@@ -255,10 +242,10 @@ public class PredatorPreyGrid extends Grid {
         int destinationRow = destination.getMyGridLocation().getRow();
 
         GridCell destinationCell = getMyCells()[destinationRow][destinationCol];
-        getMyGridPane().getChildren().remove(destinationCell.getMyShape());
+        //getMyGridPane().getChildren().remove(destinationCell.getMyShape());
 
         GridCell originCell = getMyCells()[originRow][originCol];
-        getMyGridPane().getChildren().remove(originCell.getMyShape());
+        //getMyGridPane().getChildren().remove(originCell.getMyShape());
 
         if (origin instanceof SharkCell) {
             destinationCell = new SharkCell((SharkCell) origin, destination.getMyGridLocation());
@@ -283,8 +270,8 @@ public class PredatorPreyGrid extends Grid {
         getMyCells()[originRow][originCol] = originCell;
         originCell.setMyNextState(State.EMPTY);
 
-        getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
-        getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
+        //getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
+        //getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
 
     }
 
@@ -298,7 +285,7 @@ public class PredatorPreyGrid extends Grid {
         int row = cell.getMyGridLocation().getRow();
         int col = cell.getMyGridLocation().getCol();
         GridCell deadCell = getMyCells()[row][col];
-        getMyGridPane().getChildren().remove(deadCell.getMyShape());
+        //getMyGridPane().getChildren().remove(deadCell.getMyShape());
 
         if (sharkOrFish == State.FISH) {
             deadCell =
@@ -314,7 +301,7 @@ public class PredatorPreyGrid extends Grid {
         }
 
         getMyCells()[row][col] = deadCell;
-        getMyGridPane().add(deadCell.getMyShape(), col, row);
+        //getMyGridPane().add(deadCell.getMyShape(), col, row);
         deadCell.setMyNextState(State.EMPTY);
 
     }

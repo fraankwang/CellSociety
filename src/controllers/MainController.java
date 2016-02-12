@@ -60,7 +60,7 @@ public class MainController {
      */
     public void resetGame () {
         stopGame();
-        myPrimaryGame.initializeGrid();
+        myPrimaryGame.initializeGridModel();
         myView.displayGame(myPrimaryGame.getGameRoot());
 
     }

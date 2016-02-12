@@ -98,20 +98,6 @@ public class FireGrid extends Grid {
 		
 	}
 
-	@Override
-    protected List<Offset> neighborOffsets () {
-
-        List<Offset> offsets = new ArrayList<Offset>();
-
-        offsets.add(NeighborOffset.TOP.getOffset());
-        offsets.add(NeighborOffset.LEFT.getOffset());
-        offsets.add(NeighborOffset.RIGHT.getOffset());
-        offsets.add(NeighborOffset.BOTTOM.getOffset());
-
-        return offsets;
-        
-    }
-
     /**
      * Determines if any of a cell's neighbor cells are currently burning
      *

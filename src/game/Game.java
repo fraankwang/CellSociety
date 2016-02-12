@@ -50,12 +50,15 @@ public class Game {
     public Game (Parameters params) {
         myGameType = params.getGameType();
         myParameters = params;
-        myGridShape = Constants.RESOURCES.getString("shape");
+        myGridShape = Constants.RESOURCES.getString("gridShape");
         myNeighborsToConsider = Constants.RESOURCES.getString("neighbors");
 
         initializeGridModel();
         initializeGridView();
         initializeNeighborOffsets();
+        
+        myGameRoot = myGrid.getView();
+        
         initializeGameLoop();
 
     }
@@ -68,6 +71,7 @@ public class Game {
      */
     public void initializeGridModel () {
 
+        System.out.println(myGameType);
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
 
@@ -84,13 +88,11 @@ public class Game {
             myGrid = new PredatorPreyGrid(myParameters);
         }
 
-        myGameRoot = myGrid.getView();
-
     }
 
     private void initializeGridView () {
 
-        GridView gridView;
+        GridView gridView = null;
 
         if (myGridShape.equals("Rectangle")) {
             gridView = new RectangleGridView(myGrid.getMyCells());
@@ -117,6 +119,8 @@ public class Game {
             }
 
         }
+        
+        myGrid.setMyGridView(gridView);
 
     }
 

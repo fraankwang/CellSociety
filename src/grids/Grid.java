@@ -140,6 +140,7 @@ public abstract class Grid {
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 myCells[row][col].transitionStates();
+                myGridView.updateCellShape(myCells[row][col]);
             }
         }
 
@@ -225,8 +226,6 @@ public abstract class Grid {
         Map<String, String> gameStateParams = new HashMap<String, String>();
         gameStateParams.put("rows", Integer.toString(this.getRows()));
         gameStateParams.put("columns", Integer.toString(this.getColumns()));
-        gameStateParams.put("width", Integer.toString((int) this.getMyGridSize().getWidth()));
-        gameStateParams.put("height", Integer.toString((int) this.getMyGridSize().getHeight()));
         gameStateParams.put("initialStates", getCurrentStatesArrayString());
         return gameStateParams;
 
@@ -257,7 +256,7 @@ public abstract class Grid {
     }
 
     public Group getView () {
-        return myGridView.getMyView();
+        return getMyGridView().getMyView();
     }
 
     public Dimension getMyGridSize () {
@@ -302,5 +301,13 @@ public abstract class Grid {
 
         return currentStates;
 
+    }
+
+    public GridView getMyGridView () {
+        return myGridView;
+    }
+
+    public void setMyGridView (GridView myGridView) {
+        this.myGridView = myGridView;
     }
 }

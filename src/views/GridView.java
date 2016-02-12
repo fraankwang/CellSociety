@@ -9,15 +9,20 @@ public abstract class GridView {
 
     private Shape[][] myCellShapes;
     private Group myView;
+    private int myRows;
+    private int myColumns;
     
     public GridView (GridCell[][] cells) {
+       myRows = cells.length;
+       myColumns = cells[0].length;
+       myCellShapes = new Shape[myRows][myColumns];
        initialize(cells);
        myView = createUI();
     }
     
     private void initialize(GridCell[][] cells){
-        for (int row = 0; row < cells.length; row++) {
-            for (int col = 0; col < cells[0].length; col++) {
+        for (int row = 0; row < getMyRows(); row++) {
+            for (int col = 0; col < getMyColumns(); col++) {
                 GridCell cell = cells[row][col];
                 myCellShapes[row][col] = cell.getMyShape();
             }
@@ -46,5 +51,14 @@ public abstract class GridView {
     protected void setMyCellShapes(Shape[][] cellShapes){
         myCellShapes = cellShapes;
     }
+
+    protected int getMyRows () {
+        return myRows;
+    }
+ 
+    protected int getMyColumns () {
+        return myColumns;
+    }
+
 
 }
