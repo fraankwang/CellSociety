@@ -15,8 +15,9 @@ import cells.SimpleCell;
 import constants.NeighborOffset;
 import constants.Offset;
 import constants.Parameters;
-import constants.State;
 import javafx.scene.shape.Rectangle;
+import states.State;
+import states.WatorState;
 
 
 /**
@@ -45,22 +46,22 @@ public class PredatorPreyGrid extends Grid {
 
 	@Override
 	protected void initializeCell (int row, int col) {
-		GridCell cell = new SimpleCell(State.EMPTY, row, col,
+		GridCell cell = new SimpleCell(WatorState.EMPTY, row, col,
 				new Rectangle(getMyCellSize(), getMyCellSize()));
 
 		int s = getMyInitialStates()[row][col];
 		switch (s) {
 			case MY_STATE_VALUE_EMPTY:
-				cell =  new SimpleCell(State.EMPTY, row, col,
+				cell =  new SimpleCell(WatorState.EMPTY, row, col,
 						new Rectangle(getMyCellSize(), getMyCellSize()));;
 						break;
 			case MY_STATE_VALUE_SHARK:
-				cell = new SharkCell(State.SHARK, row, col,
+				cell = new SharkCell(WatorState.SHARK, row, col,
 						new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,
 						sharkBreed);
 				break;
 			case MY_STATE_VALUE_FISH:
-				cell = new FishCell(State.FISH, row, col,
+				cell = new FishCell(WatorState.FISH, row, col,
 						new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
 			default:
                 // Display error message
@@ -78,7 +79,7 @@ public class PredatorPreyGrid extends Grid {
 		
 		for (int row = 0; row < getRows(); row++) {
 			for (int col = 0; col < getColumns(); col++) {
-				if (getMyCells()[row][col].getMyCurrentState() == State.EMPTY) {
+				if (getMyCells()[row][col].getMyCurrentState() == WatorState.EMPTY) {
 					setCellState(getMyCells()[row][col]);
 				}
 			}
@@ -88,19 +89,22 @@ public class PredatorPreyGrid extends Grid {
 
 	@Override
 	protected void toggleState(GridCell cell) {
-		if (cell.getMyCurrentState() == State.EMPTY) {
-			cell.setMyCurrentState(State.SHARK);
+		if (cell.getMyCurrentState() == WatorState.EMPTY) {
+			cell.setMyCurrentState(WatorState.SHARK);
 			
 		}
-		else if (cell.getMyCurrentState() == State.SHARK) {
-			cell.setMyCurrentState(State.FISH);
+		else if (cell.getMyCurrentState() == WatorState.SHARK) {
+			cell.setMyCurrentState(WatorState.FISH);
 			
 		} 
-		else if (cell.getMyCurrentState() == State.FISH) {
-			cell.setMyCurrentState(State.EMPTY);
+		else if (cell.getMyCurrentState() == WatorState.FISH) {
+			cell.setMyCurrentState(WatorState.EMPTY);
 			
 		} 
+		else if (cell.getMyCurrentState() == WatorState.EMPTY) {
+			cell.setMyCurrentState(WatorState.DEAD);
 		
+		}
 		cell.setMyColor();
 		
 	}
@@ -135,7 +139,8 @@ public class PredatorPreyGrid extends Grid {
 		for (int row = 0; row < getRows(); row++) {
 			for (int col = 0; col < getColumns(); col++) {
 				GridCell cell = getMyCells()[row][col];
-				if (cell instanceof FishCell && (cell.getMyNextState() == null || cell.getMyNextState()== State.DEAD)) {
+				if (cell instanceof FishCell && 
+				   (cell.getMyNextState() == null || cell.getMyNextState()== WatorState.DEAD)) {
 					setFishCellState((FishCell)getMyCells()[row][col]);
 				}
 			}
@@ -153,8 +158,8 @@ public class PredatorPreyGrid extends Grid {
 		fishCell.update();
 		List<GridCell> neighbors = getNeighbors(fishCell);
 		List<GridCell> validMoves = getValidCellList(neighbors);
-		if (fishCell.getMyNextState() == State.DEAD) {
-			kill(fishCell, State.FISH);
+		if (fishCell.getMyNextState() == WatorState.DEAD) {
+			kill(fishCell, WatorState.FISH);
 		}
 		else {
 			moveAndBreed(fishCell, validMoves, fishCell.getTimeUntilBreed());
@@ -167,10 +172,12 @@ public class PredatorPreyGrid extends Grid {
 	 * and sets their next states
 	 */
 	private void setSharkCellStates() {
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getColumns(); c++) {
-				if (getMyCells()[r][c] instanceof SharkCell && (getMyCells()[r][c].getMyNextState() == null || getMyCells()[r][c].getMyNextState()== State.DEAD)) {
-					setSharkCellState((SharkCell) getMyCells()[r][c]);
+		for (int row = 0; row < getRows(); row++) {
+			for (int col = 0; col < getColumns(); col++) {
+				GridCell cell = getMyCells()[row][col];
+				if (cell instanceof SharkCell && 
+				   (cell.getMyNextState() == null || cell.getMyNextState() == WatorState.DEAD)) {
+					setSharkCellState((SharkCell) cell);
 				}
 			}
 		}
@@ -199,7 +206,7 @@ public class PredatorPreyGrid extends Grid {
 			shark.eat((FishCell)(edible.remove(edible.size()-1)));
 			shark.setMyNextState(shark.getMyCurrentState());
 		}
-		else if (shark.getMyNextState() == State.DEAD) {
+		else if (shark.getMyNextState() == WatorState.DEAD) {
 			kill(shark, shark.getMyCurrentState());
 		}
 		else {
@@ -219,12 +226,12 @@ public class PredatorPreyGrid extends Grid {
 		int col = toSpawn.getMyGridLocation().getCol();
 
 		getMyGridPane().getChildren().remove(toSpawn.getMyShape());
-		if (fishOrShark == State.SHARK) {
-			toSpawn = new SharkCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
+		if (fishOrShark == WatorState.SHARK) {
+			toSpawn = new SharkCell(WatorState.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
 			toSpawn.setMyNextState(fishOrShark);
 		}
-		else if (fishOrShark == State.FISH) {
-			toSpawn = new FishCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
+		else if (fishOrShark == WatorState.FISH) {
+			toSpawn = new FishCell(WatorState.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
 			toSpawn.setMyNextState(fishOrShark);
 		}
 
@@ -254,20 +261,20 @@ public class PredatorPreyGrid extends Grid {
 
 		if (origin instanceof SharkCell) {
 			destinationCell = new SharkCell((SharkCell) origin, destination.getMyGridLocation());
-			destinationCell.setMyNextState(State.SHARK);
-			originCell = new SimpleCell(State.SHARK, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
+			destinationCell.setMyNextState(WatorState.SHARK);
+			originCell = new SimpleCell(WatorState.SHARK, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
 		}
 		else if (origin instanceof FishCell) {
 			destinationCell = new FishCell((FishCell) origin, destination.getMyGridLocation());
-			destinationCell.setMyNextState(State.FISH);
-			originCell = new SimpleCell(State.FISH, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
+			destinationCell.setMyNextState(WatorState.FISH);
+			originCell = new SimpleCell(WatorState.FISH, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
 		}
 
 		getMyCells()[destinationRow][destinationCol] = destinationCell;
-		destinationCell.setMyCurrentState(State.EMPTY);
+		destinationCell.setMyCurrentState(WatorState.EMPTY);
 
 		getMyCells()[originRow][originCol] = originCell;
-		originCell.setMyNextState(State.EMPTY);
+		originCell.setMyNextState(WatorState.EMPTY);
 
 		getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
 		getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
@@ -286,16 +293,16 @@ public class PredatorPreyGrid extends Grid {
 		GridCell deadCell = getMyCells()[row][col];
 		getMyGridPane().getChildren().remove(deadCell.getMyShape());
 
-		if (sharkOrFish == State.FISH){
-			deadCell =  new SimpleCell(State.FISH, deadCell.getMyGridLocation().getRow(), deadCell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
+		if (sharkOrFish == WatorState.FISH){
+			deadCell =  new SimpleCell(WatorState.FISH, deadCell.getMyGridLocation().getRow(), deadCell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
 		}
-		else if (sharkOrFish == State.SHARK){
-			deadCell =  new SimpleCell(State.SHARK, deadCell.getMyGridLocation().getRow(), deadCell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
+		else if (sharkOrFish == WatorState.SHARK){
+			deadCell =  new SimpleCell(WatorState.SHARK, deadCell.getMyGridLocation().getRow(), deadCell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
 		}
 
 		getMyCells()[row][col] = deadCell;
 		getMyGridPane().add(deadCell.getMyShape(), col, row);
-		deadCell.setMyNextState(State.EMPTY);
+		deadCell.setMyNextState(WatorState.EMPTY);
 
 	}
 
@@ -342,7 +349,7 @@ public class PredatorPreyGrid extends Grid {
 	private List<GridCell> getValidCellList(List<GridCell> neighbors){
 		List<GridCell> validCells = new ArrayList<GridCell>();
 		for (GridCell cell: neighbors) {
-			if (cell.getMyCurrentState()==State.EMPTY && cell.getMyNextState() == null) {
+			if (cell.getMyCurrentState() == WatorState.EMPTY && cell.getMyNextState() == null) {
 				validCells.add(cell);
 			}
 		}

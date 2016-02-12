@@ -5,10 +5,10 @@
 package cells;
 
 import constants.Location;
-import constants.State;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import states.State;
 
 
 /**

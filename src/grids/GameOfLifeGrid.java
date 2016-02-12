@@ -10,8 +10,9 @@ import java.util.Set;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import constants.State;
 import javafx.scene.shape.Rectangle;
+import states.GameOfLifeState;
+import states.State;
 
 
 /**
@@ -33,16 +34,16 @@ public class GameOfLifeGrid extends Grid {
 
     @Override
     protected void initializeCell (int row, int col) {
-        State state = State.DEAD;
+        State state = GameOfLifeState.DEAD;
 
         int s = getMyInitialStates()[row][col];
 
         switch (s) {
             case MY_STATE_VALUE_DEAD:
-                state = State.DEAD;
+                state = GameOfLifeState.DEAD;
                 break;
             case MY_STATE_VALUE_ALIVE:
-                state = State.ALIVE;
+                state = GameOfLifeState.ALIVE;
                 break;
             default:
                 // Display error message
@@ -60,20 +61,20 @@ public class GameOfLifeGrid extends Grid {
         int numNeighborsAlive = numNeighborsAlive(cell);
 
         // Can combine these if statements, but I think it's more readable this way
-        if (cell.getMyCurrentState() == State.ALIVE) {
+        if (cell.getMyCurrentState() == GameOfLifeState.ALIVE) {
             if (NUM_NEIGHBORS_TO_STAY_ALIVE.contains(numNeighborsAlive)) {
-                cell.setMyNextState(State.ALIVE);
+                cell.setMyNextState(GameOfLifeState.ALIVE);
             }
             else {
-                cell.setMyNextState(State.DEAD);
+                cell.setMyNextState(GameOfLifeState.DEAD);
             }
         }
-        else if (cell.getMyCurrentState() == State.DEAD) {
+        else if (cell.getMyCurrentState() == GameOfLifeState.DEAD) {
             if (numNeighborsAlive == NUM_NEIGHBORS_TO_RESURRECT) {
-                cell.setMyNextState(State.ALIVE);
+                cell.setMyNextState(GameOfLifeState.ALIVE);
             }
             else {
-                cell.setMyNextState(State.DEAD);
+                cell.setMyNextState(GameOfLifeState.DEAD);
             }
         }
 
@@ -81,12 +82,12 @@ public class GameOfLifeGrid extends Grid {
 
     @Override
 	protected void toggleState(GridCell cell) {
-		if (cell.getMyCurrentState() == State.DEAD) {
-			cell.setMyCurrentState(State.ALIVE);
+		if (cell.getMyCurrentState() == GameOfLifeState.DEAD) {
+			cell.setMyCurrentState(GameOfLifeState.ALIVE);
 			
 		}
-		else if (cell.getMyCurrentState() == State.ALIVE) {
-			cell.setMyCurrentState(State.DEAD);
+		else if (cell.getMyCurrentState() == GameOfLifeState.ALIVE) {
+			cell.setMyCurrentState(GameOfLifeState.DEAD);
 			
 		} 
 		
@@ -105,7 +106,7 @@ public class GameOfLifeGrid extends Grid {
         int numNeighborsAlive = 0;
 
         for (GridCell neighbor : getNeighbors(cell)) {
-            if (neighbor.getMyCurrentState() == State.ALIVE) {
+            if (neighbor.getMyCurrentState() == GameOfLifeState.ALIVE) {
                 numNeighborsAlive++;
             }
         }
