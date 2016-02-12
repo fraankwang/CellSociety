@@ -21,7 +21,7 @@ public class XMLGenerator {
   
 	private static int fileNameCounter = 0;
 	
-    public void writeXML (Map<String,String> params) {
+    public void writeXML (Map<String,String> params, int[][] currentStates) {
     	try {
     		DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = dbfac.newDocumentBuilder();
@@ -30,13 +30,8 @@ public class XMLGenerator {
             Element root = doc.createElement("root");
             doc.appendChild(root);
 
-            for (String key : params.keySet()){
-            	Element paramName = doc.createElement(key);
-            	Node paramValue = doc.createTextNode(params.get(key));
-            	paramName.appendChild(paramValue);
-            	
-            	root.appendChild(paramName);
-            }
+            addParameters(params, doc, root);
+            addInitialStates(currentStates, doc, root);
             
             TransformerFactory transfac = TransformerFactory.newInstance();
             Transformer trans = transfac.newTransformer();
@@ -65,6 +60,48 @@ public class XMLGenerator {
     	}
     	
     }
+
+    /**
+     * Translates 2D array of integer states to multiple row attributes with columns concatenated as a String
+     * @param currentStates
+     * @param doc to write the elements to 
+     * @param root to add the initialStates element to
+     */
+    private void addInitialStates(int[][] currentStates, Document doc, Element root) {
+		Element initialStates = doc.createElement("initialStates");
+		
+		for (int r = 0; r < currentStates.length; r++) {
+			Element row = doc.createElement("row");
+			
+			String rowValues = "";
+			for (int c = 0; c < currentStates[0].length; c++) {
+				rowValues += Integer.toString(currentStates[r][c]);
+			}
+			
+			Node values = doc.createTextNode(rowValues);
+			row.appendChild(values);
+			initialStates.appendChild(row);
+		}
+		
+		root.appendChild(initialStates);
+		
+	}
+
+	/**
+     * Takes Map of parameters and adds key as tag and value as node value
+     * @param params
+     * @param doc
+     * @param root
+     */
+	private void addParameters(Map<String, String> params, Document doc, Element root) {
+		for (String key : params.keySet()){
+			Element paramName = doc.createElement(key);
+			Node paramValue = doc.createTextNode(params.get(key));
+			paramName.appendChild(paramValue);
+			
+			root.appendChild(paramName);
+		}
+	}
     
     
     

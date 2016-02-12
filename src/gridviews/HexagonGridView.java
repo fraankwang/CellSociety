@@ -1,4 +1,4 @@
-package views;
+package gridviews;
 
 import cells.GridCell;
 import javafx.scene.Group;

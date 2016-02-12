@@ -15,16 +15,16 @@ import grids.GameOfLifeGrid;
 import grids.Grid;
 import grids.PredatorPreyGrid;
 import grids.SegregationGrid;
+import gridviews.GridView;
+import gridviews.HexagonGridView;
+import gridviews.RectangleGridView;
+import gridviews.TriangleGridView;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.util.Duration;
-import views.GridView;
-import views.HexagonGridView;
-import views.RectangleGridView;
-import views.TriangleGridView;
 
 
 /**
@@ -43,7 +43,7 @@ public class Game {
     private Timeline myGameLoop;
 
     /**
-     * Given parsed XML data, construct appropriate Grid subclass and gameLoop
+     * Given parsed XML data, construct appropriate Grid Model and View and gameLoop
      * @param params A map containing parsed XML data
      */
     public Game (Parameters params) {
@@ -52,7 +52,6 @@ public class Game {
         myGridShape = Constants.RESOURCES.getString("gridShape");
         myNeighborsToConsider = Constants.RESOURCES.getString("neighbors");
 
-        
         initializeGrid();
         initializeGameLoop();
 
@@ -64,14 +63,6 @@ public class Game {
         initializeNeighborOffsets();
         setRoot();
         
-       
-        
-    }
-    
-    private void setRoot(){
-        Group group = new Group();
-        group.getChildren().add(createScrollPane());
-        myGameRoot = group;
     }
     
     /**
@@ -101,6 +92,9 @@ public class Game {
 
     }
 
+    /**
+     * Instantiates GridView based on GridCell shapes and passes myCells to populate it
+     */
     private void initializeGridView () {
 
         GridView gridView = null;
@@ -135,6 +129,19 @@ public class Game {
 
     }
 
+    /**
+	 * Creates ScrollPane with current GridView and puts it in myGameRoot, 
+	 * the primary UI element to be displayed when MainController sets up a new Game 
+	 */
+	private void setRoot(){
+	    Group group = new Group();
+	    group.getChildren().add(createScrollPane());
+	    myGameRoot = group;
+	}
+
+	/**
+     * Sets myGrid's myNeighbor's attribute with appropriate directional headings
+     */
     private void initializeNeighborOffsets () {
 
         if (myNeighborsToConsider.equals("Cardinal")) {
@@ -155,7 +162,10 @@ public class Game {
         }
     }
     
-    private ScrollPane createScrollPane(){
+    /**
+     * @return ScrollPane with appropriate GridView
+     */
+    private ScrollPane createScrollPane() {
         ScrollPane sp = new ScrollPane();
         sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
         sp.setContent(myGrid.getView());
