@@ -1,8 +1,8 @@
-package grids;
-
 /**
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
+
+package grids;
 
 import java.util.List;
 import java.util.Map;

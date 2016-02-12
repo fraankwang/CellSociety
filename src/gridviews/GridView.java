@@ -1,4 +1,8 @@
-package views;
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
+package gridviews;
 
 import java.awt.Dimension;
 import cells.GridCell;
@@ -8,6 +12,7 @@ import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import main.MainView;
 
 public abstract class GridView {
     public static final boolean OUTLINED = Constants.RESOURCES.getString("outlined").equals("Yes");
@@ -23,6 +28,10 @@ public abstract class GridView {
     
     private Grid myGrid;  //TODO: use interface to specifiy how grid view interacts with grid
     
+    /**
+     * Instantiates variables and creates UI
+     * @param grid
+     */
     public GridView (Grid grid) {
        myGrid = grid;
        myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
@@ -36,6 +45,10 @@ public abstract class GridView {
        myView = createUI();
     }
     
+    /**
+     * Initializes Shape[row][col] using given GridCells' rows/cols with GridCells' shape 
+     * @param cells
+     */
     private void initialize(GridCell[][] cells){
         for (int row = 0; row < getMyRows(); row++) {
             for (int col = 0; col < getMyColumns(); col++) {
@@ -67,17 +80,29 @@ public abstract class GridView {
     }
     
     protected abstract Shape defaultShape();
+    /**
+     * Abstract class that customizes Grid and Game UI elements to be implemented by subclass of GridView
+     * @return formatted Group
+     */
     protected abstract Group createUI();
    
-    
+    /**
+     * Updates 1-1 corresponding Shape[][] with GridCell's Shape attribute
+     * @param cell
+     */
     public void updateCellShape(GridCell cell){
         Location location = cell.getMyGridLocation();
         Shape shape = myCellShapes[location.getRow()][location.getCol()];
         updateShapeUI(shape, cell);
         
         //TODO: might need to update the view too depending on how we implement it 
-        // (i.e. do something similar to remove/add that we did for the gridpane
+        // (i.e. do something similar to remove/add that we did for the gridpane)
     }
+    
+
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
     
     public Group getMyView(){
         return myView;

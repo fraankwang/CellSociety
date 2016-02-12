@@ -1,16 +1,16 @@
-package views;
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
+package main;
 
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import constants.Constants;
-import controllers.MainController;
-import game.Game;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import constants.Constants;
-import controllers.MainController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -22,7 +22,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -42,12 +41,11 @@ public class MainView {
     private Stage myPrimaryStage;
     private BorderPane myPrimaryPane;
     private Group myPrimaryRoot;
-    private MainController myController; // better to use delegation/interface, but don't know how
-                                         // to do that yet in java
+    private MainController myController; 
+                                         
 
     /**
      * Instantiates all UI variables to be displayed
-     * 
      * @param s - the Stage variable to be displayed
      */
     public MainView (Stage s) {
@@ -209,8 +207,6 @@ public class MainView {
         return fileChooser.showOpenDialog(myPrimaryStage);
 
     }
-
-    // TODO: replace with method to deal with infinite scroll
 
     /**
      * Adjusts stage size when grid size changes

@@ -4,7 +4,6 @@
 
 package constants;
 
-import java.awt.Dimension;
 import java.util.ResourceBundle;
 
 

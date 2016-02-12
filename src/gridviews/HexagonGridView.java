@@ -1,4 +1,8 @@
-package views;
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
+package gridviews;
 
 import grids.Grid;
 import javafx.scene.Group;

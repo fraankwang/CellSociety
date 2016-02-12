@@ -13,20 +13,20 @@ import cells.GridCell;
 import constants.Location;
 import constants.Offset;
 import constants.Parameters;
+import gridviews.GridView;
 import javafx.scene.Group;
-import views.GridView;
 
 
 /**
  * Abstract class representing a grid to be used for the simulation
  * In charge of determining how to update itself for each step of the simulation
- * Right now this class is acting as the model and the controller (maybe i should make it just a model and make grid view act as the controller?)
+ * Right now this class is acting as the model and the controller (maybe i should make it just a
+ * model and make grid view act as the controller?)
  */
 public abstract class Grid {
-    
-    
-    
-    // Model
+
+    private static final int GRID_SIZE = 500;
+
     private int[][] myInitialStates;
     private int myColumns;
     private int myRows;
@@ -38,7 +38,7 @@ public abstract class Grid {
 
     /**
      * Constructor - initializes a Grid based on parameters from xml
-     *
+     * 
      * @param params Map of xml parameters
      */
     public Grid (Parameters params) {
@@ -46,7 +46,7 @@ public abstract class Grid {
         myColumns = params.getColumns();
         myInitialStates = params.getInitialStates();
 
-        initialize();
+        initializeCells();
 
     }
 
@@ -55,16 +55,9 @@ public abstract class Grid {
     // =========================================================================
 
     /**
-     * Initializes the grid model (2d array) and grid UI (GridPane)
-     */
-    protected void initialize () {
-        initializeCells();
-    }
-
-    /**
      * Initializes and populates myCells by calling initializeCell for each cell
      */
-    private void initializeCells () {
+    protected void initializeCells () {
         myCells = new GridCell[myRows][myColumns];
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
@@ -83,12 +76,11 @@ public abstract class Grid {
      */
     protected abstract GridCell initializeCell (int row, int column);
 
-   
-    public void toggleStateAndUpdateUI (GridCell cell){
+    public void toggleStateAndUpdateUI (GridCell cell) {
         toggleState(cell);
         updateCellUI(cell);
     }
-    
+
     /**
      * Action to be carried out when GridCell's shape is clicked. Abstracted
      * so subclasses of Grid can toggle between only relevant states.
@@ -97,7 +89,7 @@ public abstract class Grid {
      */
     protected abstract void toggleState (GridCell cell);
 
-    private void updateCellUI(GridCell cell){
+    private void updateCellUI (GridCell cell) {
         myGridView.updateCellShape(cell);
     }
     // =========================================================================
@@ -150,6 +142,92 @@ public abstract class Grid {
 
     }
 
+    // TODO: infinite grid
+    // private Location neighborLocationInfinite
+    // or private Location getNeighborsInfinite
+
+    /**
+     * Determines whether a grid index is out of bounds
+     *
+     * @param row The row to check
+     * @param col The column to check
+     * @return A boolean indicating whether a cell in that position would be out of bounds
+     */
+    protected boolean cellInBounds (Location location) {
+        int row = location.getRow();
+        int col = location.getCol();
+
+        boolean farTop = row < 0;
+        boolean farBottom = row > getRows() - 1;
+        boolean farLeft = col < 0;
+        boolean farRight = col > getColumns() - 1;
+
+        return !(farTop | farBottom | farLeft | farRight);
+
+    }
+
+    /**
+     * Used by getNeighbors for a finite or toroidal grid (I think it also works for finite)
+     * 
+     * @param cell GridCell
+     * @param offset Offset where potential neighbor is located
+     * @return Location of neighbor at offset from cell
+     */
+    private Location neighborLocationNonInfinite (GridCell cell, Offset offset) {
+        int neighborRow = (cell.getMyGridLocation().getRow() + offset.getRow()) % myRows;
+        int neighborCol = (cell.getMyGridLocation().getCol() + offset.getCol()) % myColumns;
+
+        return new Location(neighborRow, neighborCol);
+    }
+
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+
+    /**
+     * Aggregates current game parameters to be saved to an XML file.
+     * Subclasses of Grid override the method by adding additional simulation-specific parameters
+     * Grid does not know the delay time, which is gathered from Game
+     * 
+     * @return current game state's parameters that are common to all Grid types
+     */
+    public Map<String, String> getMyGameState () {
+        Map<String, String> gameStateParams = new HashMap<String, String>();
+        gameStateParams.put("rows", Integer.toString(this.getRows()));
+        gameStateParams.put("columns", Integer.toString(this.getColumns()));
+        return gameStateParams;
+
+    }
+
+    /**
+     * Loops through each GridCell and returns the State value (same translation as
+     * initialStates parameter from XML file) to be converted to String format
+     * 
+     * @return
+     */
+    public int[][] getCurrentStatesArray () {
+        int[][] currentStates = new int[getRows()][getColumns()];
+
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                GridCell cell = myCells[row][col];
+                int currentStateValue = cell.getMyCurrentState().getStateValue();
+                currentStates[row][col] = currentStateValue;
+            }
+        }
+
+        return currentStates;
+
+    }
+
+    // TODO: infinite grid
+    // private Location neighborLocationInfinite
+    // or private Location getNeighborsInfinite
+
+    protected int[][] getMyInitialStates () {
+        return myInitialStates;
+    }
+
     /**
      * Returns a list of a GridCell's neighboring GridCells
      *
@@ -173,66 +251,8 @@ public abstract class Grid {
 
     }
 
-    /**
-     * Used by getNeighbors for a finite or toroidal grid (I think it also works for finite)
-     * 
-     * @param cell GridCell
-     * @param offset Offset where potential neighbor is located
-     * @return Location of neighbor at offset from cell
-     */
-    private Location neighborLocationNonInfinite (GridCell cell, Offset offset) {
-        int neighborRow = (cell.getMyGridLocation().getRow() + offset.getRow()) % myRows;
-        int neighborCol = (cell.getMyGridLocation().getCol() + offset.getCol()) % myColumns;
-
-        return new Location(neighborRow, neighborCol);
-    }
-
-    // TODO: infinite grid
-    // private Location neighborLocationInfinite
-    // or private Location getNeighborsInfinite
-
     public void setNeighborOffsets (List<Offset> offsets) {
         myNeighborOffsets = offsets;
-    }
-
-    // =========================================================================
-    // Getters and Setters
-    // =========================================================================
-
-    /**
-     * Determines whether a grid index is out of bounds
-     *
-     * @param row The row to check
-     * @param col The column to check
-     * @return A boolean indicating whether a cell in that position would be out of bounds
-     */
-    protected boolean cellInBounds (Location location) {
-        int row = location.getRow();
-        int col = location.getCol();
-
-        boolean farTop = row < 0;
-        boolean farBottom = row > getRows() - 1;
-        boolean farLeft = col < 0;
-        boolean farRight = col > getColumns() - 1;
-
-        return !(farTop | farBottom | farLeft | farRight);
-
-    }
-
-    /**
-     * Aggregates current game parameters to be saved to an XML file.
-     * Subclasses of Grid override the method by adding additional simulation-specific parameters
-     * Grid does not know the delay time, which is gathered from Game
-     * 
-     * @return current game state's parameters that are common to all Grid types
-     */
-    public Map<String, String> getMyGameState () {
-        Map<String, String> gameStateParams = new HashMap<String, String>();
-        gameStateParams.put("rows", Integer.toString(this.getRows()));
-        gameStateParams.put("columns", Integer.toString(this.getColumns()));
-        gameStateParams.put("initialStates", getCurrentStatesArrayString());
-        return gameStateParams;
-
     }
 
     public GridCell[][] getMyCells () {
@@ -260,16 +280,11 @@ public abstract class Grid {
     }
 
     public Group getView () {
-        return getMyGridView().getMyView();
+        return myGridView.getMyView();
     }
 
     public Dimension getMyGridSize () {
         return myGridView.getMyGridSize();
-    }
-
-
-    protected int[][] getMyInitialStates () {
-        return myInitialStates;
     }
 
     /**
@@ -302,5 +317,6 @@ public abstract class Grid {
 
     public void setMyGridView (GridView myGridView) {
         this.myGridView = myGridView;
+
     }
 }

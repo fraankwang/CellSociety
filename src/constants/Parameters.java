@@ -20,7 +20,6 @@ public class Parameters {
 		return myParameters.get("gameType");
 	}
 	
-	
 	public Double getDelay () {
 		return Double.parseDouble(myParameters.get("delay"));
 	}
@@ -49,8 +48,5 @@ public class Parameters {
 	public int[][] getInitialStates () {
 		return initialStates;
 	}
-	
-	
-	
 	
 }

@@ -1,9 +1,13 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package cells;
 
-import java.util.List;
 import constants.Location;
 import states.State;
 import states.WatorState;
+import java.util.List;
 
 /**
  * The class for the Shark

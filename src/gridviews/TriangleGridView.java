@@ -1,4 +1,8 @@
-package views;
+/**
+* Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+*/
+
+package gridviews;
 
 import cells.GridCell;
 import grids.Grid;

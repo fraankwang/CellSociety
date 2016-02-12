@@ -1,4 +1,8 @@
-package views;
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
+package gridviews;
 
 import cells.GridCell;
 import constants.Location;
@@ -8,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import main.MainView;
 
 
 public class RectangleGridView extends GridView {
