@@ -61,7 +61,7 @@ public class XMLGenerator {
             fw.close();
             
     	} catch (Exception e) {
-    		e.printStackTrace();
+    		e.getMessage();
     	}
     	
     }
