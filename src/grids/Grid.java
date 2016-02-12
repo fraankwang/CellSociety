@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
+import constants.Constants;
 import constants.Location;
 import constants.NeighborOffset;
 import constants.Offset;
@@ -24,7 +25,9 @@ import views.GridView;
  * In charge of determining how to update itself for each step of the simulation
  */
 public abstract class Grid {
-
+    
+    
+    
     // Model
     private int[][] myInitialStates;
     private int myColumns;
@@ -44,8 +47,9 @@ public abstract class Grid {
      * @param params Map of xml parameters
      */
     public Grid (Parameters params) {
-        myGridSize = params.getDimension();
-        myCellSize = params.getCellSize();
+        //myGridSize = params.getDimension();
+        myGridSize = new Dimension(500, 500);
+        myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
 
         myRows = params.getRows();
         myColumns = params.getColumns();
