@@ -9,6 +9,8 @@ import constants.Constants;
 import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -17,16 +19,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.stage.Stage;
 
 public class CellSocietyViewer {
 
@@ -77,8 +78,9 @@ public class CellSocietyViewer {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
-        
+        HBox paramBar = createParametersBar();
         myPrimaryPane.setTop(toolbar);
+        myPrimaryPane.setLeft(paramBar);
         myPrimaryPane.setPrefSize(Constants.DEFAULT_WINDOW_SIZE.getWidth(),
                                   Constants.DEFAULT_WINDOW_SIZE.getHeight());
 
@@ -114,6 +116,19 @@ public class CellSocietyViewer {
 
         return toolbar;
 
+    }
+    
+    private HBox createParametersBar () {
+    	
+    	HBox paramBar = new HBox();
+    	Slider slider = new Slider(0, 10, 0.5);
+    	
+    	paramBar.getChildren().add(slider);
+    	paramBar.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+    	paramBar.setPrefHeight(100);
+    	paramBar.setPrefWidth(100);
+    	return paramBar;
+    	
     }
     
     /**
