@@ -4,7 +4,8 @@
 
 package main;
 
-import view.CellSocietyViewer;
+import view.MainView;
+import controllers.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -18,9 +19,10 @@ public class Main extends Application {
      * is created within the view.
      */
     public void start (Stage s) throws Exception {
-    	CellSocietyViewer view = new CellSocietyViewer(s);
-    	view.display();
-    	
+    	MainView view = new MainView(s);
+    	MainController controller = new MainController(view);
+    	view.setController(controller);
+    	controller.start();
     }
 
     public static void main (String[] args) {
