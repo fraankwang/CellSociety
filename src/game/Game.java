@@ -107,6 +107,10 @@ public class Game {
         }
         
     }
+    
+    public void setTimelineRate(double millisecond){
+        
+    }
 
     // =========================================================================
     // Getters and Setters

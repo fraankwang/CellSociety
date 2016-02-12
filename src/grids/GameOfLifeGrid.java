@@ -6,10 +6,10 @@ package grids;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import cells.GridCell;
 import cells.SimpleCell;
+import constants.Parameters;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
@@ -26,7 +26,7 @@ public class GameOfLifeGrid extends Grid {
     private static final Set<Integer> NUM_NEIGHBORS_TO_STAY_ALIVE =
             new HashSet<Integer>(Arrays.asList(2, 3));
 
-    public GameOfLifeGrid (Map<String, String> params) {
+    public GameOfLifeGrid (Parameters params) {
         super(params);
         
     }

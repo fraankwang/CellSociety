@@ -1,12 +1,13 @@
 package view;
+
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import constants.Constants;
 import constants.Parameters;
+import controllers.MainController;
 import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
@@ -29,42 +30,46 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class CellSocietyViewer {
 
-	private Stage myPrimaryStage;
-	private BorderPane myPrimaryPane;
-	private Group myPrimaryRoot;
-	private Game myPrimaryGame;
-	
-	/**
-	 * Instantiates all UI variables to be displayed
-	 * @param s - the Stage variable to be displayed 
-	 */
-	public CellSocietyViewer(Stage s) {
-		myPrimaryStage = s;
-		myPrimaryRoot = initializeRoot();
-		
-	}
-	
-	/**
+public class MainView {
+
+    private Stage myPrimaryStage;
+    private BorderPane myPrimaryPane;
+    private Group myPrimaryRoot;
+    private MainController myController; // better to use delegation/interface, but don't know how
+                                         // to do that yet in java
+
+    /**
+     * Instantiates all UI variables to be displayed
+     * 
+     * @param s - the Stage variable to be displayed
+     */
+    public MainView (Stage s) {
+        myPrimaryStage = s;
+        myPrimaryRoot = initializeRoot();
+
+    }
+
+    /**
      * Sets primaryStage (which displays primaryScene) and primaryScene (which displays
      * primaryRoot).
      *
      * PrimaryRoot contains a BorderPane with two groups
      * - A tool bar (start/stop/reset/newGame buttons - always present) called myPrimaryPane
-     * - The game (contains varying Node elements depending on game and Grid type - not always present) 
+     * - The game (contains varying Node elements depending on game and Grid type - not always
+     * present)
      * which is returned from myPrimaryGame is displayGame()
-	 */
-	public void display() {
-		Scene myPrimaryScene = new Scene(myPrimaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
-				Constants.DEFAULT_WINDOW_SIZE.getHeight(),
-				Color.WHITE);
-		
-		myPrimaryStage.setScene(myPrimaryScene);
-		myPrimaryStage.show();
-	}
-	
-	/**
+     */
+    public void display () {
+        Scene myPrimaryScene = new Scene(myPrimaryRoot, Constants.DEFAULT_WINDOW_SIZE.getWidth(),
+                                         Constants.DEFAULT_WINDOW_SIZE.getHeight(),
+                                         Color.WHITE);
+
+        myPrimaryStage.setScene(myPrimaryScene);
+        myPrimaryStage.show();
+    }
+
+    /**
      * Initializes myPrimaryRoot with a BorderPane
      * The BorderPane is initialized with an HBox tool bar on top to hold all the game buttons that
      * stay visible the entire time.
@@ -74,7 +79,7 @@ public class CellSocietyViewer {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
-        
+
         myPrimaryPane.setTop(toolbar);
         myPrimaryPane.setPrefSize(Constants.DEFAULT_WINDOW_SIZE.getWidth(),
                                   Constants.DEFAULT_WINDOW_SIZE.getHeight());
@@ -84,7 +89,7 @@ public class CellSocietyViewer {
 
         return root;
     }
-    
+
     /**
      * Creates a formatted tool bar to display in the top of the screen
      *
@@ -101,7 +106,7 @@ public class CellSocietyViewer {
                 Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetHorizontal"));
         float insetVertical =
                 Float.parseFloat(Constants.RESOURCES.getString("toolbarButtonInsetVertical"));
-        
+
         for (Button b : buttons) {
             HBox.setMargin(b, new Insets(insetHorizontal, insetVertical, insetHorizontal,
                                          insetVertical));
@@ -112,7 +117,7 @@ public class CellSocietyViewer {
         return toolbar;
 
     }
-    
+
     /**
      * Creates a list of buttons to display in the tool bar
      *
@@ -121,96 +126,71 @@ public class CellSocietyViewer {
     private List<Button> createGameButtons () {
         List<Button> list = new ArrayList<Button>();
 
-        Button startButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"), event -> startGame());
-        Button stopButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"), event -> stopGame());
-        Button stepButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"), event -> stepGame());
-        Button resetButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"), event -> resetGame());
-        Button newGameButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"), event -> chooseNewGame());
-        Button saveXMLButton = makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"), event -> saveXML());
-        
+        Button startButton =
+                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
+                           event -> myController.startGame());
+        Button stopButton =
+                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
+                           event -> myController.stopGame());
+        Button stepButton =
+                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
+                           event -> myController.stepGame());
+        Button resetButton =
+                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"),
+                           event -> myController.resetGame());
+        Button newGameButton =
+                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"),
+                           event -> myController.chooseNewGame());
+        Button saveXMLButton =
+                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
+                           event -> myController.saveXML());
+
         list.add(startButton);
         list.add(stopButton);
         list.add(stepButton);
         list.add(resetButton);
         list.add(newGameButton);
         list.add(saveXMLButton);
-        
+
         return list;
-        
+
     }
-    
+
     /**
      * Creates a button that is set on action based on the parameter given
+     * 
      * @param name - label of button
      * @param handler - ActionEvent the button will do
      * @return named and Button (which is set on action)
      */
     public Button makeButton (String name, EventHandler<ActionEvent> handler) {
-    	Button button = new Button();
-    	button.setText(name);
-    	button.setOnAction(handler);
-    	return button;
-    	
-    }
-    
-    /**
-     * Event handler for starting the current game
-     */
-    private void startGame () {
-    	if (myPrimaryGame != null){
-    		myPrimaryGame.startGame();    		
-    	}
-    	
+        Button button = new Button();
+        button.setText(name);
+        button.setOnAction(handler);
+        return button;
+
     }
 
     /**
-     * Event handler for stopping the current game
+     * Switches to a new game by displaying the game root in the center of the BorderPane
+     *
+     * @param myPrimaryGame The game to be displayed
      */
-    private void stopGame () {
-        if (myPrimaryGame != null){
-        	myPrimaryGame.stopGame();
-        }
-        
+    public void displayGame (Group gameRoot) {
+        BorderPane.setAlignment(gameRoot, Pos.TOP_LEFT);
+        myPrimaryPane.setCenter(gameRoot);
+
+        // TODO: deal with infinite scroll
+        // setStageSizeToMatchGrid(myPrimaryGame.getMyGrid().getMyGridSize());
+
     }
 
-    /**
-     * Event handler for a single step through a game
-     */
-    private void stepGame () {
-        if (myPrimaryGame != null){
-        	stopGame();
-        	myPrimaryGame.getMyGrid().step();        	
-        }
-        
-    }
-
-    /**
-     * Event handler for resetting the current game
-     */
-    private void resetGame () {
-    	stopGame();
-        myPrimaryGame.initializeGrid();
-        displayPrimaryGame();
-        
-    }
-
-    /**
-     * Event handler for choosing a new game to start
-     */
-    private void chooseNewGame () {
-    	stopGame();
-    	
-        File file = getFileFromUser();
-        if (file != null) {
-            setUpGame(file);
-        }
-        
-    }
-    
     /**
      * Specifies the available files the user can choose and returns it
+     * 
      * @return File picked by user
      */
+<<<<<<< HEAD:src/view/CellSocietyViewer.java
     private File getFileFromUser () {
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
@@ -233,19 +213,20 @@ public class CellSocietyViewer {
         displayPrimaryGame();
         
     }
+=======
+    public File getFileFromUser () {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
+        fileChooser.getExtensionFilters().add(
+                                              new ExtensionFilter(Constants.RESOURCES
+                                                      .getString("fileExtensionFilterDescription"),
+                                                                  Constants.RESOURCES
+                                                                          .getString("fileExtensionFilterExtension")));
+>>>>>>> 6df4dd85f45c1cf47185cce9faa7c4e441da886e:src/view/MainView.java
 
-    /**
-     * Switches to a new game by displaying the game root in the center of the BorderPane
-     *
-     * @param myPrimaryGame The game to be displayed
-     */
-    private void displayPrimaryGame () {
-        BorderPane.setAlignment(myPrimaryGame.getGameRoot(), Pos.TOP_LEFT);
-        myPrimaryPane.setCenter(myPrimaryGame.getGameRoot());
-        setStageSizeToMatchGrid(myPrimaryGame.getMyGrid().getMyGridSize());
-        
-    }
+        return fileChooser.showOpenDialog(myPrimaryStage);
 
+<<<<<<< HEAD:src/view/CellSocietyViewer.java
     /**
      * Takes a file and converts XML data to a Map of Grid parameters and their initial values
      *
@@ -256,9 +237,13 @@ public class CellSocietyViewer {
         Parser parser = new Parser();
         return parser.parse(file);
         
+=======
+>>>>>>> 6df4dd85f45c1cf47185cce9faa7c4e441da886e:src/view/MainView.java
     }
 
+    // TODO: replace with method to deal with infinite scroll
     /**
+<<<<<<< HEAD:src/view/CellSocietyViewer.java
 	 * Calls myGrid in myPrimaryGame to return updated game parameters, then 
 	 * adds game parameters that are not visible to myGrid, then generating the .xml file
 	 */
@@ -278,6 +263,8 @@ public class CellSocietyViewer {
 	}
 
 	/**
+=======
+>>>>>>> 6df4dd85f45c1cf47185cce9faa7c4e441da886e:src/view/MainView.java
      * Adjusts stage size when grid size changes
      *
      * NOTE: this method does not deal with BorderPane insets, so sizing may be
@@ -306,5 +293,9 @@ public class CellSocietyViewer {
         }
 
     }
-	
+    
+    public void setController(MainController controller){
+        myController = controller;
+    }
+
 }
