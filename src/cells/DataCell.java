@@ -4,8 +4,8 @@
 
 package cells;
 
-import constants.State;
 import javafx.scene.shape.Shape;
+import states.State;
 
 
 /**

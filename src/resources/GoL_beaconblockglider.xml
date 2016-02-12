@@ -3,7 +3,17 @@
 <delay>150</delay>
 <columns>10</columns>
 <width>500</width>
-<initialStates>0100000000,0100000000,0100001000,0000101000,0000011000,0000000000,0011000000,0011000000,1100000000,1100000000,</initialStates>
+<initialStates></initialStates>
+	<row>0100000000</row>
+	<row>0100000000</row>
+	<row>0100001000</row>
+	<row>0000101000</row>
+	<row>0000011000</row>
+	<row>0000000000</row>
+	<row>0011000000</row>
+	<row>0011000000</row>
+	<row>1100000000</row>
+	<row>1100000000</row>
 <rows>10</rows>
 <height>500</height>
 </root>

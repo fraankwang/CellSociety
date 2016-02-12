@@ -28,7 +28,6 @@ import views.TriangleGridView;
 
 /**
  * Manages the simulation - in charge of the game loop and grid subclass
- *
  */
 public class Game {
     public static final int MILLISECONDS_PER_SECOND = 1000;
@@ -44,7 +43,6 @@ public class Game {
 
     /**
      * Given parsed XML data, construct appropriate Grid subclass and gameLoop
-     *
      * @param params A map containing parsed XML data
      */
     public Game (Parameters params) {
@@ -66,6 +64,7 @@ public class Game {
     /**
      * Initializes a specific grid based on the gameType parameter, and
      * updates myGameRoot after myGrid updates its local root
+     * 
      * This function uses only global variables so the user can press the reset
      * button (in the Main class) at any time
      */
@@ -230,10 +229,15 @@ public class Game {
 
     }
 
-    public void setTimelineRate (double millisecond) {
-
+    /**
+     * Sets the rate of the animation played based on
+     * the speed passed in
+     * 
+     * @param speed the speed to set the animation
+     */
+    public void setTimelineRate (double speed){
+        myGameLoop.setRate(speed);
     }
-
     // =========================================================================
     // Getters and Setters
     // =========================================================================

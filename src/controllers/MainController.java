@@ -1,3 +1,7 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package controllers;
 
 import java.io.File;
@@ -104,6 +108,8 @@ public class MainController {
     /**
      * Calls myGrid in myPrimaryGame to return updated game parameters, then
      * adds game parameters that are not visible to myGrid, then generating the .xml file
+     * Delay is not accessible from the grid. If the user modifies delay time, then it will
+     * be included in currentGameState. If not, the default is used.
      */
     public void saveXML () {
         XMLGenerator generator = new XMLGenerator();
@@ -111,7 +117,11 @@ public class MainController {
         if (myPrimaryGame != null) {
             Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
             currentGameState.put("gameType", myPrimaryGame.getMyGameType());
-            currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));
+            
+            if (!currentGameState.containsKey("delay")) {
+            	currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));            	
+            }
+            
             generator.writeXML(currentGameState);
         }
 
@@ -120,4 +130,8 @@ public class MainController {
         savedAlert.showAndWait();
     }
 
+    
+    public void setSpeed (double time){
+    	myPrimaryGame.setTimelineRate(time);
+    }
 }

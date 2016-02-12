@@ -1,3 +1,7 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package inputoutput;
 
 import java.io.*;
@@ -57,7 +61,7 @@ public class XMLGenerator {
             fw.close();
             
     	} catch (Exception e) {
-    		e.printStackTrace();
+    		e.getMessage();
     	}
     	
     }

@@ -2,8 +2,9 @@ package cells;
 
 import java.util.List;
 import constants.Location;
-import constants.State;
 import javafx.scene.shape.Shape;
+import states.State;
+import states.WatorState;
 
 /**
  * The class for the Shark
@@ -42,7 +43,7 @@ public class SharkCell extends DataCell {
 	public void update() {
 		sharkCurrentHealth--;
 		if(sharkCurrentHealth < 0) {
-			setMyNextState(State.DEAD);
+			setMyNextState(WatorState.DEAD);
 		}
 		
 		if(sharkCurrentBreedTime != 0){
@@ -62,7 +63,7 @@ public class SharkCell extends DataCell {
 	 */
 	public void eat(FishCell fish) {
 		sharkCurrentHealth = sharkMaxHealth;
-		fish.setMyNextState(State.DEAD);
+		fish.setMyNextState(WatorState.DEAD);
 	}
 	
 	

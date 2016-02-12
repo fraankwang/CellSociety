@@ -9,8 +9,9 @@ import java.util.Map;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import constants.State;
 import javafx.scene.shape.Rectangle;
+import states.SegregationState;
+import states.State;
 
 
 /**
@@ -32,18 +33,19 @@ public class SegregationGrid extends Grid {
 
     @Override
     protected GridCell initializeCell (int row, int col) {
-        State state = State.EMPTY;
+        State state = SegregationState.EMPTY;
 
         int s = getMyInitialStates()[row][col];
         switch (s) {
             case MY_STATE_VALUE_EMPTY:
-                state = State.EMPTY;
+                state = SegregationState.EMPTY;
                 break;
             case MY_STATE_VALUE_RED:
-                state = State.RED;
+                state = SegregationState.RED;
                 break;
             case MY_STATE_VALUE_BLUE:
-                state = State.BLUE;
+
+                state = SegregationState.BLUE;
             default:
                 // Display error message
                 break;
@@ -55,7 +57,7 @@ public class SegregationGrid extends Grid {
 
     @Override
     protected void setCellState (GridCell cell) {
-        if (!cell.getMyCurrentState().equals(State.EMPTY)) {
+        if (!cell.getMyCurrentState().equals(SegregationState.EMPTY)) {
             List<GridCell> neighbors = getNeighbors(cell);
             double sameCount = 0;
             double nonEmptyCount = 0;
@@ -63,7 +65,7 @@ public class SegregationGrid extends Grid {
                 if (cell.getMyCurrentState().equals(neighbor.getMyCurrentState())) {
                     sameCount++;
                 }
-                if (!(neighbor.getMyCurrentState() == State.EMPTY)) {
+                if (!(neighbor.getMyCurrentState() == SegregationState.EMPTY)) {
                     nonEmptyCount++;	// we don't account for empty cells when calculating
                                     	// similarity percentage
                 }
@@ -85,16 +87,16 @@ public class SegregationGrid extends Grid {
 
     @Override
     protected void toggleState (GridCell cell) {
-        if (cell.getMyCurrentState() == State.EMPTY) {
-            cell.setMyCurrentState(State.RED);
+        if (cell.getMyCurrentState() == SegregationState.EMPTY) {
+            cell.setMyCurrentState(SegregationState.RED);
 
         }
-        else if (cell.getMyCurrentState() == State.RED) {
-            cell.setMyCurrentState(State.BLUE);
+        else if (cell.getMyCurrentState() == SegregationState.RED) {
+            cell.setMyCurrentState(SegregationState.BLUE);
 
         }
-        else if (cell.getMyCurrentState() == State.BLUE) {
-            cell.setMyCurrentState(State.EMPTY);
+        else if (cell.getMyCurrentState() == SegregationState.BLUE) {
+            cell.setMyCurrentState(SegregationState.EMPTY);
 
         }
 
@@ -112,10 +114,11 @@ public class SegregationGrid extends Grid {
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 GridCell newCell = getMyCells()[row][col];
-                if (newCell.getMyCurrentState().equals(State.EMPTY) &&
-                    (newCell.getMyNextState() == null || newCell.getMyNextState() == State.EMPTY)) {
+                if (newCell.getMyCurrentState().equals(SegregationState.EMPTY) &&
+                    (newCell.getMyNextState() == null ||
+                     newCell.getMyNextState() == SegregationState.EMPTY)) {
                     newCell.setMyNextState(cell.getMyCurrentState());
-                    cell.setMyNextState(State.EMPTY);
+                    cell.setMyNextState(SegregationState.EMPTY);
                     return;
                 }
             }

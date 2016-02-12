@@ -6,5 +6,11 @@
 	<rows>5</rows>
 	<columns>5</columns>
 	<delay>50</delay>
-	<initialStates>12021,02010,01201,12112,22200</initialStates>
+	<initialStates>
+		<row>12021</row>
+		<row>02010</row>
+		<row>01201</row>
+		<row>12112</row>
+		<row>22200</row>
+	</initialStates>
 </root>

@@ -5,7 +5,6 @@
 package grids;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -14,8 +13,9 @@ import cells.SimpleCell;
 import constants.NeighborOffset;
 import constants.Offset;
 import constants.Parameters;
-import constants.State;
 import javafx.scene.shape.Rectangle;
+import states.FireState;
+import states.State;
 
 
 /**
@@ -38,22 +38,22 @@ public class FireGrid extends Grid {
 
     @Override
     protected GridCell initializeCell (int row, int col) {
-        State state = State.EMPTY;
+        State state = FireState.EMPTY;
         
         int s = getMyInitialStates()[row][col];
 
         switch (s) {
             case MY_STATE_VALUE_EMPTY:
-                state = State.EMPTY;
+                state = FireState.EMPTY;
                 break;
             case MY_STATE_VALUE_TREE:
-                state = State.TREE;
+                state = FireState.TREE;
                 break;
             case MY_STATE_VALUE_BURNING:
-                state = State.BURNING;
+                state = FireState.BURNING;
                 break;
             case MY_STATE_VALUE_BURNED:
-            	state = State.BURNED;
+            	state = FireState.BURNED;
             
             default:
                 // Display error message
@@ -67,11 +67,11 @@ public class FireGrid extends Grid {
 
     @Override
     protected void setCellState (GridCell cell) {
-        if (cell.getMyCurrentState() == State.BURNING) {
-            cell.setMyNextState(State.BURNED);
+        if (cell.getMyCurrentState() == FireState.BURNING) {
+            cell.setMyNextState(FireState.BURNED);
         }
         else if (willCatch(cell)) {
-            cell.setMyNextState(State.BURNING);
+            cell.setMyNextState(FireState.BURNING);
         }
         else {
             cell.setMyNextState(cell.getMyCurrentState());
@@ -81,16 +81,16 @@ public class FireGrid extends Grid {
 
     @Override
 	protected void toggleState(GridCell cell) {
-		if (cell.getMyCurrentState() == State.BURNING) {
-			cell.setMyCurrentState(State.BURNED);
+		if (cell.getMyCurrentState() == FireState.BURNING) {
+			cell.setMyCurrentState(FireState.BURNED);
 			
 		}
-		else if (cell.getMyCurrentState() == State.BURNED) {
-			cell.setMyCurrentState(State.TREE);
+		else if (cell.getMyCurrentState() == FireState.BURNED) {
+			cell.setMyCurrentState(FireState.TREE);
 			
 		} 
-		else if (cell.getMyCurrentState() == State.TREE) {
-			cell.setMyCurrentState(State.BURNING);
+		else if (cell.getMyCurrentState() == FireState.TREE) {
+			cell.setMyCurrentState(FireState.BURNING);
 			
 		}
 		
@@ -110,7 +110,7 @@ public class FireGrid extends Grid {
 
         for (GridCell neighbor : getNeighbors(cell)) {
 
-            if (neighbor.getMyCurrentState() == State.BURNING) {
+            if (neighbor.getMyCurrentState() == FireState.BURNING) {
                 neighborIsBurning = true;
             }
 
@@ -129,7 +129,7 @@ public class FireGrid extends Grid {
      * @return A boolean indicating whether to set the cell's next state to burning
      */
     private boolean willCatch (GridCell cell) {
-        return cell.getMyCurrentState() == State.TREE && neighborIsBurning(cell) &&
+        return cell.getMyCurrentState() == FireState.TREE && neighborIsBurning(cell) &&
                probCatchRandom();
     }
 
