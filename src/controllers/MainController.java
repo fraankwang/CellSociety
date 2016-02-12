@@ -3,6 +3,7 @@ package controllers;
 import java.io.File;
 import java.util.Map;
 import constants.Constants;
+import constants.Parameters;
 import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
@@ -83,7 +84,7 @@ public class MainController {
      * @param file The file containing the game parameters
      */
     private void setUpGame (File file) {
-        Map<String, String> params = parseXML(file);
+        Parameters params = parseXML(file);
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
     }
@@ -94,7 +95,7 @@ public class MainController {
      * @param file The file to parse
      * @return A map of grid parameter keys and values
      */
-    private Map<String, String> parseXML (File file) {
+    private Parameters parseXML (File file) {
         Parser parser = new Parser();
         return parser.parse(file);
 
@@ -110,7 +111,7 @@ public class MainController {
         if (myPrimaryGame != null) {
             Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
             currentGameState.put("gameType", myPrimaryGame.getMyGameType());
-            currentGameState.put("delay", myPrimaryGame.getDelay());
+            currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));
             generator.writeXML(currentGameState);
         }
 
