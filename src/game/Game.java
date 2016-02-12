@@ -4,7 +4,7 @@
 
 package game;
 
-import java.util.Map;
+import constants.Parameters;
 import grids.FireGrid;
 import grids.GameOfLifeGrid;
 import grids.Grid;
@@ -26,7 +26,7 @@ public class Game {
 
     private String myGameType;
     private Grid myGrid;
-    private Map<String, String> myParameters;
+    private Parameters myParameters;
 
     private Group myGameRoot;
     private Timeline myGameLoop;
@@ -36,8 +36,8 @@ public class Game {
      *
      * @param params A map containing parsed XML data
      */
-    public Game (Map<String, String> params) {
-        myGameType = params.get("gameType");
+    public Game (Parameters params) {
+        myGameType = params.getGameType();
         myParameters = params;
 
         initializeGrid();
@@ -79,7 +79,7 @@ public class Game {
     private void initializeGameLoop () {
         // "delay" given in milliseconds
         double framesPerSecond =
-                MILLISECONDS_PER_SECOND * 1 / Double.parseDouble(myParameters.get("delay"));
+                MILLISECONDS_PER_SECOND * 1 / myParameters.getDelay();
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
                                       e -> myGrid.step());
         
@@ -124,13 +124,9 @@ public class Game {
     public Grid getMyGrid () {
         return myGrid;
     }
-
-	public Map<String, String> getMyParameters () {
-		return myParameters;
-	}
 	
-	public String getDelay () {
-		return myParameters.get("delay");
+	public Double getDelay () {
+		return myParameters.getDelay();
 	}
 
 	public String getMyGameType () {
