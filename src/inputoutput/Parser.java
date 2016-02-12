@@ -1,3 +1,7 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package inputoutput;
 
 import java.io.File;
@@ -16,10 +20,15 @@ import constants.Parameters;
 
 public class Parser {
 
-	
+	/**
+	 * 
+	 * @param file picked by user
+	 * @return Parameters - a map of parameters and a 2D array of initial states (integers) packaged together
+	 */
 	public Parameters parse (File file) {
 		Map<String, String> params = new HashMap<String, String>();
 		int[][] initialStates = null;
+		
 		try {				
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -60,7 +69,11 @@ public class Parser {
 		return new Parameters(params, initialStates);
 		
 	}
-		
+	
+	/**
+	 * @param states to be converted to int[][]
+	 * @return int[][] initial state values corresponding to the grid
+	 */
 	private int[][] createInitialStates(ArrayList<String> states) {
 		int numberOfRows = states.size();
 		int numberOfColumns = states.get(0).length();

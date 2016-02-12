@@ -8,5 +8,16 @@
 <rows>10</rows>
 <columns>10</columns>
 <delay>50</delay>
-<initialStates>0120102200,0120201210,2010022000,1012000002,2022110020,0120102200,0120201210,2010022000,1012000002,2022110020</initialStates>
+<initialStates>
+	<row>0120102200</row>
+	<row>0120201210</row>
+	<row>2010022000</row>
+	<row>1012000002</row>
+	<row>2022110020</row>
+	<row>0120102200</row>
+	<row>0120201210</row>
+	<row>2010022000</row>
+	<row>1012000002</row>
+	<row>2022110020</row>
+</initialStates>
 </root>
