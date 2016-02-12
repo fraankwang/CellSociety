@@ -5,13 +5,15 @@
 package gridviews;
 
 import cells.GridCell;
+import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Shape;
 
 public class TriangleGridView extends GridView {
 
-    public TriangleGridView (GridCell[][] cells) {
-        super(cells);
+    public TriangleGridView (Grid grid) {
+        super(grid);
         setMyCellShapes(new Polygon[1][1]);
         // TODO Auto-generated constructor stub
     }
@@ -21,5 +23,8 @@ public class TriangleGridView extends GridView {
         return new Group();
     }
 
-
+    @Override
+    protected Shape defaultShape(){
+        return new Polygon();
+    }
 }

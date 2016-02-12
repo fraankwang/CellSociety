@@ -57,7 +57,7 @@ public class FireGrid extends Grid {
 
         }
 
-        return new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
+        return new SimpleCell(state, row, col);
 
     }
 
@@ -90,7 +90,6 @@ public class FireGrid extends Grid {
 			
 		}
 		
-		cell.setMyColor();
 		
 	}
 

@@ -4,7 +4,6 @@
 
 package cells;
 
-import javafx.scene.shape.Shape;
 import states.State;
 
 
@@ -14,8 +13,8 @@ import states.State;
  */
 public abstract class DataCell extends GridCell {
 
-    public DataCell (State currentState, int row, int col, Shape shape) {
-        super(currentState, row, col, shape);
+    public DataCell (State currentState, int row, int col) {
+        super(currentState, row, col);
     }
 
     /**

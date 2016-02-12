@@ -6,8 +6,11 @@ package gridviews;
 
 import cells.GridCell;
 import constants.Location;
+import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import main.MainView;
 
@@ -16,9 +19,8 @@ public class RectangleGridView extends GridView {
 
     private GridPane gp;
 
-    public RectangleGridView (GridCell[][] cells) {
-        super(cells);
-        // TODO Auto-generated constructor stub
+    public RectangleGridView (Grid grid) {
+        super(grid);
     }
 
     @Override
@@ -46,10 +48,16 @@ public class RectangleGridView extends GridView {
 
         Location l = cell.getMyGridLocation();
         Shape old = getMyCellShapes()[l.getRow()][l.getCol()];
-        gp.getChildren().remove(old);
-        gp.add(cell.getMyShape(), cell.getMyGridLocation().getCol(),
-               cell.getMyGridLocation().getRow());
+        updateShapeUI(old, cell);
+        
+        //gp.getChildren().remove(old);
+        //gp.add(cell.getMyShape(), cell.getMyGridLocation().getCol(), cell.getMyGridLocation().getRow());
 
+    }
+
+    protected Shape defaultShape(){
+        return new Circle(getMyCellSize(),getMyCellSize(), getMyCellSize());
+        //return new Rectangle(getMyCellSize(),getMyCellSize());
     }
 
 }

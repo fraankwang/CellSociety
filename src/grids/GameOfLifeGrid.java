@@ -29,7 +29,7 @@ public class GameOfLifeGrid extends Grid {
 
     public GameOfLifeGrid (Parameters params) {
         super(params);
-        
+
     }
 
     @Override
@@ -51,7 +51,7 @@ public class GameOfLifeGrid extends Grid {
                 break;
         }
 
-        return new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
+        return new SimpleCell(state, row, col);
 
     }
 
@@ -81,21 +81,19 @@ public class GameOfLifeGrid extends Grid {
     }
 
     @Override
-	protected void toggleState(GridCell cell) {
-		if (cell.getMyCurrentState() == GameOfLifeState.DEAD) {
-			cell.setMyCurrentState(GameOfLifeState.ALIVE);
-			
-		}
-		else if (cell.getMyCurrentState() == GameOfLifeState.ALIVE) {
-			cell.setMyCurrentState(GameOfLifeState.DEAD);
-			
-		} 
-		
-		cell.setMyColor();
-		
-	}
+    protected void toggleState (GridCell cell) {
+        if (cell.getMyCurrentState() == GameOfLifeState.DEAD) {
+            cell.setMyCurrentState(GameOfLifeState.ALIVE);
 
-	/**
+        }
+        else if (cell.getMyCurrentState() == GameOfLifeState.ALIVE) {
+            cell.setMyCurrentState(GameOfLifeState.DEAD);
+
+        }
+
+    }
+
+    /**
      * Calculates the number of "neighbor" cells alive
      *
      * @param r The row index of the cell in question
