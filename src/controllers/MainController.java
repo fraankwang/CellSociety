@@ -130,10 +130,14 @@ public class MainController {
         savedAlert.showAndWait();
     }
 
-    
-    public void setSpeed (double time){
+    /**
+     * Sets the speed of the animation of the Game
+     * 
+     * @param speed how fast the animation should go
+     */
+    public void setSpeed (double speed){
     	if (myPrimaryGame != null){
-    		myPrimaryGame.setTimelineRate(time);
+    		myPrimaryGame.setTimelineRate(speed);
     	}
     }
 }
