@@ -82,6 +82,7 @@ public class Game {
                 MILLISECONDS_PER_SECOND * 1 / Double.parseDouble(myParameters.get("delay"));
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
                                       e -> myGrid.step());
+        
         myGameLoop = new Timeline();
         myGameLoop.setCycleCount(Animation.INDEFINITE);
         myGameLoop.getKeyFrames().add(frame);
@@ -105,6 +106,10 @@ public class Game {
             myGameLoop.stop();
         }
         
+    }
+    
+    public void setTimelineRate(double millisecond){
+        myGameLoop.setDelay(Duration.millis(millisecond));
     }
 
     // =========================================================================

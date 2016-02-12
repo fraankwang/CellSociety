@@ -32,10 +32,10 @@ public class SegregationGrid extends Grid {
 	}
 
 	@Override
-    protected void initializeCell (int r, int c) {
+    protected void initializeCell (int row, int col) {
         State state = State.EMPTY;
 
-        int s = getMyInitialStates()[r][c];
+        int s = getMyInitialStates()[row][col];
         switch (s) {
             case MY_STATE_VALUE_EMPTY:
                 state = State.EMPTY;
@@ -50,8 +50,8 @@ public class SegregationGrid extends Grid {
                 break;
         }
 
-        getMyCells()[r][c] =
-                new SimpleCell(state, r, c, new Rectangle(getMyCellSize(), getMyCellSize()));
+        getMyCells()[row][col] =
+                new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
 
     }
 
@@ -109,9 +109,9 @@ public class SegregationGrid extends Grid {
 	 * @param cell the cell to be moved
 	 */
 	private void move(GridCell cell) {
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getColumns(); c++) {
-				GridCell newCell = getMyCells()[r][c];
+		for (int row = 0; row < getRows(); row++) {
+			for (int col = 0; col < getColumns(); col++) {
+				GridCell newCell = getMyCells()[row][col];
 				if(newCell.getMyCurrentState().equals(State.EMPTY) && (newCell.getMyNextState()==null || newCell.getMyNextState()==State.EMPTY)) {
 					newCell.setMyNextState(cell.getMyCurrentState());
 					cell.setMyNextState(State.EMPTY);

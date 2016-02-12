@@ -4,15 +4,13 @@
 
 package main;
 
-import game.Game;
-import view.CellSocietyViewer;
+import view.MainView;
+import controllers.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
  * Main class of cell society. Sets up GUI
- *
- *
  */
 public class Main extends Application {
 
@@ -21,11 +19,10 @@ public class Main extends Application {
      * is created within the view.
      */
     public void start (Stage s) throws Exception {
-
-    	Game myPrimaryGame = null;
-    	CellSocietyViewer view = new CellSocietyViewer(s, myPrimaryGame);
-    	view.display();
-    	
+    	MainView view = new MainView(s);
+    	MainController controller = new MainController(view);
+    	view.setController(controller);
+    	controller.start();
     }
 
     public static void main (String[] args) {

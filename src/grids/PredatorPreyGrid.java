@@ -37,6 +37,8 @@ public class PredatorPreyGrid extends Grid {
 		fishBreed = Integer.parseInt(params.get("fishbreed"));
 		sharkBreed = Integer.parseInt(params.get("sharkbreed"));
 		sharkHealth = Integer.parseInt(params.get("sharkhealth"));
+		
+		initialize();
 	}
 
 	@Override
@@ -72,10 +74,10 @@ public class PredatorPreyGrid extends Grid {
 		setSharkCellStates();		//Shark states have to be set first because they will eat Fish
 		setFishCellStates();		//don't want Fish to move before being eaten
 		
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getColumns(); c++) {
-				if (getMyCells()[r][c].getMyCurrentState() == State.EMPTY) {
-					setCellState(getMyCells()[r][c]);
+		for (int row = 0; row < getRows(); row++) {
+			for (int col = 0; col < getColumns(); col++) {
+				if (getMyCells()[row][col].getMyCurrentState() == State.EMPTY) {
+					setCellState(getMyCells()[row][col]);
 				}
 			}
 		}
@@ -103,7 +105,7 @@ public class PredatorPreyGrid extends Grid {
 	
 	@Override
 	protected void setCellState (GridCell cell) {
-		if (cell.getMyNextState()== null){
+		if (cell.getMyNextState() == null){
 			cell.setMyNextState(cell.getMyCurrentState());
 		}
 		
@@ -122,40 +124,17 @@ public class PredatorPreyGrid extends Grid {
 		return offsets;
 	}
 
-	/**
-	 * Overrides Grid method in order to include
-	 * the wrap around
-	 */
-	@Override
-	protected List<GridCell> getNeighbors(GridCell cell){
-		int r = cell.getMyGridLocation().getRow();
-		int c = cell.getMyGridLocation().getCol();
-
-		List<Offset> offsets = neighborOffsets();
-		List<GridCell> neighbors = new ArrayList<GridCell>();
-
-		for(Offset offset : offsets){
-			int neighborRow = r + offset.getRow();
-			int neighborCol = c + offset.getCol();
-			neighborRow = checkAndSetRowWrapAround(neighborRow);
-			neighborCol = checkAndSetColWrapAround(neighborCol);
-			neighbors.add(getMyCells()[neighborRow][neighborCol]);
-		}
-
-		return neighbors;
-		
-	}
-
 
 	/**
 	 * Iterates through the Fish Cell states that haven't already been updated
 	 * and sets their next states
 	 */
 	private void setFishCellStates() {
-		for (int r = 0; r < getMyCells().length; r++) {
-			for (int c = 0; c < getMyCells()[0].length; c++) {
-				if(getMyCells()[r][c] instanceof FishCell && (getMyCells()[r][c].getMyNextState() == null || getMyCells()[r][c].getMyNextState()== State.DEAD)) {
-					setFishCellState((FishCell)getMyCells()[r][c]);
+		for (int row = 0; row < getRows(); row++) {
+			for (int col = 0; col < getColumns(); col++) {
+				GridCell cell = getMyCells()[row][col];
+				if (cell instanceof FishCell && (cell.getMyNextState() == null || cell.getMyNextState()== State.DEAD)) {
+					setFishCellState((FishCell)getMyCells()[row][col]);
 				}
 			}
 		}
@@ -176,21 +155,7 @@ public class PredatorPreyGrid extends Grid {
 			kill(fishCell, State.FISH);
 		}
 		else {
-			if (validMoves.size() > 0) {
-				GridCell toMove = getRandomValidCell(validMoves);
-				validMoves.remove(toMove);
-				move(fishCell, toMove);
-			}
-			else {
-				fishCell.setMyNextState(State.FISH);
-			}
-		}
-
-		if (fishCell.getTimeUntilBreed() == 0) {
-			if (validMoves.size() > 0) {
-				GridCell toSpawn = getRandomValidCell(validMoves);
-				breed(toSpawn, State.FISH);
-			}
+			moveAndBreed(fishCell, validMoves, fishCell.getTimeUntilBreed());
 		}
 		
 	}
@@ -236,21 +201,7 @@ public class PredatorPreyGrid extends Grid {
 			kill(shark, shark.getMyCurrentState());
 		}
 		else {
-			if (validMoves.size()>0) {
-				GridCell toMove = getRandomValidCell(validMoves);
-				validMoves.remove(toMove);
-				move(shark,toMove);
-			}
-			else {
-				shark.setMyNextState(State.SHARK);
-			}
-		}
-
-		if (shark.getTimeUntilBreed() == 0) {
-			if(validMoves.size()>0){
-				GridCell toSpawn = getRandomValidCell(validMoves);;
-				breed(toSpawn, State.SHARK);
-			}
+			moveAndBreed(shark, validMoves, shark.getTimeUntilBreed());
 		}
 		
 	}
@@ -268,11 +219,11 @@ public class PredatorPreyGrid extends Grid {
 		getMyGridPane().getChildren().remove(toSpawn.getMyShape());
 		if (fishOrShark == State.SHARK) {
 			toSpawn = new SharkCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
-			toSpawn.setMyNextState(State.SHARK);
+			toSpawn.setMyNextState(fishOrShark);
 		}
 		else if (fishOrShark == State.FISH) {
 			toSpawn = new FishCell(State.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
-			toSpawn.setMyNextState(State.FISH);
+			toSpawn.setMyNextState(fishOrShark);
 		}
 
 		getMyCells()[row][col] = toSpawn;
@@ -347,7 +298,26 @@ public class PredatorPreyGrid extends Grid {
 	}
 
 
+	private void moveAndBreed(GridCell cell, List<GridCell> validMoves, int timeUntilBreed){
+		if (validMoves.size()>0) {
+			GridCell toMove = getRandomValidCell(validMoves);
+			validMoves.remove(toMove);
+			move(cell,toMove);
+		}
+		else {
+			cell.setMyNextState(cell.getMyCurrentState());
+		}
 
+
+		if (timeUntilBreed == 0) {
+			if(validMoves.size()>0){
+				GridCell toSpawn = getRandomValidCell(validMoves);;
+				breed(toSpawn, cell.getMyCurrentState());
+			}
+		}
+	}
+	
+	
 	/**
 	 * Gets a random cell from list
 	 * 
@@ -378,45 +348,6 @@ public class PredatorPreyGrid extends Grid {
 		
 	}
 
-	/**
-	 * Checks to see if the row wraps around and
-	 * returns itself it doesn't or does the math
-	 * for the wrap around
-	 * @param row
-	 * @return the number to set the row to
-	 */
-	private int checkAndSetRowWrapAround(int row){
-		if (row < 0) {
-			return row + getRows();
-		}
-		else if (row == getRows()){
-			return 0;
-		}
-		else {
-			return row;
-		}
-		
-	}
-
-	/**
-	 * Checks to see if the col wraps around and
-	 * returns itself it doesn't or does the math
-	 * for the wrap around
-	 * @param col
-	 * @return the number to set the col to
-	 */
-	private int checkAndSetColWrapAround(int col){
-		if(col < 0) {
-			return col + getColumns();
-		}
-		else if(col == getColumns()){
-			return 0;
-		}
-		else{
-			return col;
-		}
-		
-	}
 
     // =========================================================================
     // Getters and Setters

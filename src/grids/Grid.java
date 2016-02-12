@@ -10,12 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
+import constants.Location;
 import constants.NeighborOffset;
 import constants.Offset;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
-
-
 
 /**
  * Abstract class representing a grid to be used for the simulation
@@ -74,9 +73,9 @@ public abstract class Grid {
      */
     private void initializeCells () {
         myCells = new GridCell[myRows][myColumns];
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-                initializeCell(r, c);
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                initializeCell(row, col);
             }
         }
         
@@ -100,11 +99,11 @@ public abstract class Grid {
         int[][] initialStates = new int[myRows][myColumns];
         String[] parsed = param.split(",");
 
-        for (int r = 0; r < parsed.length; r++) {
-            String s = parsed[r];
-            for (int c = 0; c < s.length(); c++) {
-                int state = Character.getNumericValue(s.charAt(c));
-                initialStates[r][c] = state;
+        for (int row = 0; row < parsed.length; row++) {
+            String s = parsed[row];
+            for (int col = 0; col < s.length(); col++) {
+                int state = Character.getNumericValue(s.charAt(col));
+                initialStates[row][col] = state;
             }
         }
 
@@ -120,11 +119,11 @@ public abstract class Grid {
         myGridPane = new GridPane();
         myGridPane.setPrefSize(myGridSize.getWidth(), myGridSize.getHeight());
 
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-            	GridCell cell = myCells[r][c];
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+            	GridCell cell = myCells[row][col];
             	cell.getMyShape().setOnMouseClicked(e -> toggleState(cell));
-                myGridPane.add(cell.getMyShape(), c, r);
+                myGridPane.add(cell.getMyShape(), col, row);
             }
         }
 
@@ -159,9 +158,9 @@ public abstract class Grid {
      * Loops through each cell in the grid and updates its next state
      */
     protected void setCellStates () {
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-                GridCell cell = myCells[r][c];
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                GridCell cell = myCells[row][col];
                 this.setCellState(cell);
             }
         }
@@ -180,9 +179,9 @@ public abstract class Grid {
      * Loop through myCells and set transition each cell to its next state
      */
     private void updateCellStates () {        
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-                myCells[r][c].transitionStates();
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                myCells[row][col].transitionStates();
             }
         }
         
@@ -195,24 +194,39 @@ public abstract class Grid {
      * @return The list of neighboring GridCells
      */
     protected List<GridCell> getNeighbors (GridCell cell) {
-        int r = cell.getMyGridLocation().getRow();
-        int c = cell.getMyGridLocation().getCol();
 
         List<Offset> offsets = neighborOffsets();
         List<GridCell> neighbors = new ArrayList<GridCell>();
 
         for (Offset offset : offsets) {
-            int neighborRow = r + offset.getRow();
-            int neighborCol = c + offset.getCol();
+            Location neighborLocation = neighborLocationToroidal(cell, offset);
+            
+            if (cellInBounds(neighborLocation)) {
+                neighbors.add(myCells[neighborLocation.getRow()][neighborLocation.getCol()]);
 
-            if (cellInBounds(neighborRow, neighborCol)) {
-                neighbors.add(myCells[neighborRow][neighborCol]);
             }
         }
 
         return neighbors;
         
     }
+    
+    /**
+     * Used by getNeighbors for a toroidal grid (I think it also works for finite)
+     * @param cell GridCell
+     * @param offset Offset where potential neighbor is located
+     * @return Location of neighbor at offset from cell
+     */
+    private Location neighborLocationToroidal(GridCell cell, Offset offset){
+       int neighborRow = (cell.getMyGridLocation().getRow() + offset.getRow()) % myRows;
+       int neighborCol = (cell.getMyGridLocation().getCol() + offset.getCol()) % myColumns;
+
+       return new Location(neighborRow, neighborCol);
+    }
+    
+    //TODO: infinite grid
+    //private Location neighborLocationInfinite
+    // or private Location getNeighborsInfinite
     
     /**
      * Returns a list of offsets to check to find a GridCell's neighbors
@@ -247,8 +261,10 @@ public abstract class Grid {
 	 * @param col The column to check
 	 * @return A boolean indicating whether a cell in that position would be out of bounds
 	 */
-	protected boolean cellInBounds (int row, int col) {
-	
+	protected boolean cellInBounds (Location location) {
+	    int row = location.getRow();
+	    int col = location.getCol();
+	    
 	    boolean farTop = row < 0;
 	    boolean farBottom = row > getRows()-1;
 	    boolean farLeft = col < 0;
@@ -339,9 +355,9 @@ public abstract class Grid {
     private String getCurrentStatesArrayString () {
     	String currentStates = "";
     	
-    	for (int i = 0; i < getRows(); i++) {
-    		for (int j = 0; j < getColumns(); j++) {
-    			GridCell cell = myCells[i][j];
+    	for (int row = 0; row < getRows(); row++) {
+    		for (int col = 0; col < getColumns(); col++) {
+    			GridCell cell = myCells[row][col];
     			int currentStateValue = cell.getMyCurrentState().getStateValue();
     			currentStates += Integer.toString(currentStateValue);
     		}
