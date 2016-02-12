@@ -6,6 +6,16 @@
 <columns>10</columns>
 <delay>50</delay>
 <probcatch>.33</probcatch>
-<initialStates>2222222222,2222222222,2222222222,2222222222,2222222222,2222222222,2222222222,2222222222,2222222222,2222222222</initialStates>
-
+<initialStates>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+	<row>2222222222</row>
+</initialStates>
 </root>
