@@ -3,7 +3,7 @@
 <delay>150</delay>
 <columns>10</columns>
 <width>500</width>
-<initialStates></initialStates>
+<initialStates>
 	<row>0100000000</row>
 	<row>0100000000</row>
 	<row>0100001000</row>
@@ -14,6 +14,7 @@
 	<row>0011000000</row>
 	<row>1100000000</row>
 	<row>1100000000</row>
+</initialStates>
 <rows>10</rows>
 <height>500</height>
 </root>

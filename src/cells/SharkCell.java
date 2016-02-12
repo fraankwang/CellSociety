@@ -1,10 +1,13 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package cells;
 
-import java.util.List;
 import constants.Location;
-import javafx.scene.shape.Shape;
 import states.State;
 import states.WatorState;
+import java.util.List;
 
 /**
  * The class for the Shark
@@ -16,8 +19,8 @@ public class SharkCell extends DataCell {
     private int sharkCurrentBreedTime;
     private int sharkBreedTime;
 
-    public SharkCell (State currentState, int row, int col, Shape shape, int health, int breedTime) {
-        super(currentState, row, col, shape);
+    public SharkCell (State currentState, int row, int col, int health, int breedTime) {
+        super(currentState, row, col);
         sharkMaxHealth = health;
         sharkCurrentHealth = sharkMaxHealth;
         sharkBreedTime = breedTime;
@@ -32,7 +35,7 @@ public class SharkCell extends DataCell {
      */
     
     public SharkCell(SharkCell shark, Location location){
-    	super(shark.getMyCurrentState(), location.getRow(), location.getCol(), shark.getMyShape());
+    	super(shark.getMyCurrentState(), location.getRow(), location.getCol());
     	sharkCurrentHealth = shark.getCurrentHealth();
     	sharkCurrentBreedTime = shark.getTimeUntilBreed();
     	sharkBreedTime = shark.getBreedTime();

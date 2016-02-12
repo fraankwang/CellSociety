@@ -12,8 +12,6 @@ import cells.FishCell;
 import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
-import constants.NeighborOffset;
-import constants.Offset;
 import constants.Parameters;
 import javafx.scene.shape.Rectangle;
 import states.State;
@@ -26,374 +24,359 @@ import states.WatorState;
  */
 public class PredatorPreyGrid extends Grid {
 
-	private int fishBreed;
-	private int sharkBreed;
-	private int sharkHealth;
+    private int fishBreed;
+    private int sharkBreed;
+    private int sharkHealth;
 
-	private static final int MY_STATE_VALUE_EMPTY = 0;
-	private static final int MY_STATE_VALUE_SHARK = 1;
-	private static final int MY_STATE_VALUE_FISH = 2;
+    private static final int MY_STATE_VALUE_EMPTY = 0;
+    private static final int MY_STATE_VALUE_SHARK = 1;
+    private static final int MY_STATE_VALUE_FISH = 2;
 
-	public PredatorPreyGrid (Parameters params) {
-		super(params);
-		
-		fishBreed = Integer.parseInt(params.getParameter("fishbreed"));
-		sharkBreed = Integer.parseInt(params.getParameter("sharkbreed"));
-		sharkHealth = Integer.parseInt(params.getParameter("sharkhealth"));
-		
-		initialize();
-	}
+    public PredatorPreyGrid (Parameters params) {
+        super(params);
 
-	@Override
-	protected void initializeCell (int row, int col) {
-		GridCell cell = new SimpleCell(WatorState.EMPTY, row, col,
-				new Rectangle(getMyCellSize(), getMyCellSize()));
+        fishBreed = Integer.parseInt(params.getParameter("fishbreed"));
+        sharkBreed = Integer.parseInt(params.getParameter("sharkbreed"));
+        sharkHealth = Integer.parseInt(params.getParameter("sharkhealth"));
 
-		int s = getMyInitialStates()[row][col];
-		switch (s) {
-			case MY_STATE_VALUE_EMPTY:
-				cell =  new SimpleCell(WatorState.EMPTY, row, col,
-						new Rectangle(getMyCellSize(), getMyCellSize()));;
-						break;
-			case MY_STATE_VALUE_SHARK:
-				cell = new SharkCell(WatorState.SHARK, row, col,
-						new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,
-						sharkBreed);
-				break;
-			case MY_STATE_VALUE_FISH:
-				cell = new FishCell(WatorState.FISH, row, col,
-						new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
-			default:
+        initializeCells();
+    }
+
+    @Override
+    protected GridCell initializeCell (int row, int col) {
+        GridCell cell = new SimpleCell(WatorState.EMPTY, row, col);
+
+        int s = getMyInitialStates()[row][col];
+        switch (s) {
+            case MY_STATE_VALUE_EMPTY:
+                cell = new SimpleCell(WatorState.EMPTY, row, col);
+                break;
+            case MY_STATE_VALUE_SHARK:
+                cell = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
+                break;
+            case MY_STATE_VALUE_FISH:
+                cell = new FishCell(WatorState.FISH, row, col, fishBreed);
+            default:
                 // Display error message
                 break;
-		}
+        }
 
-		getMyCells()[row][col] = cell;
+        return cell;
 
-	}
+    }
 
-	@Override
-	protected void setCellStates() { 
-		setSharkCellStates();		//Shark states have to be set first because they will eat Fish
-		setFishCellStates();		//don't want Fish to move before being eaten
-		
-		for (int row = 0; row < getRows(); row++) {
-			for (int col = 0; col < getColumns(); col++) {
-				if (getMyCells()[row][col].getMyCurrentState() == WatorState.EMPTY) {
-					setCellState(getMyCells()[row][col]);
-				}
-			}
-		}
+    @Override
+    protected void setCellStates () {
+        setSharkCellStates();		// Shark states have to be set first because they will eat
+                             		// Fish
+        setFishCellStates();		// don't want Fish to move before being eaten
 
-	}
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                if (getMyCells()[row][col].getMyCurrentState() == WatorState.EMPTY) {
+                    setCellState(getMyCells()[row][col]);
+                }
+            }
+        }
 
-	@Override
-	protected void toggleState(GridCell cell) {
-		if (cell.getMyCurrentState() == WatorState.EMPTY) {
-			cell.setMyCurrentState(WatorState.SHARK);
-			
-		}
-		else if (cell.getMyCurrentState() == WatorState.SHARK) {
-			cell.setMyCurrentState(WatorState.FISH);
-			
-		} 
-		else if (cell.getMyCurrentState() == WatorState.FISH) {
-			cell.setMyCurrentState(WatorState.EMPTY);
-			
-		} 
-		else if (cell.getMyCurrentState() == WatorState.EMPTY) {
-			cell.setMyCurrentState(WatorState.DEAD);
-		
-		}
-		cell.setMyColor();
-		
-	}
-	
-	@Override
-	protected void setCellState (GridCell cell) {
-		if (cell.getMyNextState() == null){
-			cell.setMyNextState(cell.getMyCurrentState());
-		}
-		
-	}
+    }
 
-	@Override
-	protected List<Offset> neighborOffsets () {
+    @Override
+    protected void toggleState (GridCell cell) {
+        if (cell.getMyCurrentState() == WatorState.EMPTY) {
+            cell.setMyCurrentState(WatorState.SHARK);
 
-		List<Offset> offsets = new ArrayList<Offset>();
+        }
+        else if (cell.getMyCurrentState() == WatorState.SHARK) {
+            cell.setMyCurrentState(WatorState.FISH);
 
-		offsets.add(NeighborOffset.TOP.getOffset());
-		offsets.add(NeighborOffset.LEFT.getOffset());
-		offsets.add(NeighborOffset.RIGHT.getOffset());
-		offsets.add(NeighborOffset.BOTTOM.getOffset());
+        }
+        else if (cell.getMyCurrentState() == WatorState.FISH) {
+            cell.setMyCurrentState(WatorState.EMPTY);
 
-		return offsets;
-	}
+        }
+        else if (cell.getMyCurrentState() == WatorState.EMPTY) {
+            cell.setMyCurrentState(WatorState.DEAD);
 
+        }
 
-	/**
-	 * Iterates through the Fish Cell states that haven't already been updated
-	 * and sets their next states
-	 */
-	private void setFishCellStates() {
-		for (int row = 0; row < getRows(); row++) {
-			for (int col = 0; col < getColumns(); col++) {
-				GridCell cell = getMyCells()[row][col];
-				if (cell instanceof FishCell && 
-				   (cell.getMyNextState() == null || cell.getMyNextState()== WatorState.DEAD)) {
-					setFishCellState((FishCell)getMyCells()[row][col]);
-				}
-			}
-		}
-		
-	}
+    }
 
-	/**
-	 * Sets the state for the Fish Cell passed in. It will kill or move the 
-	 * fish and then breeds if that is possible.
-	 * 
-	 * @param fishCell the Fish Cell that needs to be updated
-	 */
-	private void setFishCellState(FishCell fishCell) {
-		fishCell.update();
-		List<GridCell> neighbors = getNeighbors(fishCell);
-		List<GridCell> validMoves = getValidCellList(neighbors);
-		if (fishCell.getMyNextState() == WatorState.DEAD) {
-			kill(fishCell, WatorState.FISH);
-		}
-		else {
-			moveAndBreed(fishCell, validMoves, fishCell.getTimeUntilBreed());
-		}
-		
-	}
+    @Override
+    protected void setCellState (GridCell cell) {
+        if (cell.getMyNextState() == null) {
+            cell.setMyNextState(cell.getMyCurrentState());
+        }
 
-	/**
-	 * Iterates through the Shark Cell states that haven't already been updated
-	 * and sets their next states
-	 */
-	private void setSharkCellStates() {
-		for (int row = 0; row < getRows(); row++) {
-			for (int col = 0; col < getColumns(); col++) {
-				GridCell cell = getMyCells()[row][col];
-				if (cell instanceof SharkCell && 
-				   (cell.getMyNextState() == null || cell.getMyNextState() == WatorState.DEAD)) {
-					setSharkCellState((SharkCell) cell);
-				}
-			}
-		}
-		
-	}
+    }
 
-	/**
-	 * Sets the state for the Shark Cell passed in. It will kill, move, or have the 
-	 * shark eat and then breeds if that is possible. 
-	 * 
-	 * @param shark the Shark Cell that needs to be updated
-	 */
-	private void setSharkCellState(SharkCell shark) {
-		shark.update();
-		List<GridCell> neighbors = getNeighbors(shark);
-		List<FishCell> edible = new ArrayList<FishCell>();
-		List<GridCell> validMoves = getValidCellList(neighbors);
-		
-		if (shark.canEat(neighbors)) {
-			for (GridCell cell : neighbors) {
-				if (cell instanceof FishCell) {
-					edible.add((FishCell) cell);
-				}
-			}
-			Collections.shuffle(edible);
-			shark.eat((FishCell)(edible.remove(edible.size()-1)));
-			shark.setMyNextState(shark.getMyCurrentState());
-		}
-		else if (shark.getMyNextState() == WatorState.DEAD) {
-			kill(shark, shark.getMyCurrentState());
-		}
-		else {
-			moveAndBreed(shark, validMoves, shark.getTimeUntilBreed());
-		}
-		
-	}
+    /**
+     * Iterates through the Fish Cell states that haven't already been updated
+     * and sets their next states
+     */
+    private void setFishCellStates () {
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                GridCell cell = getMyCells()[row][col];
+                if (cell instanceof FishCell &&
+                    (cell.getMyNextState() == null || cell.getMyNextState() == WatorState.DEAD)) {
+                    setFishCellState((FishCell) getMyCells()[row][col]);
+                }
+            }
+        }
 
-	/**
-	 * Breeds a new Shark or Fish
-	 * 
-	 * @param toSpawn the place to spawn a new fish
-	 * @param fishOrShark determines whether to make a Fish or Shark
-	 */
-	private void breed(GridCell toSpawn, State fishOrShark) {
-		int row = toSpawn.getMyGridLocation().getRow();
-		int col = toSpawn.getMyGridLocation().getCol();
+    }
 
-		getMyGridPane().getChildren().remove(toSpawn.getMyShape());
-		if (fishOrShark == WatorState.SHARK) {
-			toSpawn = new SharkCell(WatorState.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
-			toSpawn.setMyNextState(fishOrShark);
-		}
-		else if (fishOrShark == WatorState.FISH) {
-			toSpawn = new FishCell(WatorState.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), fishBreed);
-			toSpawn.setMyNextState(fishOrShark);
-		}
+    /**
+     * Sets the state for the Fish Cell passed in. It will kill or move the
+     * fish and then breeds if that is possible.
+     * 
+     * @param fishCell the Fish Cell that needs to be updated
+     */
+    private void setFishCellState (FishCell fishCell) {
+        fishCell.update();
+        List<GridCell> neighbors = getNeighbors(fishCell);
+        List<GridCell> validMoves = getValidCellList(neighbors);
+        if (fishCell.getMyNextState() == WatorState.DEAD) {
+            kill(fishCell, WatorState.FISH);
+        }
+        else {
+            moveAndBreed(fishCell, validMoves, fishCell.getTimeUntilBreed());
+        }
 
-		getMyCells()[row][col] = toSpawn;
-		getMyGridPane().add(toSpawn.getMyShape(), col, row);
-		
-	}
+    }
 
-	/**
-	 * Moves the cell at origin to destination
-	 * 
-	 * @param origin the start position
-	 * @param destination the end position
-	 */
-	private void move (GridCell origin, GridCell destination) {
-		int originCol = origin.getMyGridLocation().getCol();
-		int originRow = origin.getMyGridLocation().getRow();
+    /**
+     * Iterates through the Shark Cell states that haven't already been updated
+     * and sets their next states
+     */
+    private void setSharkCellStates () {
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
+                GridCell cell = getMyCells()[row][col];
+                if (cell instanceof SharkCell &&
+                    (cell.getMyNextState() == null || cell.getMyNextState() == WatorState.DEAD)) {
+                    setSharkCellState((SharkCell) cell);
+                }
+            }
+        }
 
-		int destinationCol = destination.getMyGridLocation().getCol();
-		int destinationRow = destination.getMyGridLocation().getRow();
+    }
 
-		GridCell destinationCell = getMyCells()[destinationRow][destinationCol];
-		getMyGridPane().getChildren().remove(destinationCell.getMyShape());
+    /**
+     * Sets the state for the Shark Cell passed in. It will kill, move, or have the
+     * shark eat and then breeds if that is possible.
+     * 
+     * @param shark the Shark Cell that needs to be updated
+     */
+    private void setSharkCellState (SharkCell shark) {
+        shark.update();
+        List<GridCell> neighbors = getNeighbors(shark);
+        List<FishCell> edible = new ArrayList<FishCell>();
+        List<GridCell> validMoves = getValidCellList(neighbors);
 
-		GridCell originCell = getMyCells()[originRow][originCol];
-		getMyGridPane().getChildren().remove(originCell.getMyShape());
+        if (shark.canEat(neighbors)) {
+            for (GridCell cell : neighbors) {
+                if (cell instanceof FishCell) {
+                    edible.add((FishCell) cell);
+                }
+            }
+            Collections.shuffle(edible);
+            shark.eat((FishCell) (edible.remove(edible.size() - 1)));
+            shark.setMyNextState(shark.getMyCurrentState());
+        }
+        else if (shark.getMyNextState() == WatorState.DEAD) {
+            kill(shark, shark.getMyCurrentState());
+        }
+        else {
+            moveAndBreed(shark, validMoves, shark.getTimeUntilBreed());
+        }
 
-		if (origin instanceof SharkCell) {
-			destinationCell = new SharkCell((SharkCell) origin, destination.getMyGridLocation());
-			destinationCell.setMyNextState(WatorState.SHARK);
-			originCell = new SimpleCell(WatorState.SHARK, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
-		}
-		else if (origin instanceof FishCell) {
-			destinationCell = new FishCell((FishCell) origin, destination.getMyGridLocation());
-			destinationCell.setMyNextState(WatorState.FISH);
-			originCell = new SimpleCell(WatorState.FISH, origin.getMyGridLocation().getRow(), origin.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
-		}
+    }
 
-		getMyCells()[destinationRow][destinationCol] = destinationCell;
-		destinationCell.setMyCurrentState(WatorState.EMPTY);
+    /**
+     * Breeds a new Shark or Fish
+     * 
+     * @param toSpawn the place to spawn a new fish
+     * @param fishOrShark determines whether to make a Fish or Shark
+     */
+    private void breed (GridCell toSpawn, State fishOrShark) {
+        int row = toSpawn.getMyGridLocation().getRow();
+        int col = toSpawn.getMyGridLocation().getCol();
 
-		getMyCells()[originRow][originCol] = originCell;
-		originCell.setMyNextState(WatorState.EMPTY);
+        // getMyGridPane().getChildren().remove(toSpawn.getMyShape());
+        if (fishOrShark == WatorState.SHARK) {
+            toSpawn = new SharkCell(WatorState.EMPTY, row, col, sharkHealth, sharkBreed);
+            toSpawn.setMyNextState(fishOrShark);
+        }
+        else if (fishOrShark == WatorState.FISH) {
+            toSpawn = new FishCell(WatorState.EMPTY, row, col, fishBreed);
+            toSpawn.setMyNextState(fishOrShark);
+        }
 
-		getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
-		getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
+        getMyCells()[row][col] = toSpawn;
+        // getMyGridPane().add(toSpawn.getMyShape(), col, row);
 
-	}
+    }
 
-	/**
-	 * Kills the cell passed into it
-	 * 
-	 * @param cell the state to kill
-	 * @param sharkOrFish determines whether or the cell is a shark or fish
-	 */
-	private void kill(GridCell cell, State sharkOrFish){
-		int row = cell.getMyGridLocation().getRow();
-		int col = cell.getMyGridLocation().getCol();
-		GridCell deadCell = getMyCells()[row][col];
-		getMyGridPane().getChildren().remove(deadCell.getMyShape());
+    /**
+     * Moves the cell at origin to destination
+     * 
+     * @param origin the start position
+     * @param destination the end position
+     */
+    private void move (GridCell origin, GridCell destination) {
+        int originCol = origin.getMyGridLocation().getCol();
+        int originRow = origin.getMyGridLocation().getRow();
 
-		if (sharkOrFish == WatorState.FISH){
-			deadCell =  new SimpleCell(WatorState.FISH, deadCell.getMyGridLocation().getRow(), deadCell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
-		}
-		else if (sharkOrFish == WatorState.SHARK){
-			deadCell =  new SimpleCell(WatorState.SHARK, deadCell.getMyGridLocation().getRow(), deadCell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
-		}
+        int destinationCol = destination.getMyGridLocation().getCol();
+        int destinationRow = destination.getMyGridLocation().getRow();
 
-		getMyCells()[row][col] = deadCell;
-		getMyGridPane().add(deadCell.getMyShape(), col, row);
-		deadCell.setMyNextState(WatorState.EMPTY);
+        GridCell destinationCell = getMyCells()[destinationRow][destinationCol];
+        // getMyGridPane().getChildren().remove(destinationCell.getMyShape());
 
-	}
+        GridCell originCell = getMyCells()[originRow][originCol];
+        // getMyGridPane().getChildren().remove(originCell.getMyShape());
 
+        if (origin instanceof SharkCell) {
+            destinationCell = new SharkCell((SharkCell) origin, destination.getMyGridLocation());
+            destinationCell.setMyNextState(WatorState.SHARK);
+            originCell =
+                    new SimpleCell(WatorState.SHARK, origin.getMyGridLocation().getRow(),
+                                   origin.getMyGridLocation().getCol());
+        }
+        else if (origin instanceof FishCell) {
+            destinationCell = new FishCell((FishCell) origin, destination.getMyGridLocation());
+            destinationCell.setMyNextState(WatorState.FISH);
+            originCell =
+                    new SimpleCell(WatorState.FISH, origin.getMyGridLocation().getRow(),
+                                   origin.getMyGridLocation().getCol());
+        }
 
-	private void moveAndBreed(GridCell cell, List<GridCell> validMoves, int timeUntilBreed){
-		if (validMoves.size()>0) {
-			GridCell toMove = getRandomValidCell(validMoves);
-			validMoves.remove(toMove);
-			move(cell,toMove);
-		}
-		else {
-			cell.setMyNextState(cell.getMyCurrentState());
-		}
+        getMyCells()[destinationRow][destinationCol] = destinationCell;
+        destinationCell.setMyCurrentState(WatorState.EMPTY);
 
+        getMyCells()[originRow][originCol] = originCell;
+        originCell.setMyNextState(WatorState.EMPTY);
 
-		if (timeUntilBreed == 0) {
-			if(validMoves.size()>0){
-				GridCell toSpawn = getRandomValidCell(validMoves);;
-				breed(toSpawn, cell.getMyCurrentState());
-			}
-		}
-	}
-	
-	
-	/**
-	 * Gets a random cell from list
-	 * 
-	 * @param validCells should be cell that is either empty and hasn't had its next state set
-	 * @return a random cell
-	 */
-	private GridCell getRandomValidCell(List<GridCell> validCells){
-		Collections.shuffle(validCells);
-		return validCells.get(0);
-	}
-	
+        // getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
+        // getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
 
-	/**
-	 * Takes the list of neighbors of a cell and returns
-	 * another list of cells that are valid for movement/breeding
-	 * 
-	 * @param neighbors
-	 * @return a list of valid cells
-	 */
-	private List<GridCell> getValidCellList(List<GridCell> neighbors){
-		List<GridCell> validCells = new ArrayList<GridCell>();
-		for (GridCell cell: neighbors) {
-			if (cell.getMyCurrentState() == WatorState.EMPTY && cell.getMyNextState() == null) {
-				validCells.add(cell);
-			}
-		}
-		return validCells;
-		
-	}
+    }
 
+    /**
+     * Kills the cell passed into it
+     * 
+     * @param cell the state to kill
+     * @param sharkOrFish determines whether or the cell is a shark or fish
+     */
+    private void kill (GridCell cell, State sharkOrFish) {
+        int row = cell.getMyGridLocation().getRow();
+        int col = cell.getMyGridLocation().getCol();
+        GridCell deadCell = getMyCells()[row][col];
+        // getMyGridPane().getChildren().remove(deadCell.getMyShape());
+
+        if (sharkOrFish == WatorState.FISH) {
+            deadCell =
+                    new SimpleCell(WatorState.FISH, deadCell.getMyGridLocation().getRow(),
+                                   deadCell.getMyGridLocation().getCol());
+        }
+        else if (sharkOrFish == WatorState.SHARK) {
+            deadCell =
+                    new SimpleCell(WatorState.SHARK, deadCell.getMyGridLocation().getRow(),
+                                   deadCell.getMyGridLocation().getCol());
+        }
+
+        getMyCells()[row][col] = deadCell;
+        // getMyGridPane().add(deadCell.getMyShape(), col, row);
+        deadCell.setMyNextState(WatorState.EMPTY);
+
+    }
+
+    private void moveAndBreed (GridCell cell, List<GridCell> validMoves, int timeUntilBreed) {
+        if (validMoves.size() > 0) {
+            GridCell toMove = getRandomValidCell(validMoves);
+            validMoves.remove(toMove);
+            move(cell, toMove);
+        }
+        else {
+            cell.setMyNextState(cell.getMyCurrentState());
+        }
+
+        if (timeUntilBreed == 0) {
+            if (validMoves.size() > 0) {
+                GridCell toSpawn = getRandomValidCell(validMoves);
+                ;
+                breed(toSpawn, cell.getMyCurrentState());
+            }
+        }
+    }
+
+    /**
+     * Gets a random cell from list
+     * 
+     * @param validCells should be cell that is either empty and hasn't had its next state set
+     * @return a random cell
+     */
+    private GridCell getRandomValidCell (List<GridCell> validCells) {
+        Collections.shuffle(validCells);
+        return validCells.get(0);
+    }
+
+    /**
+     * Takes the list of neighbors of a cell and returns
+     * another list of cells that are valid for movement/breeding
+     * 
+     * @param neighbors
+     * @return a list of valid cells
+     */
+    private List<GridCell> getValidCellList (List<GridCell> neighbors) {
+        List<GridCell> validCells = new ArrayList<GridCell>();
+        for (GridCell cell : neighbors) {
+            if (cell.getMyCurrentState() == WatorState.EMPTY && cell.getMyNextState() == null) {
+                validCells.add(cell);
+            }
+        }
+        return validCells;
+
+    }
 
     // =========================================================================
     // Getters and Setters
     // =========================================================================
-	
-	@Override
-	public Map<String,String> getMyGameState () {
-		Map<String,String> currentGameState = super.getMyGameState();
-		currentGameState.put("fishbreed", Integer.toString(getFishBreed()));
-		currentGameState.put("sharkbreed", Integer.toString(getSharkBreed()));
-		currentGameState.put("sharkhealth", Integer.toString(getSharkHealth()));
-		
-		return currentGameState;
-		
-	}
 
-	public int getFishBreed() {
-		return fishBreed;
-	}
+    @Override
+    public Map<String, String> getMyGameState () {
+        Map<String, String> currentGameState = super.getMyGameState();
+        currentGameState.put("fishbreed", Integer.toString(getFishBreed()));
+        currentGameState.put("sharkbreed", Integer.toString(getSharkBreed()));
+        currentGameState.put("sharkhealth", Integer.toString(getSharkHealth()));
 
-	public void setFishBreed(int fishBreed) {
-		this.fishBreed = fishBreed;
-	}
+        return currentGameState;
 
-	public int getSharkBreed() {
-		return sharkBreed;
-	}
+    }
 
-	public void setSharkBreed(int sharkBreed) {
-		this.sharkBreed = sharkBreed;
-	}
+    public int getFishBreed () {
+        return fishBreed;
+    }
 
-	public int getSharkHealth() {
-		return sharkHealth;
-	}
+    public void setFishBreed (int fishBreed) {
+        this.fishBreed = fishBreed;
+    }
 
-	public void setSharkHealth(int sharkHealth) {
-		this.sharkHealth = sharkHealth;
-	}
+    public int getSharkBreed () {
+        return sharkBreed;
+    }
+
+    public void setSharkBreed (int sharkBreed) {
+        this.sharkBreed = sharkBreed;
+    }
+
+    public int getSharkHealth () {
+        return sharkHealth;
+    }
+
+    public void setSharkHealth (int sharkHealth) {
+        this.sharkHealth = sharkHealth;
+    }
 }
