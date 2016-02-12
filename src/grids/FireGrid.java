@@ -4,14 +4,10 @@
 
 package grids;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import cells.GridCell;
 import cells.SimpleCell;
-import constants.NeighborOffset;
-import constants.Offset;
 import constants.Parameters;
 import javafx.scene.shape.Rectangle;
 import states.FireState;
@@ -37,7 +33,7 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    protected void initializeCell (int row, int col) {
+    protected GridCell initializeCell (int row, int col) {
         State state = FireState.EMPTY;
         
         int s = getMyInitialStates()[row][col];
@@ -61,8 +57,7 @@ public class FireGrid extends Grid {
 
         }
 
-        getMyCells()[row][col] =
-                new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
+        return new SimpleCell(state, row, col, new Rectangle(getMyCellSize(), getMyCellSize()));
 
     }
 
@@ -98,20 +93,6 @@ public class FireGrid extends Grid {
 		cell.setMyColor();
 		
 	}
-
-	@Override
-    protected List<Offset> neighborOffsets () {
-
-        List<Offset> offsets = new ArrayList<Offset>();
-
-        offsets.add(NeighborOffset.TOP.getOffset());
-        offsets.add(NeighborOffset.LEFT.getOffset());
-        offsets.add(NeighborOffset.RIGHT.getOffset());
-        offsets.add(NeighborOffset.BOTTOM.getOffset());
-
-        return offsets;
-        
-    }
 
     /**
      * Determines if any of a cell's neighbor cells are currently burning

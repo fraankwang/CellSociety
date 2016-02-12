@@ -12,8 +12,6 @@ import cells.FishCell;
 import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
-import constants.NeighborOffset;
-import constants.Offset;
 import constants.Parameters;
 import javafx.scene.shape.Rectangle;
 import states.State;
@@ -41,11 +39,11 @@ public class PredatorPreyGrid extends Grid {
 		sharkBreed = Integer.parseInt(params.getParameter("sharkbreed"));
 		sharkHealth = Integer.parseInt(params.getParameter("sharkhealth"));
 		
-		initialize();
+		initializeCells();
 	}
 
 	@Override
-	protected void initializeCell (int row, int col) {
+	protected GridCell initializeCell (int row, int col) {
 		GridCell cell = new SimpleCell(WatorState.EMPTY, row, col,
 				new Rectangle(getMyCellSize(), getMyCellSize()));
 
@@ -68,7 +66,7 @@ public class PredatorPreyGrid extends Grid {
                 break;
 		}
 
-		getMyCells()[row][col] = cell;
+		return cell;
 
 	}
 
@@ -115,19 +113,6 @@ public class PredatorPreyGrid extends Grid {
 			cell.setMyNextState(cell.getMyCurrentState());
 		}
 		
-	}
-
-	@Override
-	protected List<Offset> neighborOffsets () {
-
-		List<Offset> offsets = new ArrayList<Offset>();
-
-		offsets.add(NeighborOffset.TOP.getOffset());
-		offsets.add(NeighborOffset.LEFT.getOffset());
-		offsets.add(NeighborOffset.RIGHT.getOffset());
-		offsets.add(NeighborOffset.BOTTOM.getOffset());
-
-		return offsets;
 	}
 
 
@@ -225,7 +210,7 @@ public class PredatorPreyGrid extends Grid {
 		int row = toSpawn.getMyGridLocation().getRow();
 		int col = toSpawn.getMyGridLocation().getCol();
 
-		getMyGridPane().getChildren().remove(toSpawn.getMyShape());
+		//getMyGridPane().getChildren().remove(toSpawn.getMyShape());
 		if (fishOrShark == WatorState.SHARK) {
 			toSpawn = new SharkCell(WatorState.EMPTY, row, col, new Rectangle(getMyCellSize(), getMyCellSize()), sharkHealth,sharkBreed);
 			toSpawn.setMyNextState(fishOrShark);
@@ -236,7 +221,7 @@ public class PredatorPreyGrid extends Grid {
 		}
 
 		getMyCells()[row][col] = toSpawn;
-		getMyGridPane().add(toSpawn.getMyShape(), col, row);
+		//getMyGridPane().add(toSpawn.getMyShape(), col, row);
 		
 	}
 
@@ -254,10 +239,10 @@ public class PredatorPreyGrid extends Grid {
 		int destinationRow = destination.getMyGridLocation().getRow();
 
 		GridCell destinationCell = getMyCells()[destinationRow][destinationCol];
-		getMyGridPane().getChildren().remove(destinationCell.getMyShape());
+		//getMyGridPane().getChildren().remove(destinationCell.getMyShape());
 
 		GridCell originCell = getMyCells()[originRow][originCol];
-		getMyGridPane().getChildren().remove(originCell.getMyShape());
+		//getMyGridPane().getChildren().remove(originCell.getMyShape());
 
 		if (origin instanceof SharkCell) {
 			destinationCell = new SharkCell((SharkCell) origin, destination.getMyGridLocation());
@@ -276,8 +261,8 @@ public class PredatorPreyGrid extends Grid {
 		getMyCells()[originRow][originCol] = originCell;
 		originCell.setMyNextState(WatorState.EMPTY);
 
-		getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
-		getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
+		//getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
+		//getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
 
 	}
 
@@ -291,7 +276,7 @@ public class PredatorPreyGrid extends Grid {
 		int row = cell.getMyGridLocation().getRow();
 		int col = cell.getMyGridLocation().getCol();
 		GridCell deadCell = getMyCells()[row][col];
-		getMyGridPane().getChildren().remove(deadCell.getMyShape());
+		//getMyGridPane().getChildren().remove(deadCell.getMyShape());
 
 		if (sharkOrFish == WatorState.FISH){
 			deadCell =  new SimpleCell(WatorState.FISH, deadCell.getMyGridLocation().getRow(), deadCell.getMyGridLocation().getCol(), new Rectangle(getMyCellSize(), getMyCellSize()));
@@ -301,7 +286,7 @@ public class PredatorPreyGrid extends Grid {
 		}
 
 		getMyCells()[row][col] = deadCell;
-		getMyGridPane().add(deadCell.getMyShape(), col, row);
+		//getMyGridPane().add(deadCell.getMyShape(), col, row);
 		deadCell.setMyNextState(WatorState.EMPTY);
 
 	}
@@ -361,39 +346,39 @@ public class PredatorPreyGrid extends Grid {
     // =========================================================================
     // Getters and Setters
     // =========================================================================
-	
-	@Override
-	public Map<String,String> getMyGameState () {
-		Map<String,String> currentGameState = super.getMyGameState();
-		currentGameState.put("fishbreed", Integer.toString(getFishBreed()));
-		currentGameState.put("sharkbreed", Integer.toString(getSharkBreed()));
-		currentGameState.put("sharkhealth", Integer.toString(getSharkHealth()));
-		
-		return currentGameState;
-		
-	}
 
-	public int getFishBreed() {
-		return fishBreed;
-	}
+    @Override
+    public Map<String, String> getMyGameState () {
+        Map<String, String> currentGameState = super.getMyGameState();
+        currentGameState.put("fishbreed", Integer.toString(getFishBreed()));
+        currentGameState.put("sharkbreed", Integer.toString(getSharkBreed()));
+        currentGameState.put("sharkhealth", Integer.toString(getSharkHealth()));
 
-	public void setFishBreed(int fishBreed) {
-		this.fishBreed = fishBreed;
-	}
+        return currentGameState;
 
-	public int getSharkBreed() {
-		return sharkBreed;
-	}
+    }
 
-	public void setSharkBreed(int sharkBreed) {
-		this.sharkBreed = sharkBreed;
-	}
+    public int getFishBreed () {
+        return fishBreed;
+    }
 
-	public int getSharkHealth() {
-		return sharkHealth;
-	}
+    public void setFishBreed (int fishBreed) {
+        this.fishBreed = fishBreed;
+    }
 
-	public void setSharkHealth(int sharkHealth) {
-		this.sharkHealth = sharkHealth;
-	}
+    public int getSharkBreed () {
+        return sharkBreed;
+    }
+
+    public void setSharkBreed (int sharkBreed) {
+        this.sharkBreed = sharkBreed;
+    }
+
+    public int getSharkHealth () {
+        return sharkHealth;
+    }
+
+    public void setSharkHealth (int sharkHealth) {
+        this.sharkHealth = sharkHealth;
+    }
 }

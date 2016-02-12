@@ -4,8 +4,6 @@
 
 package main;
 
-import view.MainView;
-import controllers.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,8 +13,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     /**
-     * Begins the game by creating the View which takes in the Game (Model) which
-     * is created within the view.
+     * Begins the game by creating the View and Controller. MainView only has access
+     * to the MainController, which contains the Game class which creates
+     * the GridViews and Grids (Model).
      */
     public void start (Stage s) throws Exception {
     	MainView view = new MainView(s);
