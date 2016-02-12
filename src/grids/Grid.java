@@ -10,19 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import cells.GridCell;
-import constants.Constants;
 import constants.Location;
-import constants.NeighborOffset;
 import constants.Offset;
 import constants.Parameters;
 import javafx.scene.Group;
-import javafx.scene.layout.GridPane;
 import views.GridView;
 
 
 /**
  * Abstract class representing a grid to be used for the simulation
  * In charge of determining how to update itself for each step of the simulation
+ * Right now this class is acting as the model and the controller (maybe i should make it just a model and make grid view act as the controller?)
  */
 public abstract class Grid {
     
@@ -36,9 +34,6 @@ public abstract class Grid {
     private List<Offset> myNeighborOffsets;
 
     // View
-    private Dimension myGridSize;
-    private int myCellSize;
-
     private GridView myGridView;
 
     /**
@@ -47,10 +42,6 @@ public abstract class Grid {
      * @param params Map of xml parameters
      */
     public Grid (Parameters params) {
-        //myGridSize = params.getDimension();
-        myGridSize = new Dimension(500, 500);
-        myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
-
         myRows = params.getRows();
         myColumns = params.getColumns();
         myInitialStates = params.getInitialStates();
@@ -273,20 +264,9 @@ public abstract class Grid {
     }
 
     public Dimension getMyGridSize () {
-        return myGridSize;
+        return myGridView.getMyGridSize();
     }
 
-    protected void setMyGridSize (Dimension gridSize) {
-        myGridSize = gridSize;
-    }
-
-    protected int getMyCellSize () {
-        return myCellSize;
-    }
-
-    protected void setMyCellSize (int cellSize) {
-        myCellSize = cellSize;
-    }
 
     protected int[][] getMyInitialStates () {
         return myInitialStates;

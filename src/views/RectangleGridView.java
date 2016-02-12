@@ -5,6 +5,7 @@ import constants.Location;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
@@ -50,8 +51,8 @@ public class RectangleGridView extends GridView {
     }
 
     protected Shape defaultShape(){
-        //TODO: replace 30 with cell size from resource file
-        return new Rectangle(30,30);
+        return new Circle(getMyCellSize(),getMyCellSize(), getMyCellSize());
+        //return new Rectangle(getMyCellSize(),getMyCellSize());
     }
 
 }

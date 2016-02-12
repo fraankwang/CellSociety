@@ -1,10 +1,8 @@
 package views;
 
-import cells.GridCell;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class HexagonGridView extends GridView {

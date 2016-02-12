@@ -33,7 +33,7 @@ public class MainView {
 
     // Important numbers that shouldn't be changed by user
     public static final int TOOLBAR_HEIGHT = 50;
-    public static final int GRID_VIEW_SIZE = 500;
+    public static final int GRID_VIEW_SIZE = 600;
     public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
     public static final int WINDOW_WIDTH = 800;
     public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;

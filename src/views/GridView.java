@@ -1,12 +1,12 @@
 package views;
 
+import java.awt.Dimension;
 import cells.GridCell;
 import constants.Constants;
 import constants.Location;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public abstract class GridView {
@@ -17,10 +17,17 @@ public abstract class GridView {
     private int myRows;
     private int myColumns;
     
+    private int myCellSize;
+    private Dimension myGridSize;
+
+    
     private Grid myGrid;  //TODO: use interface to specifiy how grid view interacts with grid
     
     public GridView (Grid grid) {
        myGrid = grid;
+       myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
+       myGridSize = new Dimension(MainView.GRID_VIEW_SIZE, MainView.GRID_VIEW_SIZE);
+       
        GridCell[][] cells = grid.getMyCells();
        myRows = cells.length;
        myColumns = cells[0].length;
@@ -98,6 +105,18 @@ public abstract class GridView {
 
     public void setMyGrid (Grid myGrid) {
         this.myGrid = myGrid;
+    }
+    
+    protected int getMyCellSize () {
+        return myCellSize;
+    }
+
+    protected void setMyCellSize (int cellSize) {
+        myCellSize = cellSize;
+    }
+    
+    public Dimension getMyGridSize () {
+        return myGridSize;
     }
 
 
