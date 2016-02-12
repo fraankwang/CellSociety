@@ -13,6 +13,7 @@ import cells.GridCell;
 import constants.Location;
 import constants.NeighborOffset;
 import constants.Offset;
+import constants.Parameters;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
 import views.GridView;
@@ -40,15 +41,15 @@ public abstract class Grid {
      *
      * @param params Map of xml parameters
      */
-    public Grid (Map<String, String> params) {
-        myGridSize =
-                new Dimension(Integer.parseInt(params.get("width")),
-                              Integer.parseInt(params.get("height")));
-        myRows = Integer.parseInt(params.get("rows"));
-        myColumns = Integer.parseInt(params.get("columns"));
-        myCellSize = (int) myGridSize.getWidth() / myRows;
-        myInitialStates = createInitialStatesArray(params.get("initialStates"));
+    public Grid (Parameters params) {
+        myGridSize = params.getDimension();
                 
+        myRows = params.getRows();
+        myColumns = params.getColumns();
+        myCellSize = params.getCellSize();
+        myInitialStates = params.getInitialStates();
+                
+        
         // TODO: (for advanced specifications, create Buttons/Sliding Bars for UI)
 
         initialize();
@@ -90,27 +91,27 @@ public abstract class Grid {
      */
     protected abstract GridCell initializeCell (int row, int column);
 
-    /**
-     * Creates an 2d int array based on a comma separated string from xml
-     *
-     * @param param The comma separated string
-     * @return The 2d array
-     */
-    private int[][] createInitialStatesArray (String param) {
-        int[][] initialStates = new int[myRows][myColumns];
-        String[] parsed = param.split(",");
-
-        for (int row = 0; row < parsed.length; row++) {
-            String s = parsed[row];
-            for (int col = 0; col < s.length(); col++) {
-                int state = Character.getNumericValue(s.charAt(col));
-                initialStates[row][col] = state;
-            }
-        }
-
-        return initialStates;
-        
-    }
+//    /**
+//     * Creates an 2d int array based on a comma separated string from xml
+//     *
+//     * @param param The comma separated string
+//     * @return The 2d array
+//     */
+//    private int[][] createInitialStatesArray (String param) {
+//        int[][] initialStates = new int[myRows][myColumns];
+//        String[] parsed = param.split(",");
+//
+//        for (int row = 0; row < parsed.length; row++) {
+//            String s = parsed[row];
+//            for (int col = 0; col < s.length(); col++) {
+//                int state = Character.getNumericValue(s.charAt(col));
+//                initialStates[row][col] = state;
+//            }
+//        }
+//
+//        return initialStates;
+//        
+//    }
 
     /**
      * Action to be carried out when GridCell's shape is clicked. Abstracted
@@ -335,7 +336,9 @@ public abstract class Grid {
     			int currentStateValue = cell.getMyCurrentState().getStateValue();
     			currentStates += Integer.toString(currentStateValue);
     		}
-    		currentStates += ",";
+    		if (row != getRows()-1){
+    			currentStates += ",";
+    		}
     	}
     	
     	return currentStates;

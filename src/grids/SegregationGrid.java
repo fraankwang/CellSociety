@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import cells.GridCell;
 import cells.SimpleCell;
+import constants.Parameters;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
@@ -24,9 +25,9 @@ public class SegregationGrid extends Grid {
     private static final int MY_STATE_VALUE_RED = 1;
     private static final int MY_STATE_VALUE_BLUE = 2;
 
-    public SegregationGrid (Map<String, String> params) {
+    public SegregationGrid (Parameters params) {
         super(params);
-        mySimilarityPercentage = Double.parseDouble(params.get("similaritypercentage"));
+        mySimilarityPercentage = Double.parseDouble(params.getParameter("similaritypercentage"));
     }
 
     @Override

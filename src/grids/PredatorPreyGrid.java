@@ -14,6 +14,7 @@ import cells.SharkCell;
 import cells.SimpleCell;
 import constants.NeighborOffset;
 import constants.Offset;
+import constants.Parameters;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
@@ -32,11 +33,11 @@ public class PredatorPreyGrid extends Grid {
     private static final int MY_STATE_VALUE_SHARK = 1;
     private static final int MY_STATE_VALUE_FISH = 2;
 
-    public PredatorPreyGrid (Map<String, String> params) {
+    public PredatorPreyGrid (Parameters params) {
         super(params);
-        fishBreed = Integer.parseInt(params.get("fishbreed"));
-        sharkBreed = Integer.parseInt(params.get("sharkbreed"));
-        sharkHealth = Integer.parseInt(params.get("sharkhealth"));
+        fishBreed = Integer.parseInt(params.getParameter("fishbreed"));
+        sharkBreed = Integer.parseInt(params.getParameter("sharkbreed"));
+        sharkHealth = Integer.parseInt(params.getParameter("sharkhealth"));
 
         initialize();
     }

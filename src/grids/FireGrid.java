@@ -5,6 +5,7 @@
 package grids;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,6 +13,7 @@ import cells.GridCell;
 import cells.SimpleCell;
 import constants.NeighborOffset;
 import constants.Offset;
+import constants.Parameters;
 import constants.State;
 import javafx.scene.shape.Rectangle;
 
@@ -28,16 +30,16 @@ public class FireGrid extends Grid {
 
     private double myProbCatch;
 
-    public FireGrid (Map<String, String> params) {
+    public FireGrid (Parameters params) {
         super(params);
-        myProbCatch = Double.parseDouble(params.get("probcatch"));
+        myProbCatch = Double.parseDouble(params.getParameter("probcatch"));
 
     }
 
     @Override
     protected GridCell initializeCell (int row, int col) {
         State state = State.EMPTY;
-
+        
         int s = getMyInitialStates()[row][col];
 
         switch (s) {

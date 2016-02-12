@@ -4,20 +4,13 @@ import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import constants.Constants;
 import controllers.MainController;
-import game.Game;
-import inputoutput.Parser;
-import inputoutput.XMLGenerator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -189,21 +182,23 @@ public class MainView {
      * 
      * @return File picked by user
      */
+
     public File getFileFromUser () {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
-        fileChooser.getExtensionFilters().add(
-                                              new ExtensionFilter(Constants.RESOURCES
-                                                      .getString("fileExtensionFilterDescription"),
-                                                                  Constants.RESOURCES
-                                                                          .getString("fileExtensionFilterExtension")));
-
-        return fileChooser.showOpenDialog(myPrimaryStage);
-
+    	FileChooser fileChooser = new FileChooser();
+    	fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
+    	fileChooser.getExtensionFilters().add(
+    			new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
+    			Constants.RESOURCES.getString("fileExtensionFilterExtension")));
+    	
+    	return fileChooser.showOpenDialog(myPrimaryStage);
+    	
     }
+   
+    
 
     // TODO: replace with method to deal with infinite scroll
-    /**
+  
+	/**
      * Adjusts stage size when grid size changes
      *
      * NOTE: this method does not deal with BorderPane insets, so sizing may be
