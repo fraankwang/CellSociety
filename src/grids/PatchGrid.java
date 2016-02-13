@@ -123,6 +123,11 @@ public abstract class PatchGrid extends Grid {
 
     protected abstract void moveAgent (Agent origin, Patch destination);
 
+    @Override 
+    public void toggleStateAndUpdateUI(GridCell cell){
+        super.toggleStateAndUpdateUI(cell);
+        removeAgents();
+    }
     @Override
     protected abstract void toggleState (GridCell cell);
 

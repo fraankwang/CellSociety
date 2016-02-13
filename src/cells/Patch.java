@@ -3,6 +3,7 @@ package cells;
 import states.State;
 
 public abstract class Patch extends DataCell {
+    private Agent myAgent;
 
     public Patch (State currentState, int row, int col) {
         super(currentState, row, col);
@@ -11,5 +12,17 @@ public abstract class Patch extends DataCell {
 
     @Override
     public abstract void update ();
+
+    public boolean isOccupied(){
+        return myAgent != null;
+    }
+    
+    public Agent getMyAgent () {
+        return myAgent;
+    }
+
+    public void setMyAgent (Agent myAgent) {
+        this.myAgent = myAgent;
+    }
 
 }
