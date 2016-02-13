@@ -48,10 +48,11 @@ public class Game {
      * @param params A map containing parsed XML data
      */
     public Game (Parameters params) {
+    	System.out.println(params.getParameter("gameType"));
         myGameType = params.getGameType();
         myParameters = params;
-        myGridShape = Constants.RESOURCES.getString("gridShape");
-        myNeighborDirections = Constants.RESOURCES.getString("neighborDirections");
+        myGridShape = Constants.RESOURCES.getString("defaultGridShape");
+        myNeighborDirections = Constants.RESOURCES.getString("defaultNeighborDirections");
 
         initializeGrid();
         initializeGameLoop();
@@ -104,15 +105,15 @@ public class Game {
 
         GridView gridView = null;
 
-        if (myGridShape.equals("Rectangle")) {
+        if (myGridShape.equals(Constants.RESOURCES.getString("ShapeRectangle"))) {
             gridView = new RectangleGridView(myGrid);
 
         }
-        else if (myGridShape.equals("Triangle")) {
+        else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeTriangle"))) {
             gridView = new TriangleGridView(myGrid);
 
         }
-        else if (myGridShape.equals("Hexagon")) {
+        else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeHexagon"))) {
             if (myNeighborDirections.equals("All")) {
                 gridView = new HexagonGridView(myGrid);
                 
@@ -121,7 +122,7 @@ public class Game {
                 // TODO: return error
                 String errorMessage =
                         Constants.RESOURCES.getString("errorMsgInvalidNeighborDirections");
-                if (myNeighborDirections.equals("Cardinal") |
+                if (myNeighborDirections.equals("Cardinal") ||
                     myNeighborDirections.equals("Diagonal")) {
                     errorMessage =
                             String.format(Constants.RESOURCES
@@ -137,15 +138,34 @@ public class Game {
 
     }
     
-//    public void changeCellShape (String type) {
-//    	if (type.equals("Hexagon")) {
-//    		myNeighborDirections = "All";
-//    		myGridShape = type;
-//    	}
-//    	initializeGridView();
-//    	
-//    }
+    /**
+     * Commanded by MainController to re-initialize GridView and create a new ScrollPane with
+     * re-initialized GridView
+     * @param type
+     */
+    public void changeCellShape (String type) {
+    	
+    	if (type.equals("Hexagon")){
+    		myNeighborDirections = "All";
+    	}
+    	
+    	myGridShape = type;
+    	initializeGridView();
+    	
+    	setRoot();
+    	
+    }
 
+    /**
+     * Changes cell size parameter and re-initializes GridView
+     * @param increment
+     */
+    public void changeCellSize (boolean increment) {
+    	initializeGridView();
+    	getMyGrid().getMyGridView().incrementCellSize(increment);
+    	setRoot();
+    	
+    }
     /**
      * Creates ScrollPane with current GridView and puts it in myGameRoot,
      * the primary UI element to be displayed when MainController sets up a new Game
@@ -166,6 +186,7 @@ public class Game {
         sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
         sp.setContent(myGrid.getView());
         return sp;
+        
     }
 
     /**
@@ -306,6 +327,10 @@ public class Game {
         return myGameRoot;
     }
 
+    public void setNeighborDirections (String neighborDirections) {
+    	myNeighborDirections = neighborDirections;
+    }
+    
     public Grid getMyGrid () {
         return myGrid;
     }

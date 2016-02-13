@@ -23,7 +23,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -35,7 +34,7 @@ public class MainView {
     public static final int TOOLBAR_HEIGHT = 50;
     public static final int GRID_VIEW_SIZE = 600;
     public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
-    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_WIDTH = 1000;
     public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;
     public static final int TOOLBAR_BUTTON_INSET_VERTICAL = 2;
 
@@ -94,10 +93,16 @@ public class MainView {
     /**
      * Creates a formatted tool bar to display in the top of the screen
      *
-     * @return The HBox tool bar
+     * @return The HBox tool bar 
      */
     private HBox createToolbar () {
-        List<Control> buttons = createGameButtons();
+        List<Control> buttons;
+		
+        try {
+			buttons = createGameButtons();
+		} catch (Throwable e) {
+			return null;
+		}
 
         HBox toolbar = new HBox();
         toolbar.getChildren().addAll(buttons);
@@ -123,47 +128,69 @@ public class MainView {
      * @return The list of buttons
      */
     private List<Control> createGameButtons () {
-        List<Control> list = new ArrayList<Control>();
 
-        Slider slider =
-                new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
-                           Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
-
-        slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
-
-        Button startButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
-                           event -> myController.startGame());
-        Button stopButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
-                           event -> myController.stopGame());
-        Button stepButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
-                           event -> myController.stepGame());
-        Button resetButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"),
-                           event -> myController.resetGame());
-        Button newGameButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"),
-                           event -> myController.chooseNewGame());
-        Button saveXMLButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
-                           event -> myController.saveXML());
-
-        ComboBox<String> cellShapeChooser = new ComboBox<String>();
-        cellShapeChooser.getItems().addAll("Rectangle","Triangle","Hexagon");
-//        cellShapeChooser.setOnAction(e -> myController.setCellShape(e.getSource().toString()));
-        
-        list.add(startButton);
-        list.add(stopButton);
-        list.add(stepButton);
-        list.add(resetButton);
-        list.add(newGameButton);
-        list.add(saveXMLButton);
-        list.add(slider);
-        list.add(cellShapeChooser);
-        
-        return list;
+    	List<Control> list = new ArrayList<Control>();
+		
+		Slider slider =
+				new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
+						Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
+		
+		slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
+		
+		Button startButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
+						event -> myController.startGame());
+		Button stopButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
+						event -> myController.stopGame());
+		Button stepButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
+						event -> myController.stepGame());
+		Button resetButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"),
+						event -> myController.resetGame());
+		Button newGameButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"),
+						event -> myController.chooseNewGame());
+		Button saveXMLButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
+						event -> myController.saveXML());
+		Button sizeUp =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonIncrement"),
+						event -> myController.incrementCellSize(true));
+		Button sizeDown =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonDecrement"),
+						event -> myController.incrementCellSize(false));
+		
+		ComboBox<String> cellShapeChooser = new ComboBox<String>();
+		cellShapeChooser.setPromptText(Constants.RESOURCES.getString("cellShapeChooserPrompt"));
+		cellShapeChooser.getItems().addAll(
+				Constants.RESOURCES.getString("ShapeRectangle"),
+				Constants.RESOURCES.getString("ShapeTriangle"),
+				Constants.RESOURCES.getString("ShapeHexagon"));
+		cellShapeChooser.setOnAction(e -> myController.setCellShape(cellShapeChooser.getValue()));
+		
+		ComboBox<String> cellNeighborChooser = new ComboBox<String>();
+		cellNeighborChooser.setPromptText(Constants.RESOURCES.getString("neighborChooserPrompt"));
+		cellNeighborChooser.getItems().addAll(
+				Constants.RESOURCES.getString("neighborCardinal"),
+				Constants.RESOURCES.getString("neighborDiagonal"),
+				Constants.RESOURCES.getString("neighborAll"));
+		cellNeighborChooser.setOnAction(e -> myController.setNeighborDirections(cellNeighborChooser.getValue()));
+		
+		list.add(startButton);
+		list.add(stopButton);
+		list.add(stepButton);
+		list.add(resetButton);
+		list.add(newGameButton);
+		list.add(saveXMLButton);
+		list.add(slider);
+		list.add(cellShapeChooser);
+		list.add(cellNeighborChooser);
+		list.add(sizeUp);
+		list.add(sizeDown);
+		
+		return list;
 
     }
 
@@ -182,6 +209,7 @@ public class MainView {
 
     }
 
+    
     /**
      * Switches to a new game by displaying the game root in the center of the BorderPane
      *

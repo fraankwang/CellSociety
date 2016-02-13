@@ -20,6 +20,7 @@ public class RectangleGridView extends GridView {
 
     @Override
     protected Shape defaultShape() {
+    	System.out.println(getMyCellSize());
     	Polygon shape = new Polygon();
     	shape.getPoints().addAll(generateSquareCoordinates(
     			(double) getMyCellSize(), (double) getMyCellSize(), getMyCellSize()));
@@ -51,7 +52,7 @@ public class RectangleGridView extends GridView {
 		
     }
     
-    protected Group createUI () {
+    public Group createUI () {
         Group root = new Group();
     	
     	Pane pane = new Pane();
@@ -78,26 +79,5 @@ public class RectangleGridView extends GridView {
         return root;
         
     }
-    
-//    @Override
-//    protected Group createUI () {
-//        GridPane gridPane = new GridPane();
-//        gridPane.setPrefSize(MainView.GRID_VIEW_SIZE, MainView.GRID_VIEW_SIZE);
-//
-//        for (int row = 0; row < getMyRows(); row++) {
-//            for (int col = 0; col < getMyColumns(); col++) {
-//                Shape shape = getMyCellShapes()[row][col];
-//                gridPane.add(shape, col, row);
-//            }
-//        }
-//
-//        Group group = new Group();
-//        group.getChildren().add(gridPane);
-//
-//        return group;
-//    }
-
-
-    
-
+   
 }
