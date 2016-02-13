@@ -6,6 +6,7 @@ package grids;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import cells.GridCell;
 import cells.SimpleCell;
@@ -110,10 +111,11 @@ public class GameOfLifeGrid extends Grid {
 
     }
 
+
 	@Override
-	public VBox createParameterButtons() {
-		VBox empty = new VBox();
-		return empty;
+	public void updateParams(Map<String, Double> map) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -385,27 +385,10 @@ public class PredatorPreyGrid extends Grid {
     }
 
 	@Override
-	public VBox createParameterButtons() {
-		VBox box = new VBox();
-    	Label sharkHealthLabel = new Label("Shark Health");
-    	TextField sharkHealthField = new TextField(""+sharkHealth);
-    	
-    	sharkHealthField.textProperty().addListener(e -> setSharkHealth(Integer.parseInt(sharkHealthField.getText())));
-    	Label sharkBreedLabel = new Label("Shark Breed Time");
-    	TextField sharkBreedField = new TextField(""+sharkBreed);
-    	
-    	sharkBreedField.textProperty().addListener(e -> setSharkBreed(Integer.parseInt(sharkBreedField.getText())));
-    	
-    	Label fishBreedLabel = new Label("Fish Breed Time");
-    	TextField fishBreedField = new TextField(""+fishBreed);
-    	
-    	fishBreedField.textProperty().addListener(e -> setFishBreed(Integer.parseInt(fishBreedField.getText())));
-    	
-    	box.getChildren().addAll(sharkHealthLabel, sharkHealthField, 
-    							sharkBreedLabel, sharkBreedField,
-    							fishBreedLabel, fishBreedField);
-    	
-    	return box;
+	public void updateParams(Map<String, Double> map) {
+		setSharkHealth(map.get("sharkhealth").intValue());
+		setSharkBreed(map.get("sharkbreed").intValue());
+		setFishBreed(map.get("fishbreed").intValue());
 	}
 	
 	

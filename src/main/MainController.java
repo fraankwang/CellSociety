@@ -73,7 +73,7 @@ public class MainController {
     		stopGame();
     		myPrimaryGame.initializeGrid();
     		myView.displayGame(myPrimaryGame.getGameRoot());
-
+    		myView.displayParameters(myPrimaryGame.getMyUIRoot());
     	}
     	
     }
@@ -136,7 +136,7 @@ public class MainController {
         Parameters params = parseXML(file);
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
-        myView.addParameterButtons(myPrimaryGame.getMyGrid().createParameterButtons());
+        myView.displayParameters(myPrimaryGame.getMyUIRoot());
     }
 
     /**

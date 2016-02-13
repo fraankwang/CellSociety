@@ -234,7 +234,7 @@ public class MainView {
      * 
      * @param sidebar The bar to be added
      */
-    public void addParameterButtons(VBox sidebar) {
+    public void displayParameters(Group sidebar) {
     	myPrimaryPane.setLeft(sidebar);
     }
 

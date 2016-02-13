@@ -138,11 +138,6 @@ public class FireGrid extends Grid {
     private double getProbCatch () {
         return myProbCatch;
     }
-
-    
-    private void setProbCatch (double set) {
-    	myProbCatch = set;
-    }
     
     @Override
 	public Map<String,String> getMyGameState () {
@@ -153,17 +148,11 @@ public class FireGrid extends Grid {
 		
 	}
 
+
 	@Override
-	public VBox createParameterButtons () {
-    	Label textLabel = new Label("Probability to Catch Fire");
-    	Slider slider = new Slider(0,1, myProbCatch);
-    	slider.setMajorTickUnit(0.25);
-    	slider.setShowTickLabels(true);
-    	slider.valueProperty().addListener(e -> setProbCatch(slider.getValue()));
-    	VBox box = new VBox();
-    	box.getChildren().addAll(textLabel, slider);
-    	
-    	return box;
+	public void updateParams(Map<String, Double> map) {
+		myProbCatch = map.get("probcatch");
+		
 	}
 
 

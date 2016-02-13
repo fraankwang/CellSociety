@@ -136,10 +136,6 @@ public class SegregationGrid extends Grid {
         return mySimilarityPercentage;
     }
     
-    private void setSimilarityPercentage (double newPercentage) {
-    	mySimilarityPercentage = newPercentage;
-    }
-
     @Override
     public Map<String, String> getMyGameState () {
         Map<String, String> currentGameState = super.getMyGameState();
@@ -150,17 +146,10 @@ public class SegregationGrid extends Grid {
     }
 
 	@Override
-	public VBox createParameterButtons () {
-		VBox box = new VBox();
-    	Label similarityLabel = new Label("Similarity Percentage");
-    	Slider slider = new Slider(0,100, mySimilarityPercentage);
-    	slider.setMajorTickUnit(25);
-    	slider.setShowTickLabels(true);
-    	slider.valueProperty().addListener(e -> setSimilarityPercentage(slider.getValue()));
-    	
-    	box.getChildren().addAll(similarityLabel, slider);
-    	return box;
+	public void updateParams(Map<String, Double> map) {
+		mySimilarityPercentage = map.get("similaritypercentage");
 	}
+
 
 
 }

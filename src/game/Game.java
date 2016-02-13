@@ -6,6 +6,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import constants.Constants;
 import constants.NeighborOffset;
 import constants.Offset;
@@ -26,6 +27,12 @@ import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.util.Duration;
+import uiviews.FireUIView;
+import uiviews.GameOfLifeUIView;
+import uiviews.PredatorPreyUIView;
+import uiviews.SegregationUIView;
+import uiviews.SugarscapeUIView;
+import uiviews.UIView;
 
 
 /**
@@ -42,6 +49,7 @@ public class Game {
     private String myNeighborDirections;
 
     private Group myGameRoot;
+    private Group myUIRoot;
     private Timeline myGameLoop;
 
     /**
@@ -81,27 +89,34 @@ public class Game {
      * button (in the Main class) at any time
      */
     private void initializeGridModel () {
-
+    	UIView uiView = null;
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
+            uiView = new FireUIView(myGrid, myParameters);
             
         }
         else if (myGameType.equals("GameOfLife")) {
             myGrid = new GameOfLifeGrid(myParameters);
+            uiView = new GameOfLifeUIView(myGrid, myParameters);
 
         }
         else if (myGameType.equals("Segregation")) {
             myGrid = new SegregationGrid(myParameters);
+            uiView = new SegregationUIView(myGrid, myParameters);
 
         }
         else if (myGameType.equals("PredatorPrey")) {
             myGrid = new PredatorPreyGrid(myParameters);
+            uiView = new PredatorPreyUIView(myGrid, myParameters);
             
         }
         else if (myGameType.equals("Sugarscape")) {
             myGrid = new SugarscapeGrid(myParameters);
+            uiView = new SugarscapeUIView(myGrid, myParameters);
         
         }
+        
+        myUIRoot = uiView.getView();
 
     }
 
@@ -148,6 +163,8 @@ public class Game {
         myGrid.setMyGridView(gridView);
 
     }
+    
+
     
     /**
      * Commanded by MainController to re-initialize GridView and create a new ScrollPane with
@@ -365,4 +382,8 @@ public class Game {
     public String getMyGameType () {
         return myGameType;
     }
+
+	public Group getMyUIRoot() {
+		return myUIRoot;
+	}
 }

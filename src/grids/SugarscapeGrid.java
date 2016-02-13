@@ -263,9 +263,9 @@ public class SugarscapeGrid extends PatchGrid {
 	}
 
 	@Override
-	public VBox createParameterButtons() {
+	public void updateParams(Map<String, Double> map) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
     
 }
