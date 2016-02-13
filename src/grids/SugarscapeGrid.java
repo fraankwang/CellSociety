@@ -267,13 +267,6 @@ public class SugarscapeGrid extends PatchGrid {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void updateParameters(Parameters params) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
     
 }

@@ -10,6 +10,7 @@ import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import states.SegregationState;
@@ -135,6 +136,10 @@ public class SegregationGrid extends Grid {
     private double getSimilarityPercentage () {
         return mySimilarityPercentage;
     }
+    
+    private void setSimilarityPercentage (double newPercentage) {
+    	mySimilarityPercentage = newPercentage;
+    }
 
     @Override
     public Map<String, String> getMyGameState () {
@@ -146,19 +151,17 @@ public class SegregationGrid extends Grid {
     }
 
 	@Override
-	public VBox createParameterButtons() {
+	public VBox createParameterButtons () {
 		VBox box = new VBox();
     	Label similarityLabel = new Label("Similarity Percentage");
-    	TextField similarityField = new TextField(""+mySimilarityPercentage);
+    	Slider slider = new Slider(0,100, mySimilarityPercentage);
+    	slider.setMajorTickUnit(25);
+    	slider.setShowTickLabels(true);
+    	slider.valueProperty().addListener(e -> setSimilarityPercentage(slider.getValue()));
     	
-    	box.getChildren().addAll(similarityLabel, similarityField);
+    	box.getChildren().addAll(similarityLabel, slider);
     	return box;
 	}
 
-	@Override
-	public void updateParameters(Parameters params) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

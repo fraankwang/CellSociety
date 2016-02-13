@@ -89,13 +89,6 @@ public class ForagingAntsGrid extends PatchGrid {
 		return null;
 	}
 
-	@Override
-	public void updateParameters(Parameters params) {
-		// TODO Auto-generated method stub
-		
-	}
-    
-    
     
     
 

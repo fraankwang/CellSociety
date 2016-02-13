@@ -87,8 +87,10 @@ public class PredatorPreyGrid extends Grid {
 
     @Override
     protected void toggleState (GridCell cell) {
+    	int row = cell.getMyGridLocation().getRow();
+    	int col = cell.getMyGridLocation().getCol();
         if (cell.getMyCurrentState() == WatorState.EMPTY) {
-            cell.setMyCurrentState(WatorState.SHARK);
+        	 getMyCells()[row][col] = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
 
         }
         else if (cell.getMyCurrentState() == WatorState.SHARK) {
@@ -97,10 +99,6 @@ public class PredatorPreyGrid extends Grid {
         }
         else if (cell.getMyCurrentState() == WatorState.FISH) {
             cell.setMyCurrentState(WatorState.EMPTY);
-
-        }
-        else if (cell.getMyCurrentState() == WatorState.EMPTY) {
-            cell.setMyCurrentState(WatorState.DEAD);
 
         }
 
@@ -174,6 +172,9 @@ public class PredatorPreyGrid extends Grid {
      * @param shark the Shark Cell that needs to be updated
      */
     private void setSharkCellState (SharkCell shark) {
+        shark.setBreedTime(sharkBreed);
+        shark.setMaxHealth(sharkHealth);
+ 
         shark.update();
         List<GridCell> neighbors = getNeighbors(shark);
         List<FishCell> edible = new ArrayList<FishCell>();
@@ -389,11 +390,16 @@ public class PredatorPreyGrid extends Grid {
     	Label sharkHealthLabel = new Label("Shark Health");
     	TextField sharkHealthField = new TextField(""+sharkHealth);
     	
+    	sharkHealthField.textProperty().addListener(e -> setSharkHealth(Integer.parseInt(sharkHealthField.getText())));
     	Label sharkBreedLabel = new Label("Shark Breed Time");
-    	TextField sharkBreedField = new TextField(""+sharkBreed)
-    			;
+    	TextField sharkBreedField = new TextField(""+sharkBreed);
+    	
+    	sharkBreedField.textProperty().addListener(e -> setSharkBreed(Integer.parseInt(sharkBreedField.getText())));
+    	
     	Label fishBreedLabel = new Label("Fish Breed Time");
     	TextField fishBreedField = new TextField(""+fishBreed);
+    	
+    	fishBreedField.textProperty().addListener(e -> setFishBreed(Integer.parseInt(fishBreedField.getText())));
     	
     	box.getChildren().addAll(sharkHealthLabel, sharkHealthField, 
     							sharkBreedLabel, sharkBreedField,
@@ -401,10 +407,7 @@ public class PredatorPreyGrid extends Grid {
     	
     	return box;
 	}
+	
+	
 
-	@Override
-	public void updateParameters(Parameters params) {
-		// TODO Auto-generated method stub
-		
-	}
 }

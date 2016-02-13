@@ -112,14 +112,8 @@ public class GameOfLifeGrid extends Grid {
 
 	@Override
 	public VBox createParameterButtons() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void updateParameters(Parameters params) {
-		// TODO Auto-generated method stub
-		
+		VBox empty = new VBox();
+		return empty;
 	}
 
 }
