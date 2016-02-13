@@ -13,6 +13,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import constants.Constants;
+
 import constants.Parameters;
 
 
@@ -62,14 +64,13 @@ public class Parser {
                 }
             }
             
-            params.remove("#text");
+            params.put("cellSize", Constants.RESOURCES.getString("cellSize"));
 
         }
         catch (Exception e) {
             return null;
         }
 
-        
         return new Parameters(params, initialStates);
 
     }

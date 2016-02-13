@@ -11,7 +11,6 @@ import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import states.GameOfLifeState;
 import states.State;
 

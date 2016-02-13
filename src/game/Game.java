@@ -34,7 +34,6 @@ import javafx.util.Duration;
 public class Game {
     public static final int MILLISECONDS_PER_SECOND = 1000;
     
-    private int myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
     private String myGameType;
     private Grid myGrid;
     private Parameters myParameters;
@@ -52,11 +51,11 @@ public class Game {
     public Game (Parameters params) {
         myGameType = params.getGameType();
         myParameters = params;
-        System.out.println(params.getColumns());
+
         myGridShape = Constants.RESOURCES.getString("defaultGridShape");
         myNeighborDirections = Constants.RESOURCES.getString("defaultNeighborDirections");
 
-        initializeGrid();
+        initializeGrid(params.getCellSize());
         initializeGameLoop();
 
     }
@@ -66,9 +65,9 @@ public class Game {
      * on xml parameters. Also sets gridShape and neighborDirections based on
      * the resource file.
      */
-    public void initializeGrid () {
-        initializeGridModel();
-        initializeGridView();
+    public void initializeGrid (int cellSize) {
+    	initializeGridModel();
+        initializeGridView(cellSize);
         initializeNeighborOffsets();
         setRoot();
 
@@ -108,25 +107,25 @@ public class Game {
     /**
      * Instantiates GridView based on GridCell shapes and passes myCells to populate it
      */
-    private void initializeGridView () {
+    private void initializeGridView (int cellSize) {
 
         GridView gridView = null;
-        
-        if (myGrid != null && myGrid.getMyGridView() != null && myGrid.getMyGridView().getMyCellSize() != 0) {
-        	myCellSize = myGrid.getMyGridView().getMyCellSize();
+        if (cellSize == 0) {
+        	cellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
+        	
         }
         
         if (myGridShape.equals(Constants.RESOURCES.getString("ShapeRectangle"))) {
-            gridView = new RectangleGridView(myGrid, myCellSize);
+            gridView = new RectangleGridView(myGrid, cellSize);
 
         }
         else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeTriangle"))) {
-            gridView = new TriangleGridView(myGrid, myCellSize);
+            gridView = new TriangleGridView(myGrid, cellSize);
 
         }
         else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeHexagon"))) {
             if (myNeighborDirections.equals("All")) {
-                gridView = new HexagonGridView(myGrid, myCellSize);
+                gridView = new HexagonGridView(myGrid, cellSize);
                 
             }
             else {
@@ -150,6 +149,31 @@ public class Game {
     }
     
     /**
+	 * Creates a scroll pane surrounding the GridView
+	 *
+	 * @return ScrollPane with appropriate GridView
+	 */
+	private ScrollPane createScrollPane () {
+	    ScrollPane sp = new ScrollPane();
+	    sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
+	    sp.setContent(myGrid.getView());
+	    
+	    return sp;
+	    
+	}
+
+	/**
+	 * Creates ScrollPane with current GridView and puts it in myGameRoot,
+	 * the primary UI element to be displayed when MainController sets up a new Game
+	 */
+	private void setRoot () {
+	    Group group = new Group();
+	    group.getChildren().add(createScrollPane());
+	    myGameRoot = group;
+	    
+	}
+
+	/**
      * Commanded by MainController to re-initialize GridView and create a new ScrollPane with
      * re-initialized GridView
      * @param type
@@ -161,7 +185,7 @@ public class Game {
     	}
     	
     	myGridShape = type;
-    	initializeGridView();
+    	initializeGridView(getMyGrid().getMyGridView().getMyCellSize());
     	
     	setRoot();
     	
@@ -172,46 +196,44 @@ public class Game {
      * @param increment
      */
     public void changeCellSize (boolean increment) {
+    	int cellSize = getMyGrid().getMyGridView().getMyCellSize();
+
     	if (increment) {
-    		myCellSize += getMyGrid().getMyGridView().getCellSizeIncrement();
+    		cellSize += getMyGrid().getMyGridView().getCellSizeIncrement();
     		
     	}
     	else {
-    		myCellSize -= getMyGrid().getMyGridView().getCellSizeIncrement();
+    		cellSize -= getMyGrid().getMyGridView().getCellSizeIncrement();
     		
     	}
     	
-    	getMyGrid().setCellSize(myCellSize);
+    	getMyGrid().setCellSize(cellSize);
     	getMyGrid().getMyGridView().updateUI();
     	setRoot();
     	
     }
     
     /**
-     * Creates ScrollPane with current GridView and puts it in myGameRoot,
-     * the primary UI element to be displayed when MainController sets up a new Game
+     * Modifies cell size parameter (to be read by initialize methods) to
+     * @param currentCellSize
      */
-    private void setRoot () {
-        Group group = new Group();
-        group.getChildren().add(createScrollPane());
-        myGameRoot = group;
-    }
-
+    public void changeCellSizeParameter(int currentCellSize) {
+		myParameters.setCellSize(currentCellSize);
+		
+	}
+    
     /**
-     * Creates a scroll pane surrounding the GridView
-     *
-     * @return ScrollPane with appropriate GridView
+     * Changes myNeighborDirections and resets Grid's neighbors-to-be-looked at 
+     * for various state-determining algorithms
+     * @param neighborDirections
      */
-    private ScrollPane createScrollPane () {
-        ScrollPane sp = new ScrollPane();
-        sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
-        sp.setContent(myGrid.getView());
-        
-        return sp;
-        
-    }
+    public void setNeighborDirections (String neighborDirections) {
+		myNeighborDirections = neighborDirections;
+		initializeNeighborOffsets();
+		
+	}
 
-    /**
+	/**
      * Sets myGrid's myNeighbor's attribute with appropriate directional headings
      */
     private void initializeNeighborOffsets () {
@@ -274,7 +296,6 @@ public class Game {
      */
     public List<Offset> neighborOffsetsAll () {
         List<Offset> offsets = neighborOffsetsCardinal();
-
         offsets.addAll(neighborOffsetsDiagonal());
 
         return offsets;
@@ -288,7 +309,6 @@ public class Game {
      */
     public List<Offset> neighborOffsetsAllHexagon () {
         List<Offset> offsets = neighborOffsetsCardinal();
-
         offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
         offsets.add(NeighborOffset.TOP_RIGHT.getOffset());
 
@@ -301,7 +321,7 @@ public class Game {
      * In each KeyFrame of the animation, myGameLoop calls the step() function from myGrid
      */
     private void initializeGameLoop () {
-        // "delay" given in milliseconds
+
         double framesPerSecond =
                 MILLISECONDS_PER_SECOND * 1 / myParameters.getDelay();
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
@@ -310,6 +330,7 @@ public class Game {
         myGameLoop = new Timeline();
         myGameLoop.setCycleCount(Animation.INDEFINITE);
         myGameLoop.getKeyFrames().add(frame);
+        
     }
 
     /**
@@ -332,6 +353,12 @@ public class Game {
 
     }
 
+    
+    
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
+
     /**
      * Sets the rate of the animation played based on
      * the speed passed in
@@ -339,21 +366,13 @@ public class Game {
      * @param speed the speed to set the animation
      */
     public void setTimelineRate (double speed) {
-        myGameLoop.setRate(speed);
+    	myGameLoop.setRate(speed);
     }
-    // =========================================================================
-    // Getters and Setters
-    // =========================================================================
 
     public Group getGameRoot () {
         return myGameRoot;
     }
 
-    public void setNeighborDirections (String neighborDirections) {
-    	myNeighborDirections = neighborDirections;
-    	initializeNeighborOffsets();
-    }
-    
     public Grid getMyGrid () {
         return myGrid;
     }
@@ -365,4 +384,7 @@ public class Game {
     public String getMyGameType () {
         return myGameType;
     }
+
+	
+	
 }
