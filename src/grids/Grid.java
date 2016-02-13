@@ -124,7 +124,6 @@ public abstract class Grid {
      * Updates each cell's next state by calling setCellState for each cell
      */
     protected void setCellStates () {
-        System.out.println(getMyNeighborOffsets().size());
 
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
