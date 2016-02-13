@@ -1,6 +1,5 @@
 package cells;
 
-import states.State;
 import states.SugarscapeState;
 
 
@@ -10,7 +9,6 @@ public class SugarPatch extends Patch {
     private int myMaxCapacity;
     private int myStepCount;
     private int mySugarGrowBackInterval;
-    private boolean isOccupied;
 
     public SugarPatch (int row,
                        int col,
@@ -31,6 +29,12 @@ public class SugarPatch extends Patch {
     }
 
     @Override
+    public void initializeWithAgent(Agent agent){
+        super.initializeWithAgent(agent);
+        setMyCurrentState(SugarscapeState.AGENT);
+    }
+    
+    @Override
     public void update () {
         myStepCount++;
         if (myStepCount >= mySugarGrowBackInterval) {
@@ -40,7 +44,7 @@ public class SugarPatch extends Patch {
             myStepCount = 0;
         }
         
-        if (isOccupied == true){
+        if (isOccupied() == true){
             setMyNextState(SugarscapeState.AGENT);
         }
 
@@ -69,18 +73,11 @@ public class SugarPatch extends Patch {
         }
     }
 
-    public void didGetEaten () {
+    public void didGetEaten (SugarAgent agent) {
         setMySugar(0);
-        isOccupied = true;
+        setMyAgent(agent);
     }
 
-    public boolean isOccupied () {
-        return isOccupied;
-    }
-
-    public void setOccupied (boolean isOccupied) {
-        this.isOccupied = isOccupied;
-    }
 
     public int getMySugar () {
         return mySugar;
