@@ -10,6 +10,6 @@
 	<agentMetabolismMax>4</agentMetabolismMax>
 	<agentVisionMin>1</agentVisionMin>
 	<agentVisionMax>6</agentVisionMax>
-	<sugarGrowBackRate>1</sugarGrowBackRate>
+	<sugarGrowBackRate>3</sugarGrowBackRate>s
 	<sugarGrowBackInterval>1</sugarGrowBackInterval>
 </root>

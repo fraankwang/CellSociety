@@ -17,162 +17,160 @@ import main.MainView;
 
 public abstract class GridView {
 
-	public static final boolean OUTLINED = Constants.RESOURCES.getString("outlined").equals("Yes");
+    public static final boolean OUTLINED = Constants.RESOURCES.getString("outlined").equals("Yes");
 
-	private Shape[][] myCellShapes;
-	private Group myView;
-	private int myRows;
-	private int myColumns;
+    private Shape[][] myCellShapes;
+    private Group myView;
+    private int myRows;
+    private int myColumns;
 
-	private int myCellSize;
-	private Dimension myGridSize;
+    private int myCellSize;
+    private Dimension myGridSize;
 
-	private Grid myGrid; // TODO: use interface to specify how grid view
-							// interacts with grid
+    private Grid myGrid; // TODO: use interface to specify how grid view
+                         // interacts with grid
 
-	/**
-	 * Instantiates variables and creates UI
-	 * 
-	 * @param grid
-	 */
-	public GridView (Grid grid) {
-		myGrid = grid;
-		myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
-		myGridSize = new Dimension(MainView.GRID_VIEW_SIZE, MainView.GRID_VIEW_SIZE);
+    /**
+     * Instantiates variables and creates UI
+     * 
+     * @param grid
+     */
+    public GridView (Grid grid) {
+        myGrid = grid;
+        myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
+        myGridSize = new Dimension(MainView.GRID_VIEW_SIZE, MainView.GRID_VIEW_SIZE);
 
-		GridCell[][] cells = grid.getMyCells();
-		myRows = grid.getRows();
-		myColumns = grid.getColumns();
-		myCellShapes = new Shape[myRows][myColumns];
-		
-		initialize(cells);
-		myView = createUI();
-		
-	}
+        GridCell[][] cells = grid.getMyCells();
+        myRows = grid.getRows();
+        myColumns = grid.getColumns();
+        myCellShapes = new Shape[myRows][myColumns];
 
-	/**
-	 * Initializes Shape[row][col] using given GridCells' rows/cols with
-	 * GridCells' shape
-	 * 
-	 * @param cells
-	 */
-	private void initialize (GridCell[][] cells) {
-		for (int row = 0; row < getMyRows(); row++) {
-			for (int col = 0; col < getMyColumns(); col++) {
-				GridCell cell = cells[row][col];
-				Shape shape = defaultShape();
-				formatShape(shape, cell);
+        initialize(cells);
+        myView = createUI();
 
-				shape.setOnMouseClicked(e -> myGrid.toggleStateAndUpdateUI(cell));
-				myCellShapes[row][col] = shape;
-			}
-		}
-	}
+    }
 
-	/**
-	 * Formats Shape of GridCell based on specified parameters, then update's the Shape UI
-	 * @param shape
-	 * @param cell
-	 */
-	protected void formatShape (Shape shape, GridCell cell) {
-		if (OUTLINED == true) {
-			shape.setStroke(Color.BLACK);
-		}
-		
-		updateShapeUI(shape, cell);
-	}
+    /**
+     * Initializes Shape[row][col] using given GridCells' rows/cols with
+     * GridCells' shape
+     * 
+     * @param cells
+     */
+    private void initialize (GridCell[][] cells) {
+        for (int row = 0; row < getMyRows(); row++) {
+            for (int col = 0; col < getMyColumns(); col++) {
+                GridCell cell = cells[row][col];
+                Shape shape = defaultShape();
+                formatShape(shape, cell);
 
-	/**
-	 * UI updating function which reads currentState of GridCell and sets 
-	 * @param shape to match the corresponding color of @param cell
-	 * Shape and GridCell passed in should be referencing the same element
-	 */
-	protected void updateShapeUI (Shape shape, GridCell cell) {
-	    System.out.println(cell.getMyCurrentState().getColor());
-		setShapeColor(shape, cell.getMyCurrentState().getColor());
+                shape.setOnMouseClicked(e -> myGrid.toggleStateAndUpdateUI(cell));
+                myCellShapes[row][col] = shape;
+            }
+        }
+    }
 
-	}
+    /**
+     * Formats Shape of GridCell based on specified parameters, then update's the Shape UI
+     * 
+     * @param shape
+     * @param cell
+     */
+    protected void formatShape (Shape shape, GridCell cell) {
+        if (OUTLINED == true) {
+            shape.setStroke(Color.BLACK);
+        }
 
-	
-	/**
-	 * 
-	 * @return default Shape to be specified by subclass of GridView
-	 */
-	protected abstract Shape defaultShape ();
+        updateShapeUI(shape, cell);
+    }
 
-	/**
-	 * Abstract class that customizes Grid and Game UI elements to be
-	 * implemented by subclass of GridView
-	 * 
-	 * @return formatted Group
-	 */
-	protected abstract Group createUI();
+    /**
+     * UI updating function which reads currentState of GridCell and sets
+     * 
+     * @param shape to match the corresponding color of @param cell
+     *        Shape and GridCell passed in should be referencing the same element
+     */
+    protected void updateShapeUI (Shape shape, GridCell cell) {
 
-	
-	/**
-	 * Updates 1-1 corresponding Shape[][] with GridCell's Shape attribute
-	 * 
-	 * @param cell
-	 */
-	public void updateCellShape (GridCell cell) {
-		Location location = cell.getMyGridLocation();
-		Shape shape = myCellShapes[location.getRow()][location.getCol()];
-		updateShapeUI(shape, cell);
+        setShapeColor(shape, cell.getMyCurrentState().getColor());
 
-		// TODO: might need to update the view too depending on how we implement
-		// it
-		// (i.e. do something similar to remove/add that we did for the
-		// gridpane)
-	}
+    }
 
-	// =========================================================================
-	// Getters and Setters
-	// =========================================================================
+    /**
+     * 
+     * @return default Shape to be specified by subclass of GridView
+     */
+    protected abstract Shape defaultShape ();
 
-	protected void setShapeColor (Shape shape, Color color) {
-		shape.setFill(color);
-	}
+    /**
+     * Abstract class that customizes Grid and Game UI elements to be
+     * implemented by subclass of GridView
+     * 
+     * @return formatted Group
+     */
+    protected abstract Group createUI ();
 
-	public Group getMyView() {
-		return myView;
-	}
+    /**
+     * Updates 1-1 corresponding Shape[][] with GridCell's Shape attribute
+     * 
+     * @param cell
+     */
+    public void updateCellShape (GridCell cell) {
+        Location location = cell.getMyGridLocation();
+        Shape shape = myCellShapes[location.getRow()][location.getCol()];
+        updateShapeUI(shape, cell);
 
-	protected Shape[][] getMyCellShapes() {
-		return myCellShapes;
-	}
+        // TODO: might need to update the view too depending on how we implement
+        // it
+        // (i.e. do something similar to remove/add that we did for the
+        // gridpane)
+    }
 
-	protected void setMyCellShapes(Shape[][] cellShapes) {
-		myCellShapes = cellShapes;
-	}
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
 
-	protected int getMyRows() {
-		return myRows;
-	}
+    protected void setShapeColor (Shape shape, Color color) {
+        shape.setFill(color);
+    }
 
-	protected int getMyColumns() {
-		return myColumns;
-	}
+    public Group getMyView () {
+        return myView;
+    }
 
-	public Grid getMyGrid() {
-		return myGrid;
-	}
+    protected Shape[][] getMyCellShapes () {
+        return myCellShapes;
+    }
 
-	public void setMyGrid(Grid myGrid) {
-		this.myGrid = myGrid;
-	}
+    protected void setMyCellShapes (Shape[][] cellShapes) {
+        myCellShapes = cellShapes;
+    }
 
-	protected int getMyCellSize() {
-		return myCellSize;
-	}
+    protected int getMyRows () {
+        return myRows;
+    }
 
-	protected void setMyCellSize(int cellSize) {
-		myCellSize = cellSize;
-	}
+    protected int getMyColumns () {
+        return myColumns;
+    }
 
-	public Dimension getMyGridSize() {
-		return myGridSize;
-	}
+    public Grid getMyGrid () {
+        return myGrid;
+    }
 
+    public void setMyGrid (Grid myGrid) {
+        this.myGrid = myGrid;
+    }
 
+    protected int getMyCellSize () {
+        return myCellSize;
+    }
+
+    protected void setMyCellSize (int cellSize) {
+        myCellSize = cellSize;
+    }
+
+    public Dimension getMyGridSize () {
+        return myGridSize;
+    }
 
 }

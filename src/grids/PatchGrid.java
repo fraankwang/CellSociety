@@ -13,6 +13,8 @@ import constants.Parameters;
 public abstract class PatchGrid extends Grid {
 
     private List<Agent> myAgents;
+    private List<Agent> myAgentsToRemove;
+
     private int myNumAgents;
 
     public PatchGrid (Parameters params) {
@@ -20,6 +22,8 @@ public abstract class PatchGrid extends Grid {
         myNumAgents = Integer.parseInt(params.getParameter("numAgents"));
 
     }
+    
+    
 
     @Override
     protected void initializeCells () {
@@ -42,6 +46,8 @@ public abstract class PatchGrid extends Grid {
 
     protected void initializeAgents () {
         myAgents = new ArrayList<Agent>();
+        myAgentsToRemove = new ArrayList<Agent>();
+
         List<Integer> xCoords = new ArrayList<Integer>();
         List<Integer> yCoords = new ArrayList<Integer>();
         for (int i = 0; i < getRows(); i++) {
@@ -71,6 +77,8 @@ public abstract class PatchGrid extends Grid {
     protected void setCellStates () {
         setAgentStates();
         setPatchStates();
+        removeAgents();
+        
 
     }
 
@@ -94,8 +102,19 @@ public abstract class PatchGrid extends Grid {
 
     protected abstract void setAgentState (Agent agent);
 
-    protected void removeAgent (Agent agent) {
+    private void removeAgents () {
+        for(Agent agent : myAgentsToRemove){
+            removeAgent(agent);
+        }
+        myAgentsToRemove = new ArrayList<Agent>();
+    }
+    
+    private void removeAgent (Agent agent) {
         myAgents.remove(agent);
+    }
+    
+    protected void addAgentToRemove(Agent agent){
+        myAgentsToRemove.add(agent);
     }
 
     protected abstract void moveAgent (Agent origin, Patch destination);
