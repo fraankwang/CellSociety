@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
@@ -148,13 +149,15 @@ public class MainView {
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
                            event -> myController.saveXML());
 
+        ComboBox cellShape = new ComboBox();
+        
         list.add(startButton);
         list.add(stopButton);
         list.add(stepButton);
-        list.add(slider);
         list.add(resetButton);
         list.add(newGameButton);
         list.add(saveXMLButton);
+        list.add(slider);
 
         return list;
 

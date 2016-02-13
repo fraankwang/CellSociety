@@ -24,10 +24,10 @@ public class TriangleGridView extends GridView {
      * so exact Triangle coordinates do not matter because they will be cleared for UI placing
      */
     @Override
-    protected Shape defaultShape(){
+    protected Shape defaultShape() {
     	Polygon shape = new Polygon();
-    	shape.getPoints().addAll(
-    			generateTriangleCoordinates((double) getMyCellSize(), (double) getMyCellSize(), getMyCellSize(), true));
+    	shape.getPoints().addAll(generateTriangleCoordinates(
+    			(double) getMyCellSize(), (double) getMyCellSize(), getMyCellSize(), true));
     	return shape;
     	
     }

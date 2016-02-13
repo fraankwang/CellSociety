@@ -26,8 +26,8 @@ public class HexagonGridView extends GridView {
     @Override
     protected Shape defaultShape(){
     	Polygon shape = new Polygon();
-    	shape.getPoints().addAll(
-    			generateHexCoordinates((double) getMyCellSize(), (double) getMyCellSize(), getMyCellSize()));
+    	shape.getPoints().addAll(generateHexCoordinates(
+    			(double) getMyCellSize(), (double) getMyCellSize(), getMyCellSize()));
     	return shape;
     	
     }
