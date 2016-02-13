@@ -46,7 +46,7 @@ public abstract class Grid {
     public Grid (Parameters params) {
         myRows = params.getRows();
         myColumns = params.getColumns();
-
+     
     }
 
     // =========================================================================
