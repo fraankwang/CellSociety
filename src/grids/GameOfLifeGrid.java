@@ -115,5 +115,5 @@ public class GameOfLifeGrid extends Grid {
 		VBox empty = new VBox();
 		return empty;
 	}
-
+	
 }

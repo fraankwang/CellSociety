@@ -117,7 +117,7 @@ public class MainController {
 		myView.displayGame(myPrimaryGame.getGameRoot());
 		
 	}
-
+	
 	/**
      * 
      * @param neighborDirections
@@ -184,20 +184,23 @@ public class MainController {
     /**
      * Reads user input and sets animation speed to given rate
      * 
+<<<<<<< HEAD
      * @param time
+=======
+     * @param speed how fast the animation should go
+>>>>>>> master
      */
     public void setSpeed (double speed){
     	if (myPrimaryGame != null){
     		myPrimaryGame.setTimelineRate(speed);
     	}
     }
-    
-    
-    
+        
     public void updateParams() {
     	//myPrimaryGame.getMyGrid().updateParameters();
 
     }
+    
     
 
 }

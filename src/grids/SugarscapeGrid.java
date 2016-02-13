@@ -267,6 +267,5 @@ public class SugarscapeGrid extends PatchGrid {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
     
 }
