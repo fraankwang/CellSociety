@@ -14,8 +14,8 @@ import main.MainView;
 
 public class TriangleGridView extends GridView {
 
-    public TriangleGridView (Grid grid) {
-        super(grid);
+    public TriangleGridView (Grid grid, int cellSize) {
+        super(grid, cellSize);
 
     }
 

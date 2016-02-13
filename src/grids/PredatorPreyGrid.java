@@ -402,9 +402,5 @@ public class PredatorPreyGrid extends Grid {
     	return box;
 	}
 
-	@Override
-	public void updateParameters(Parameters params) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
