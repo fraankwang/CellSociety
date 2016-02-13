@@ -23,6 +23,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -149,7 +150,9 @@ public class MainView {
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
                            event -> myController.saveXML());
 
-        ComboBox cellShape = new ComboBox();
+        ComboBox<String> cellShapeChooser = new ComboBox<String>();
+        cellShapeChooser.getItems().addAll("Rectangle","Triangle","Hexagon");
+//        cellShapeChooser.setOnAction(e -> myController.setCellShape(e.getSource().toString()));
         
         list.add(startButton);
         list.add(stopButton);
@@ -158,7 +161,8 @@ public class MainView {
         list.add(newGameButton);
         list.add(saveXMLButton);
         list.add(slider);
-
+        list.add(cellShapeChooser);
+        
         return list;
 
     }
