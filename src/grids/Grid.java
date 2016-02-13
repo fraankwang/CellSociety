@@ -185,7 +185,7 @@ public abstract class Grid {
 
         List<GridCell> neighbors = new ArrayList<GridCell>();
 
-        for (Offset offset : myNeighborOffsets) {
+        for (Offset offset : getMyNeighborOffsets()) {
             Location neighborLocation = null;
 
             if (EDGE_TYPE.equals("Finite")) {
@@ -285,9 +285,7 @@ public abstract class Grid {
         return myInitialStates;
     }
 
-    public void setNeighborOffsets (List<Offset> offsets) {
-        myNeighborOffsets = offsets;
-    }
+   
 
     public GridCell[][] getMyCells () {
         return myCells;
@@ -329,4 +327,12 @@ public abstract class Grid {
         this.myGridView = myGridView;
 
     }
+    
+    public void setNeighborOffsets (List<Offset> offsets) {
+        myNeighborOffsets = offsets;
+    }
+    protected List<Offset> getMyNeighborOffsets () {
+        return myNeighborOffsets;
+    }
+
 }

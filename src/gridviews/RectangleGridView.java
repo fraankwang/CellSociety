@@ -4,6 +4,7 @@
 
 package gridviews;
 
+
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
@@ -20,7 +21,6 @@ public class RectangleGridView extends GridView {
 
     @Override
     protected Shape defaultShape() {
-    	System.out.println(getMyCellSize());
     	Polygon shape = new Polygon();
     	shape.getPoints().addAll(generateSquareCoordinates(
     			(double) getMyCellSize(), (double) getMyCellSize(), getMyCellSize()));
