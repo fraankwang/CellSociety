@@ -21,7 +21,7 @@ public class Location {
     public Location (int row, int col) {
         myRow = row;
         myCol = col;
-        
+
     }
 
     public int getRow () {

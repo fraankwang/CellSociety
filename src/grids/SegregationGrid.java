@@ -12,7 +12,6 @@ import constants.Parameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import states.SegregationState;
 import states.State;
 
@@ -23,39 +22,29 @@ import states.State;
  */
 public class SegregationGrid extends Grid {
 
+	private int[][] myInitialStates;
     private double mySimilarityPercentage;
-
-    private static final int MY_STATE_VALUE_EMPTY = 0;
-    private static final int MY_STATE_VALUE_RED = 1;
-    private static final int MY_STATE_VALUE_BLUE = 2;
-
+    
     public SegregationGrid (Parameters params) {
         super(params);
         mySimilarityPercentage = Double.parseDouble(params.getParameter("similaritypercentage"));
+        myInitialStates = params.getInitialStates();
+        
+        initializeCells();
     }
 
     @Override
     protected GridCell initializeCell (int row, int col) {
-        State state = SegregationState.EMPTY;
+        int s = myInitialStates[row][col];
 
-        int s = getMyInitialStates()[row][col];
-        switch (s) {
-            case MY_STATE_VALUE_EMPTY:
-                state = SegregationState.EMPTY;
-                break;
-            case MY_STATE_VALUE_RED:
-                state = SegregationState.RED;
-                break;
-            case MY_STATE_VALUE_BLUE:
-
-                state = SegregationState.BLUE;
-            default:
-                // Display error message
-                break;
+        for (State state : SegregationState.values()) {
+            if (s == state.getStateValue()) {
+                return new SimpleCell(state, row, col);
+            }
         }
 
-        return new SimpleCell(state, row, col);
-
+        // TODO: Return error: invalid initial state
+        return null;
     }
 
     @Override
@@ -69,8 +58,8 @@ public class SegregationGrid extends Grid {
                     sameCount++;
                 }
                 if (!(neighbor.getMyCurrentState() == SegregationState.EMPTY)) {
-                    nonEmptyCount++;	// we don't account for empty cells when calculating
-                                    	// similarity percentage
+                    // we don't account for empty cells when calculating similarity percentage
+                    nonEmptyCount++;
                 }
             }
             if (!isContent((sameCount / nonEmptyCount) * 100)) {
@@ -103,13 +92,12 @@ public class SegregationGrid extends Grid {
 
         }
 
-
     }
 
     /**
      * Moves a cell to the first empty location in the Grid that
      * hasn't already been moved into
-     * 
+     *
      * @param cell the cell to be moved
      */
     private void move (GridCell cell) {
@@ -132,7 +120,7 @@ public class SegregationGrid extends Grid {
     /**
      * Checks to see if a cell is content based on how many
      * of its neighbors are the same race.
-     * 
+     *
      * @param percent the percentage of neighbors that are the same race
      * @return True if the percent is at least the threshold percentage
      */

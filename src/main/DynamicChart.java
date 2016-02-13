@@ -1,19 +1,31 @@
 package main;
 
+import java.util.List;
+import java.util.Set;
+
 import javafx.application.Application;
-import javafx.collections.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.*;
-import javafx.scene.chart.*;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-import java.util.*;
 
-// Demonstrates dynamically changing the data series assigned to a chart and applying css styles to the 
+// Demonstrates dynamically changing the data series assigned to a chart and applying css styles to
+// the
 // chart based on user selection and data series attributes.
 public class DynamicChart extends Application {
   private LineChart<Number, Number> lineChart;
@@ -160,58 +172,70 @@ public class DynamicChart extends Application {
       seriesData.add(new XYChart.Data<>(i+1, data.get(i)));
     }
     series.setData(seriesData);
-    
+
     return series;
   }
-  
-  private class Event {
-    private String name;
-    private ObservableList<XYChart.Series<Number, Number>> series;
-    private String strokeDashArray;
-    private boolean isActive = true;
 
-    public String getName() { return name; }
-    public String getStrokeDashArray() { return strokeDashArray; }
-    
-    public Event(String name, String strokeDashArray, ObservableList<XYChart.Series<Number, Number>> series) {
-      this.name = name; this.strokeDashArray = strokeDashArray; this.series = series;
-    }
-    
-    public boolean isBelowAverage(XYChart.Series<Number, Number> checkedSeries) {
-      double checkedSeriesAvg = calcSeriesAverage(checkedSeries);
-      double allSeriesAvgTot = 0;
-      double seriesCount = series.size();
-      for (XYChart.Series<Number, Number> curSeries: series) {
-        allSeriesAvgTot += calcSeriesAverage(curSeries);
-      } 
-      double allSeriesAvg = seriesCount != 0 ? allSeriesAvgTot / seriesCount: 0; 
-      
-      return checkedSeriesAvg < allSeriesAvg;
-    }
-    
-    public ObservableList<XYChart.Series<Number, Number>> getSeries() {
-      return series;
-    }
-    
-    private double calcSeriesAverage(XYChart.Series<Number, Number> series) {
-      double sum = 0;
-      int count = series.getData().size();
-      for (XYChart.Data<Number, Number> data: series.getData()) {
-        sum += data.YValueProperty().get().doubleValue();
-      }
-      return count != 0 ? sum / count : 0; 
-    }
 
-    private boolean isActive() {
-      return isActive;
+    private class Event {
+        private String name;
+        private ObservableList<XYChart.Series<Number, Number>> series;
+        private String strokeDashArray;
+        private boolean isActive = true;
+
+        public String getName () {
+            return name;
+        }
+
+        public String getStrokeDashArray () {
+            return strokeDashArray;
+        }
+
+        public Event (String name,
+                      String strokeDashArray,
+                      ObservableList<XYChart.Series<Number, Number>> series) {
+            this.name = name;
+            this.strokeDashArray = strokeDashArray;
+            this.series = series;
+        }
+
+        public boolean isBelowAverage (XYChart.Series<Number, Number> checkedSeries) {
+            double checkedSeriesAvg = calcSeriesAverage(checkedSeries);
+            double allSeriesAvgTot = 0;
+            double seriesCount = series.size();
+            for (XYChart.Series<Number, Number> curSeries : series) {
+                allSeriesAvgTot += calcSeriesAverage(curSeries);
+            }
+            double allSeriesAvg = seriesCount != 0 ? allSeriesAvgTot / seriesCount : 0;
+
+            return checkedSeriesAvg < allSeriesAvg;
+        }
+
+        public ObservableList<XYChart.Series<Number, Number>> getSeries () {
+            return series;
+        }
+
+        private double calcSeriesAverage (XYChart.Series<Number, Number> series) {
+            double sum = 0;
+            int count = series.getData().size();
+            for (XYChart.Data<Number, Number> data : series.getData()) {
+                sum += data.YValueProperty().get().doubleValue();
+            }
+            return count != 0 ? sum / count : 0;
+        }
+
+        private boolean isActive () {
+            return isActive;
+        }
+
+        private void setActive (boolean isActive) {
+            this.isActive = isActive;
+        
+        }
     }
     
-    private void setActive(boolean isActive) {
-      this.isActive = isActive;
+
+    public static void main (String[] args) {
+        launch(args);
     }
-  }
-  
-  public static void main(String[] args) {
-    launch(args);
-  }
 }

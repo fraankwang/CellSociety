@@ -4,7 +4,6 @@
 
 package main;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -36,7 +36,7 @@ public class MainView {
     public static final int TOOLBAR_HEIGHT = 50;
     public static final int GRID_VIEW_SIZE = 600;
     public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
-    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_WIDTH = 1000;
     public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;
     public static final int TOOLBAR_BUTTON_INSET_VERTICAL = 2;
 
@@ -45,10 +45,10 @@ public class MainView {
     private Group myPrimaryRoot;
     private MainController myController; 
     private DynamicChart myDynamicChart;
-                                         
 
     /**
      * Instantiates all UI variables to be displayed
+     *
      * @param s - the Stage variable to be displayed
      */
     public MainView (Stage s) {
@@ -98,10 +98,17 @@ public class MainView {
     /**
      * Creates a formatted tool bar to display in the top of the screen
      *
-     * @return The HBox tool bar
+     * @return The HBox tool bar 
      */
     private HBox createToolbar () {
-        List<Control> buttons = createGameControls();
+
+        List<Control> buttons;
+		
+        try {
+			buttons = createGameButtons();
+		} catch (Throwable e) {
+			return null;
+		}
 
         HBox toolbar = new HBox();
         toolbar.getChildren().addAll(buttons);
@@ -121,6 +128,7 @@ public class MainView {
 
     }
 
+
     private void createLineGraph (){
     	try {
     		myDynamicChart = new DynamicChart();
@@ -132,53 +140,82 @@ public class MainView {
     	
     }
  
+
     /**
      * Creates a list of buttons to display in the tool bar
      *
      * @return The list of buttons
      */
-    private List<Control> createGameControls () {
-        List<Control> list = new ArrayList<Control>();
-    	
-        Slider slider = new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")), 
-        							Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
+    private List<Control> createGameButtons () {
 
-    	slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
-
-        Button startButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
-                           event -> myController.startGame());
-        Button stopButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
-                           event -> myController.stopGame());
-        Button stepButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
-                           event -> myController.stepGame());
-        Button resetButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"),
-                           event -> myController.resetGame());
-        Button newGameButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"),
-                           event -> myController.chooseNewGame());
-        Button saveXMLButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
-                           event -> myController.saveXML());
-
-        list.add(startButton);
-        list.add(stopButton);
-        list.add(stepButton);
-        list.add(slider);
-        list.add(resetButton);
-        list.add(newGameButton);
-        list.add(saveXMLButton);
-
-        return list;
+    	List<Control> list = new ArrayList<Control>();
+		
+		Slider slider =
+				new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
+						Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
+		
+		slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
+		
+		Button startButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
+						event -> myController.startGame());
+		Button stopButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
+						event -> myController.stopGame());
+		Button stepButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
+						event -> myController.stepGame());
+		Button resetButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"),
+						event -> myController.resetGame());
+		Button newGameButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"),
+						event -> myController.chooseNewGame());
+		Button saveXMLButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
+						event -> myController.saveXML());
+		Button sizeUp =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonIncrement"),
+						event -> myController.incrementCellSize(true));
+		Button sizeDown =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonDecrement"),
+						event -> myController.incrementCellSize(false));
+		
+		ComboBox<String> cellShapeChooser = new ComboBox<String>();
+		cellShapeChooser.setPromptText(Constants.RESOURCES.getString("cellShapeChooserPrompt"));
+		cellShapeChooser.getItems().addAll(
+				Constants.RESOURCES.getString("ShapeRectangle"),
+				Constants.RESOURCES.getString("ShapeTriangle"),
+				Constants.RESOURCES.getString("ShapeHexagon"));
+		cellShapeChooser.setOnAction(e -> myController.setCellShape(cellShapeChooser.getValue()));
+		
+		ComboBox<String> cellNeighborChooser = new ComboBox<String>();
+		cellNeighborChooser.setPromptText(Constants.RESOURCES.getString("neighborChooserPrompt"));
+		cellNeighborChooser.getItems().addAll(
+				Constants.RESOURCES.getString("neighborCardinal"),
+				Constants.RESOURCES.getString("neighborDiagonal"),
+				Constants.RESOURCES.getString("neighborAll"));
+		cellNeighborChooser.setOnAction(e -> myController.setNeighborDirections(cellNeighborChooser.getValue()));
+		
+		list.add(startButton);
+		list.add(stopButton);
+		list.add(stepButton);
+		list.add(resetButton);
+		list.add(newGameButton);
+		list.add(saveXMLButton);
+		list.add(slider);
+		list.add(cellShapeChooser);
+		list.add(cellNeighborChooser);
+		list.add(sizeUp);
+		list.add(sizeDown);
+		
+		return list;
 
     }
 
     /**
      * Creates a button that is set on action based on the parameter given
-     * 
+     *
      * @param name - label of button
      * @param handler - ActionEvent the button will do
      * @return named and Button (which is set on action)
@@ -199,6 +236,7 @@ public class MainView {
     
     }
 
+    
     /**
      * Switches to a new game by displaying the game root in the center of the BorderPane
      *
@@ -215,7 +253,7 @@ public class MainView {
 
     /**
      * Specifies the available files the user can choose and returns it
-     * 
+     *
      * @return File picked by user
      */
     public File getFileFromUser () {
@@ -228,36 +266,6 @@ public class MainView {
                                                                           .getString("fileExtensionFilterExtension")));
 
         return fileChooser.showOpenDialog(myPrimaryStage);
-
-    }
-
-    /**
-     * Adjusts stage size when grid size changes
-     *
-     * NOTE: this method does not deal with BorderPane insets, so sizing may be
-     * off if insets are not 0. Can't call myPrimaryPane.getWidth() because this
-     * is not set until layout
-     *
-     * @param gridDimension The dimension of the new grid
-     */
-    private void setStageSizeToMatchGrid (Dimension gridDimension) {
-        int stageWidth = (int) gridDimension.getWidth();
-        int stageHeight = (int) gridDimension.getHeight() + TOOLBAR_HEIGHT;
-
-        if (stageWidth < WINDOW_WIDTH) {
-            myPrimaryStage.setWidth(WINDOW_WIDTH);
-        }
-        else {
-            myPrimaryStage.setWidth(stageWidth);
-        }
-
-        if (stageHeight < WINDOW_HEIGHT) {
-            myPrimaryStage.setHeight(WINDOW_HEIGHT);
-        }
-        else {
-            myPrimaryStage.setHeight(stageHeight);
-
-        }
 
     }
 

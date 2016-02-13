@@ -4,60 +4,80 @@
 
 package gridviews;
 
-import cells.GridCell;
-import constants.Location;
+
 import grids.Grid;
 import javafx.scene.Group;
-import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import main.MainView;
 
 
 public class RectangleGridView extends GridView {
 
-    private GridPane gp;
-
     public RectangleGridView (Grid grid) {
         super(grid);
     }
 
     @Override
-    protected Group createUI () {
-        GridPane gridPane = new GridPane();
-        gridPane.setPrefSize(MainView.GRID_VIEW_SIZE, MainView.GRID_VIEW_SIZE);
-
-        for (int row = 0; row < getMyRows(); row++) {
+    protected Shape defaultShape() {
+    	Polygon shape = new Polygon();
+    	shape.getPoints().addAll(generateSquareCoordinates(
+    			(double) getMyCellSize(), (double) getMyCellSize(), getMyCellSize()));
+        return shape;
+        
+    }
+    
+    /**
+     * 
+     * @param x-coordinate of top left vertex
+     * @param y-coordinate of top left vertex
+     * @param cellSize length of edge
+     * @return 4 coordinates (consecutive coordinates pair for one (x,y) coordinate) 
+     * going clockwise starting from the top left vertex
+     */
+    private Double[] generateSquareCoordinates (Double x, Double y, int cellSize) {
+    	Double[] coordinates = new Double[8];
+    	
+    	coordinates[0] = x; 
+		coordinates[1] = y;
+		coordinates[2] = x + cellSize;
+		coordinates[3] = y;
+		coordinates[4] = x + cellSize;
+		coordinates[5] = y + cellSize;
+		coordinates[6] = x;
+		coordinates[7] = y + cellSize;
+		
+		return coordinates;
+		
+    }
+    
+    public Group createUI () {
+        Group root = new Group();
+    	
+    	Pane pane = new Pane();
+    	pane.setPrefHeight(MainView.GRID_VIEW_SIZE);
+    	pane.setPrefWidth(MainView.GRID_VIEW_SIZE);
+    	
+    	int cellSize = getMyCellSize();
+    	
+    	for (int row = 0; row < getMyRows(); row++) {
             for (int col = 0; col < getMyColumns(); col++) {
-                Shape shape = getMyCellShapes()[row][col];
-                gridPane.add(shape, col, row);
+                Polygon shape = (Polygon) getMyCellShapes()[row][col];
+                shape.getPoints().clear();
+                
+                double xOffset = col * cellSize;
+                double yOffset = row * cellSize;
+                
+                shape.getPoints().addAll(generateSquareCoordinates(xOffset, yOffset, cellSize));
+                
+                pane.getChildren().add(shape);
             }
         }
 
-        Group group = new Group();
-        group.getChildren().add(gridPane);
-
-        gp = gridPane;
-
-        return group;
-    }
-
-    public void updateCellShape (GridCell cell) {
-        super.updateCellShape(cell);
-
-        Location l = cell.getMyGridLocation();
-        Shape old = getMyCellShapes()[l.getRow()][l.getCol()];
-        updateShapeUI(old, cell);
+    	root.getChildren().add(pane);
+        return root;
         
-        //gp.getChildren().remove(old);
-        //gp.add(cell.getMyShape(), cell.getMyGridLocation().getCol(), cell.getMyGridLocation().getRow());
-
     }
-
-    protected Shape defaultShape(){
-        return new Circle(getMyCellSize(),getMyCellSize(), getMyCellSize());
-        //return new Rectangle(getMyCellSize(),getMyCellSize());
-    }
-
+   
 }

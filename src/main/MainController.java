@@ -12,8 +12,8 @@ import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 
 public class MainController {
@@ -27,58 +27,61 @@ public class MainController {
     /**
      * Kickoff method that shows the primaryScene on the primaryStage in MainView
      */
-    public void start(){
+    public void start () {
         myView.display();
     }
-    
+
     /**
-     * Event handler for starting the current game
+     * Event handler for starting the current game 
      */
     public void startGame () {
-        if (myPrimaryGame != null) {
-            myPrimaryGame.startGame();
-        }
+    	if (myPrimaryGame != null) {
+    		myPrimaryGame.startGame();
+        
+    	}
 
     }
 
     /**
-     * Event handler for stopping the current game
+     * Event handler for stopping the current game 
      */
     public void stopGame () {
-        if (myPrimaryGame != null) {
-            myPrimaryGame.stopGame();
-        }
+    	if (myPrimaryGame != null) {
+    		myPrimaryGame.stopGame();
+    	}
 
     }
 
     /**
-     * Event handler for a single step through a game
+     * Event handler for a single step through a game 
      */
     public void stepGame () {
-        if (myPrimaryGame != null) {
-            stopGame();
-            myPrimaryGame.getMyGrid().step();
-        }
+    	if (myPrimaryGame != null) {
+    		stopGame();
+    		myPrimaryGame.getMyGrid().step();
+    	
+    	}
 
     }
 
     /**
-     * Event handler for resetting the current game
+     * Event handler for resetting the current game 
      */
     public void resetGame () {
-        if (myPrimaryGame != null) {
-        	stopGame();
-        	myPrimaryGame.initializeGrid();
-        	myView.displayGame(myPrimaryGame.getGameRoot());        	
-        }
+    	
+    	if (myPrimaryGame != null) {
+    		stopGame();
+    		myPrimaryGame.initializeGrid();
+    		myView.displayGame(myPrimaryGame.getGameRoot());
 
+    	}
+    	
     }
 
     /**
-     * Event handler for choosing a new game to start
+     * Event handler for choosing a new game to start 
      */
     public void chooseNewGame () {
-        stopGame();
 
         File file = myView.getFileFromUser();
         if (file != null) {
@@ -88,6 +91,31 @@ public class MainController {
     }
 
     /**
+     * Tells myPrimaryGame to change relevant variables
+     * @param type
+     */
+    public void setCellShape (String type) {
+    	stopGame();
+    	if (myPrimaryGame != null) {
+    		myPrimaryGame.changeCellShape(type);
+    		myView.displayGame(myPrimaryGame.getGameRoot());
+    	
+    	}
+    	
+    }
+    
+    /**
+     * 
+     * @param neighborDirections
+     */
+    public void setNeighborDirections(String neighborDirections) {
+    	if (myPrimaryGame != null) {
+    		myPrimaryGame.setNeighborDirections(neighborDirections);
+    	}
+
+    }
+
+	/**
      * Constructs a new game based on a given file and switches to it
      *
      * @param file The file containing the game parameters
@@ -97,7 +125,6 @@ public class MainController {
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
         myView.addParameterButtons(myPrimaryGame.getMyGrid().createParameterButtons());
-        
     }
 
     /**
@@ -108,39 +135,40 @@ public class MainController {
      */
     private Parameters parseXML (File file) {
         Parser parser = new Parser();
-        return parser.parse(file);
+    	return parser.parse(file);
 
     }
 
+    
     /**
      * Calls myGrid in myPrimaryGame to return updated game parameters, then
      * adds game parameters that are not visible to myGrid, then generating the .xml file
      * Delay is not accessible from the grid. If the user modifies delay time, then it will
-     * be included in currentGameState. If not, the default is used.
+     * be included in currentGameState. If not, the default is used. 
      */
     public void saveXML () {
         XMLGenerator generator = new XMLGenerator();
 
         if (myPrimaryGame != null) {
-            Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
-            currentGameState.put("gameType", myPrimaryGame.getMyGameType());
-            
-            if (!currentGameState.containsKey("delay")) {
-            	currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));            	
-            }
-            
-            int[][] currentStates = myPrimaryGame.getMyGrid().getCurrentStatesArray();
-            generator.writeXML(currentGameState, currentStates);
+	        Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
+	        currentGameState.put("gameType", myPrimaryGame.getMyGameType());
+	
+	        if (!currentGameState.containsKey("delay")) {
+	            currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));
+	        }
+	
+	        int[][] currentStates = myPrimaryGame.getMyGrid().getCurrentStatesArray();
+	        generator.writeXML(currentGameState, currentStates);
+	
+	        String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
+	        Alert savedAlert = new Alert(AlertType.INFORMATION, confirmation, new ButtonType("OK"));
+	        savedAlert.showAndWait();
         }
 
-        String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
-        Alert savedAlert = new Alert(AlertType.INFORMATION, confirmation, new ButtonType("OK"));
-        savedAlert.showAndWait();
-        
     }
 
     /**
-     * Sets the speed of the animation of the Game
+     * Reads user input and sets animation speed to given rate
      * 
      * @param speed how fast the animation should go
      */
@@ -149,6 +177,20 @@ public class MainController {
     		myPrimaryGame.setTimelineRate(speed);
     	}
     }
+    
+    /**
+     * Updates Game and updates display
+     * @param increment
+     */
+    public void incrementCellSize (boolean increment) {
+    	if (myPrimaryGame != null) {
+    		myPrimaryGame.changeCellSize(increment);
+    	}
+    	
+    	myView.displayGame(myPrimaryGame.getGameRoot());
+    	
+    }
+    
     
     public void updateParams() {
     	//myPrimaryGame.getMyGrid().updateParameters();

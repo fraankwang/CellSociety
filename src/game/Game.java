@@ -15,6 +15,7 @@ import grids.GameOfLifeGrid;
 import grids.Grid;
 import grids.PredatorPreyGrid;
 import grids.SegregationGrid;
+import grids.SugarscapeGrid;
 import gridviews.GridView;
 import gridviews.HexagonGridView;
 import gridviews.RectangleGridView;
@@ -28,7 +29,7 @@ import javafx.util.Duration;
 
 
 /**
- * Manages the simulation - in charge of the game loop and grid subclass
+ * Manages the simulation - in charge of the game loop and grid
  */
 public class Game {
     public static final int MILLISECONDS_PER_SECOND = 1000;
@@ -37,38 +38,43 @@ public class Game {
     private Grid myGrid;
     private Parameters myParameters;
     private String myGridShape;
-    private String myNeighborsToConsider;
+    private String myNeighborDirections;
 
     private Group myGameRoot;
     private Timeline myGameLoop;
 
     /**
-     * Given parsed XML data, construct appropriate Grid Model and View and gameLoop
+     * Given parsed XML data, construct appropriate Grid Model/View and gameLoop
+     *
      * @param params A map containing parsed XML data
      */
     public Game (Parameters params) {
         myGameType = params.getGameType();
         myParameters = params;
-        myGridShape = Constants.RESOURCES.getString("gridShape");
-        myNeighborsToConsider = Constants.RESOURCES.getString("neighbors");
+        myGridShape = Constants.RESOURCES.getString("defaultGridShape");
+        myNeighborDirections = Constants.RESOURCES.getString("defaultNeighborDirections");
 
         initializeGrid();
         initializeGameLoop();
 
     }
 
-    public void initializeGrid(){
+    /**
+     * Initializes the grid model and view to use in the simulation, based
+     * on xml parameters. Also sets gridShape and neighborDirections based on
+     * the resource file.
+     */
+    public void initializeGrid () {
         initializeGridModel();
         initializeGridView();
         initializeNeighborOffsets();
         setRoot();
-        
+
     }
-    
+
     /**
-     * Initializes a specific grid based on the gameType parameter, and
-     * updates myGameRoot after myGrid updates its local root
-     * 
+     * Initializes a specific grid based on the gameType parameter
+     *
      * This function uses only global variables so the user can press the reset
      * button (in the Main class) at any time
      */
@@ -76,7 +82,7 @@ public class Game {
 
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
-
+            
         }
         else if (myGameType.equals("GameOfLife")) {
             myGrid = new GameOfLifeGrid(myParameters);
@@ -88,6 +94,8 @@ public class Game {
         }
         else if (myGameType.equals("PredatorPrey")) {
             myGrid = new PredatorPreyGrid(myParameters);
+        }else if (myGameType.equals("Sugarscape")) {
+            myGrid = new SugarscapeGrid(myParameters);
         }
 
     }
@@ -99,60 +107,104 @@ public class Game {
 
         GridView gridView = null;
 
-        if (myGridShape.equals("Rectangle")) {
+        if (myGridShape.equals(Constants.RESOURCES.getString("ShapeRectangle"))) {
             gridView = new RectangleGridView(myGrid);
 
         }
-        else if (myGridShape.equals("Triangle")) {
+        else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeTriangle"))) {
             gridView = new TriangleGridView(myGrid);
 
         }
-        else if (myGridShape.equals("Hexagon")) {
-            if (myNeighborsToConsider.equals("All")) {
+        else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeHexagon"))) {
+            if (myNeighborDirections.equals("All")) {
                 gridView = new HexagonGridView(myGrid);
+                
             }
             else {
                 // TODO: return error
-                // TODO: move errorMessages to resource file
-                String errorMessage = "Invalid neighbors to consider";
-                if (myNeighborsToConsider.equals("Cardinal") |
-                    myNeighborsToConsider.equals("Diagonal")) {
+                String errorMessage =
+                        Constants.RESOURCES.getString("errorMsgInvalidNeighborDirections");
+                if (myNeighborDirections.equals("Cardinal") ||
+                    myNeighborDirections.equals("Diagonal")) {
                     errorMessage =
-                            String.format("Hexagonal grids can't go with %s neighbors",
-                                          myNeighborsToConsider);
+                            String.format(Constants.RESOURCES
+                                    .getString("errorMsgGridShapeNeighborDirections"),
+                                          myGridShape, myNeighborDirections);
                 }
+                System.out.println(errorMessage);
             }
 
         }
-        
+
         myGrid.setMyGridView(gridView);
 
     }
+    
+    /**
+     * Commanded by MainController to re-initialize GridView and create a new ScrollPane with
+     * re-initialized GridView
+     * @param type
+     */
+    public void changeCellShape (String type) {
+    	
+    	if (type.equals("Hexagon")){
+    		myNeighborDirections = "All";
+    	}
+    	
+    	myGridShape = type;
+    	initializeGridView();
+    	
+    	setRoot();
+    	
+    }
 
     /**
-	 * Creates ScrollPane with current GridView and puts it in myGameRoot, 
-	 * the primary UI element to be displayed when MainController sets up a new Game 
-	 */
-	private void setRoot(){
-	    Group group = new Group();
-	    group.getChildren().add(createScrollPane());
-	    myGameRoot = group;
-	}
+     * Changes cell size parameter and re-initializes GridView
+     * @param increment
+     */
+    public void changeCellSize (boolean increment) {
+    	getMyGrid().getMyGridView().incrementCellSize(increment);
+    	setRoot();
+    	
+    }
+    
+    /**
+     * Creates ScrollPane with current GridView and puts it in myGameRoot,
+     * the primary UI element to be displayed when MainController sets up a new Game
+     */
+    private void setRoot () {
+        Group group = new Group();
+        group.getChildren().add(createScrollPane());
+        myGameRoot = group;
+    }
 
-	/**
+    /**
+     * Creates a scroll pane surrounding the GridView
+     *
+     * @return ScrollPane with appropriate GridView
+     */
+    private ScrollPane createScrollPane () {
+        ScrollPane sp = new ScrollPane();
+        sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
+        sp.setContent(myGrid.getView());
+        return sp;
+        
+    }
+
+    /**
      * Sets myGrid's myNeighbor's attribute with appropriate directional headings
      */
     private void initializeNeighborOffsets () {
 
-        if (myNeighborsToConsider.equals("Cardinal")) {
+        if (myNeighborDirections.equals("Cardinal")) {
             myGrid.setNeighborOffsets(neighborOffsetsCardinal());
 
         }
-        else if (myNeighborsToConsider.equals("Diagonal")) {
+        else if (myNeighborDirections.equals("Diagonal")) {
             myGrid.setNeighborOffsets(neighborOffsetsDiagonal());
 
         }
-        else if (myNeighborsToConsider.equals("All")) {
+        else if (myNeighborDirections.equals("All")) {
             if (myGridShape.equals("Hexagon")) {
                 myGrid.setNeighborOffsets(neighborOffsetsAllHexagon());
             }
@@ -161,19 +213,10 @@ public class Game {
             }
         }
     }
-    
-    /**
-     * @return ScrollPane with appropriate GridView
-     */
-    private ScrollPane createScrollPane() {
-        ScrollPane sp = new ScrollPane();
-        sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
-        sp.setContent(myGrid.getView());
-        return sp;
-    }
+ 
 
     /**
-     * Returns a list of offsets to check to find a GridCell's neighbors
+     * Returns a list of offsets to check to find a GridCell's cardinal neighbors
      *
      * @return The list of offsets
      */
@@ -188,6 +231,11 @@ public class Game {
         return offsets;
     }
 
+    /**
+     * Returns a list of offsets to check to find a GridCell's diagonal neighbors
+     *
+     * @return The list of offsets
+     */
     public List<Offset> neighborOffsetsDiagonal () {
         List<Offset> offsets = new ArrayList<Offset>();
 
@@ -199,6 +247,11 @@ public class Game {
         return offsets;
     }
 
+    /**
+     * Returns a list of offsets to check to find all neighbors of a GridCell
+     *
+     * @return The list of offsets
+     */
     public List<Offset> neighborOffsetsAll () {
         List<Offset> offsets = neighborOffsetsCardinal();
 
@@ -208,17 +261,18 @@ public class Game {
 
     }
 
+    /**
+     * Returns a list of offsets to check to find all neighbors of a hexagonal cell
+     *
+     * @return The list of offsets
+     */
     public List<Offset> neighborOffsetsAllHexagon () {
-        List<Offset> offsets1 = neighborOffsetsCardinal();
-        List<Offset> offsets2 = neighborOffsetsCardinal();
+        List<Offset> offsets = neighborOffsetsCardinal();
 
-        offsets1.add(NeighborOffset.TOP_LEFT.getOffset());
-        offsets1.add(NeighborOffset.TOP_RIGHT.getOffset());
+        offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
+        offsets.add(NeighborOffset.TOP_RIGHT.getOffset());
 
-        offsets2.add(NeighborOffset.BOTTOM_LEFT.getOffset());
-        offsets2.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
-
-        return offsets1;
+        return offsets;
 
     }
 
@@ -261,10 +315,10 @@ public class Game {
     /**
      * Sets the rate of the animation played based on
      * the speed passed in
-     * 
+     *
      * @param speed the speed to set the animation
      */
-    public void setTimelineRate (double speed){
+    public void setTimelineRate (double speed) {
         myGameLoop.setRate(speed);
     }
     // =========================================================================
@@ -275,6 +329,10 @@ public class Game {
         return myGameRoot;
     }
 
+    public void setNeighborDirections (String neighborDirections) {
+    	myNeighborDirections = neighborDirections;
+    }
+    
     public Grid getMyGrid () {
         return myGrid;
     }

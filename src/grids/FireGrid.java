@@ -22,45 +22,33 @@ import states.State;
  *
  */
 public class FireGrid extends Grid {
-    private static final int MY_STATE_VALUE_EMPTY = 0;
-    private static final int MY_STATE_VALUE_TREE = 1;
-    private static final int MY_STATE_VALUE_BURNING = 2;
-    private static final int MY_STATE_VALUE_BURNED = 3;
 
+	private int[][] myInitialStates;
     private double myProbCatch;
-
+    
+    
     public FireGrid (Parameters params) {
         super(params);
         myProbCatch = Double.parseDouble(params.getParameter("probcatch"));
-
+        myInitialStates = params.getInitialStates();
+        
+        initializeCells();
     }
 
     @Override
     protected GridCell initializeCell (int row, int col) {
-        State state = FireState.EMPTY;
-        
-        int s = getMyInitialStates()[row][col];
+    	int s = myInitialStates[row][col];
 
-        switch (s) {
-            case MY_STATE_VALUE_EMPTY:
-                state = FireState.EMPTY;
-                break;
-            case MY_STATE_VALUE_TREE:
-                state = FireState.TREE;
-                break;
-            case MY_STATE_VALUE_BURNING:
-                state = FireState.BURNING;
-                break;
-            case MY_STATE_VALUE_BURNED:
-            	state = FireState.BURNED;
-            
-            default:
-                // Display error message
-                break;
-
+        // Note: duplicated code, but no way to subclass an enum to abstract FireState.values
+        // Can maybe use reflection, but we don't know that yet
+        for (State state : FireState.values()) {
+            if (s == state.getStateValue()) {
+                return new SimpleCell(state, row, col);
+            }
         }
 
-        return new SimpleCell(state, row, col);
+        // TODO: Return error: invalid initial state
+        return null;
 
     }
 
@@ -75,26 +63,25 @@ public class FireGrid extends Grid {
         else {
             cell.setMyNextState(cell.getMyCurrentState());
         }
-        
+
     }
 
     @Override
-	protected void toggleState(GridCell cell) {
-		if (cell.getMyCurrentState() == FireState.BURNING) {
-			cell.setMyCurrentState(FireState.BURNED);
-			
-		}
-		else if (cell.getMyCurrentState() == FireState.BURNED) {
-			cell.setMyCurrentState(FireState.TREE);
-			
-		} 
-		else if (cell.getMyCurrentState() == FireState.TREE) {
-			cell.setMyCurrentState(FireState.BURNING);
-			
-		}
-		
-		
-	}
+    protected void toggleState (GridCell cell) {
+        if (cell.getMyCurrentState() == FireState.BURNING) {
+            cell.setMyCurrentState(FireState.BURNED);
+
+        }
+        else if (cell.getMyCurrentState() == FireState.BURNED) {
+            cell.setMyCurrentState(FireState.TREE);
+
+        }
+        else if (cell.getMyCurrentState() == FireState.TREE) {
+            cell.setMyCurrentState(FireState.BURNING);
+
+        }
+
+    }
 
     /**
      * Determines if any of a cell's neighbor cells are currently burning
@@ -115,7 +102,7 @@ public class FireGrid extends Grid {
         }
 
         return neighborIsBurning;
-        
+
     }
 
     /**
@@ -141,7 +128,7 @@ public class FireGrid extends Grid {
         double value = r.nextDouble();
 
         return value >= getProbCatch();
-        
+
     }
 
     // =========================================================================
@@ -150,6 +137,7 @@ public class FireGrid extends Grid {
     private double getProbCatch () {
         return myProbCatch;
     }
+
     
     private void setProbCatch (double set) {
     	myProbCatch = set;
@@ -178,4 +166,5 @@ public class FireGrid extends Grid {
 	public void updateParameters (Parameters params) {
 		
 	}
+
 }

@@ -1,21 +1,23 @@
-/**
- * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
- */
-
 package states;
 
 import javafx.scene.paint.Color;
 
 
-public enum GameOfLifeState implements State {
+public enum SugarscapeState implements State {
 
-    DEAD(Color.WHITE, 0),
-    ALIVE(Color.BLACK, 1);
+      AGENT(Color.RED, 0),
+      EMPTY(Color.web("0xffffff"), 1),
+      LOW(Color.web("0xfff5e6"), 2),
+      MEDIUM(Color.web("ffcc80"), 3),
+      HIGH(Color.web("#ff9900"), 4),
+      STRONG(Color.web("#cc7a00"), 5);
+
+
 
     private Color myColor;
     private int stateValue;
 
-    GameOfLifeState (Color color, int state) {
+    SugarscapeState (Color color, int state) {
         myColor = color;
         stateValue = state;
     }
@@ -29,4 +31,5 @@ public enum GameOfLifeState implements State {
     public int getStateValue () {
         return stateValue;
     }
+
 }
