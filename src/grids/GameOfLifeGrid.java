@@ -38,6 +38,7 @@ public class GameOfLifeGrid extends Grid {
             if (s == state.getStateValue()) {
                 return new SimpleCell(state, row, col);
             }
+
         }
 
         // TODO: Return error: invalid initial state

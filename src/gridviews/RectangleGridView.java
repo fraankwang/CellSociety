@@ -4,8 +4,8 @@
 
 package gridviews;
 
+
 import cells.GridCell;
-import constants.Location;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
@@ -38,19 +38,11 @@ public class RectangleGridView extends GridView {
         return group;
     }
 
-    @Override
-    public void updateCellShape (GridCell cell) {
-        super.updateCellShape(cell);
-
-        Location l = cell.getMyGridLocation();
-        Shape old = getMyCellShapes()[l.getRow()][l.getCol()];
-        updateShapeUI(old, cell);
-
-    }
 
     @Override
     protected Shape defaultShape () {
         return new Rectangle(getMyCellSize(), getMyCellSize());
+        
     }
 
 }

@@ -81,7 +81,7 @@ public class Game {
 
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
-
+            
         }
         else if (myGameType.equals("GameOfLife")) {
             myGrid = new GameOfLifeGrid(myParameters);
@@ -115,6 +115,7 @@ public class Game {
         else if (myGridShape.equals("Hexagon")) {
             if (myNeighborDirections.equals("All")) {
                 gridView = new HexagonGridView(myGrid);
+                
             }
             else {
                 // TODO: return error
@@ -180,6 +181,7 @@ public class Game {
             }
         }
     }
+ 
 
     /**
      * Returns a list of offsets to check to find a GridCell's cardinal neighbors
