@@ -4,8 +4,6 @@
 
 package gridviews;
 
-
-import cells.GridCell;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;

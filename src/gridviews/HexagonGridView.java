@@ -6,7 +6,6 @@ package gridviews;
 
 import grids.Grid;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
@@ -22,7 +21,7 @@ public class HexagonGridView extends GridView {
 
     /**
      * defaultShape instantiates shape to be put in 2D array to run simulation (not for UI),
-     * so exact Hexagon coordinates do not matter
+     * so exact Hexagon coordinates do not matter because they will be cleared for UI placing
      */
     @Override
     protected Shape defaultShape(){
@@ -74,15 +73,15 @@ public class HexagonGridView extends GridView {
                 Polygon shape = (Polygon) getMyCellShapes()[row][col];
                 shape.getPoints().clear();
                 
-                double xOffset = row * (cellSize * Math.sqrt(3.0));
+                double xOffset = col * (cellSize * Math.sqrt(3.0));
                 double xStaggerOffset = xOffset + ((cellSize * Math.sqrt(3.0)) / 2);
-                double yOffset = cellSize/2 + (col * (cellSize + cellSize/2));
+                double yOffset = cellSize/2 + (row * (cellSize + cellSize/2));
                 
-                if (col % 2 == 0) {
+                if (row % 2 == 0) {
                 	shape.getPoints().addAll(generateHexCoordinates(xOffset, yOffset, cellSize));
                 	
                 }
-                else if (col % 2 != 0) {
+                else if (row % 2 != 0) {
                 	shape.getPoints().addAll(generateHexCoordinates(xStaggerOffset, yOffset, cellSize));
                 
                 }
