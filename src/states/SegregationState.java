@@ -7,6 +7,10 @@ package states;
 import javafx.scene.paint.Color;
 
 
+/**
+ *  Enum of states for the Segregation simulation 
+ *
+ */
 public enum SegregationState implements State {
                                                EMPTY(Color.WHITE, 0),
                                                RED(Color.RED, 1),
