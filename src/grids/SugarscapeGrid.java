@@ -1,40 +1,62 @@
 package grids;
 
+import java.util.Random;
 import cells.Agent;
 import cells.GridCell;
 import cells.Patch;
 import cells.SugarAgent;
 import cells.SugarPatch;
+import constants.Constants;
 import constants.Location;
 import constants.Offset;
 import constants.Parameters;
 import states.SugarscapeState;
 
 public class SugarscapeGrid extends PatchGrid {
+    private int myAgentSugarMin;
+    private int myAgentSugarMax;
+    private int myAgentMetabolismMin;
+    private int myAgentMetabolismMax;
+    private int myAgentVisionMin;
+    private int myAgentVisionMax;
+    private int mySugarGrowBackRate;
+    private int mySugarGrowBackInterval;
+    
+    private int myStepCount;
+
    
     public SugarscapeGrid (Parameters params) {
         super(params);
-        // TODO Auto-generated constructor stub
+        myAgentSugarMin = Integer.parseInt(params.getParameter("agentSugarMin"));
+        myAgentSugarMax = Integer.parseInt(params.getParameter("agentSugarMax"));
+        myAgentMetabolismMin = Integer.parseInt(params.getParameter("agentMetabolismMin"));
+        myAgentMetabolismMax = Integer.parseInt(params.getParameter("agentMetabolismMax"));
+        myAgentVisionMin = Integer.parseInt(params.getParameter("agentVisionMin"));
+        myAgentVisionMax = Integer.parseInt(params.getParameter("agentVisionMax"));
+        mySugarGrowBackRate = Integer.parseInt(params.getParameter("sugarGrowBackRate"));
+        mySugarGrowBackInterval = Integer.parseInt(params.getParameter("sugarGrowBackInterval"));
+       
+
     }
 
-    private int sugarGrowBackInterval;
-    private int stepCount;
     
    
 
     @Override
     public void step () {
         super.step();
-        stepCount++;
+        myStepCount++;
     }
 
    
     @Override
     protected Agent initializeAgent (int row, int column) {
         // TODO Auto-generated method stub
-        int sugar = 1;
-        int sugarMetabolism = 5;
-        int vision = 2;
+       
+        Random r = new Random();
+        int sugar = r.nextInt(myAgentSugarMax - myAgentSugarMin + 1) + myAgentSugarMin;
+        int sugarMetabolism = r.nextInt(myAgentMetabolismMax - myAgentMetabolismMin + 1) + myAgentMetabolismMin;;
+        int vision = r.nextInt(myAgentVisionMax - myAgentVisionMin + 1) + myAgentVisionMin;
         
         Agent agent = new SugarAgent(SugarscapeState.AGENT, row, column, sugar, sugarMetabolism, vision);
         return agent;
@@ -43,8 +65,19 @@ public class SugarscapeGrid extends PatchGrid {
     @Override
     protected Patch initializePatch (int row, int column) {
         // TODO Auto-generated method stub
+        Random r = new Random();
+        int stateValue = r.nextInt(5) + 1;
+        SugarscapeState state = null;
+        for (SugarscapeState s : SugarscapeState.values()){
+            if(s.getStateValue() == stateValue){
+                state = s;
+            }
+        }
         
-        return null;
+        int myPatchSugarMax = 5;
+        int myPatchSugarMin = 0;
+        int sugar = r.nextInt(myPatchSugarMax - myPatchSugarMin + 1) + myPatchSugarMin;
+        return new SugarPatch(state, row, column, mySugarGrowBackRate, sugar, myPatchSugarMax);
     }
     
     @Override
@@ -106,8 +139,8 @@ public class SugarscapeGrid extends PatchGrid {
 
     @Override
     protected void setPatchState (Patch patch) {
-        if (stepCount >= sugarGrowBackInterval){
-            stepCount = 0;
+        if (myStepCount >= mySugarGrowBackInterval){
+            myStepCount = 0;
             patch.update();
         }
         

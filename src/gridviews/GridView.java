@@ -88,6 +88,7 @@ public abstract class GridView {
 	 * Shape and GridCell passed in should be referencing the same element
 	 */
 	protected void updateShapeUI (Shape shape, GridCell cell) {
+	    System.out.println(cell.getMyCurrentState().getColor());
 		setShapeColor(shape, cell.getMyCurrentState().getColor());
 
 	}

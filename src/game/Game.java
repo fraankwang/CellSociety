@@ -15,6 +15,7 @@ import grids.GameOfLifeGrid;
 import grids.Grid;
 import grids.PredatorPreyGrid;
 import grids.SegregationGrid;
+import grids.SugarscapeGrid;
 import gridviews.GridView;
 import gridviews.HexagonGridView;
 import gridviews.RectangleGridView;
@@ -93,6 +94,8 @@ public class Game {
         }
         else if (myGameType.equals("PredatorPrey")) {
             myGrid = new PredatorPreyGrid(myParameters);
+        }else if (myGameType.equals("Sugarscape")) {
+            myGrid = new SugarscapeGrid(myParameters);
         }
 
     }

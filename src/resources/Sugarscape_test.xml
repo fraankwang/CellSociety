@@ -1,0 +1,15 @@
+<root>
+	<gameType>Sugarscape</gameType>
+	<rows>51</rows>
+	<columns>51</columns>
+	<delay>50</delay>
+	<numAgents>50</numAgents>
+	<agentSugarMin>5</agentSugarMin>
+	<agentSugarMax>25</agentSugarMax>
+	<agentMetabolismMin>1</agentMetabolismMin>
+	<agentMetabolismMax>4</agentMetabolismMax>
+	<agentVisionMin>1</agentVisionMin>
+	<agentVisionMax>6</agentVisionMax>
+	<sugarGrowBackRate>1</sugarGrowBackRate>
+	<sugarGrowBackInterval>1</sugarGrowBackInterval>
+</root>
