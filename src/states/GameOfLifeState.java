@@ -6,10 +6,11 @@ package states;
 
 import javafx.scene.paint.Color;
 
+
 public enum GameOfLifeState implements State {
-    DEAD(Color.BLACK, 0),
-    ALIVE(Color.WHITE, 1);
-	
+                                              DEAD(Color.BLACK, 0),
+                                              ALIVE(Color.WHITE, 1);
+
     private Color myColor;
     private int stateValue;
 
@@ -18,11 +19,13 @@ public enum GameOfLifeState implements State {
         stateValue = state;
     }
 
+    @Override
     public Color getColor () {
         return myColor;
     }
-    
+
+    @Override
     public int getStateValue () {
-    	return stateValue;
+        return stateValue;
     }
 }

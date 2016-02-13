@@ -9,15 +9,12 @@ import constants.Location;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import main.MainView;
 
 
 public class RectangleGridView extends GridView {
-
-    private GridPane gp;
 
     public RectangleGridView (Grid grid) {
         super(grid);
@@ -38,26 +35,22 @@ public class RectangleGridView extends GridView {
         Group group = new Group();
         group.getChildren().add(gridPane);
 
-        gp = gridPane;
-
         return group;
     }
 
+    @Override
     public void updateCellShape (GridCell cell) {
         super.updateCellShape(cell);
 
         Location l = cell.getMyGridLocation();
         Shape old = getMyCellShapes()[l.getRow()][l.getCol()];
         updateShapeUI(old, cell);
-        
-        //gp.getChildren().remove(old);
-        //gp.add(cell.getMyShape(), cell.getMyGridLocation().getCol(), cell.getMyGridLocation().getRow());
 
     }
 
-    protected Shape defaultShape(){
-        return new Circle(getMyCellSize(),getMyCellSize(), getMyCellSize());
-        //return new Rectangle(getMyCellSize(),getMyCellSize());
+    @Override
+    protected Shape defaultShape () {
+        return new Rectangle(getMyCellSize(), getMyCellSize());
     }
 
 }

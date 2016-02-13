@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
+
 public class HexagonGridView extends GridView {
 
     public HexagonGridView (Grid grid) {
@@ -21,9 +22,9 @@ public class HexagonGridView extends GridView {
         // TODO Auto-generated method stub
         return new Group();
     }
-    
+
     @Override
-    protected Shape defaultShape(){
+    protected Shape defaultShape () {
         return new Polygon();
     }
 

@@ -4,7 +4,6 @@
 
 package main;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +40,11 @@ public class MainView {
     private Stage myPrimaryStage;
     private BorderPane myPrimaryPane;
     private Group myPrimaryRoot;
-    private MainController myController; 
-                                         
+    private MainController myController;
 
     /**
      * Instantiates all UI variables to be displayed
+     *
      * @param s - the Stage variable to be displayed
      */
     public MainView (Stage s) {
@@ -116,7 +115,6 @@ public class MainView {
 
     }
 
- 
     /**
      * Creates a list of buttons to display in the tool bar
      *
@@ -124,11 +122,12 @@ public class MainView {
      */
     private List<Control> createGameButtons () {
         List<Control> list = new ArrayList<Control>();
-    	
-        Slider slider = new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")), 
-        							Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
 
-    	slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
+        Slider slider =
+                new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
+                           Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
+
+        slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
 
         Button startButton =
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
@@ -163,7 +162,7 @@ public class MainView {
 
     /**
      * Creates a button that is set on action based on the parameter given
-     * 
+     *
      * @param name - label of button
      * @param handler - ActionEvent the button will do
      * @return named and Button (which is set on action)
@@ -192,7 +191,7 @@ public class MainView {
 
     /**
      * Specifies the available files the user can choose and returns it
-     * 
+     *
      * @return File picked by user
      */
     public File getFileFromUser () {
@@ -205,36 +204,6 @@ public class MainView {
                                                                           .getString("fileExtensionFilterExtension")));
 
         return fileChooser.showOpenDialog(myPrimaryStage);
-
-    }
-
-    /**
-     * Adjusts stage size when grid size changes
-     *
-     * NOTE: this method does not deal with BorderPane insets, so sizing may be
-     * off if insets are not 0. Can't call myPrimaryPane.getWidth() because this
-     * is not set until layout
-     *
-     * @param gridDimension The dimension of the new grid
-     */
-    private void setStageSizeToMatchGrid (Dimension gridDimension) {
-        int stageWidth = (int) gridDimension.getWidth();
-        int stageHeight = (int) gridDimension.getHeight() + TOOLBAR_HEIGHT;
-
-        if (stageWidth < WINDOW_WIDTH) {
-            myPrimaryStage.setWidth(WINDOW_WIDTH);
-        }
-        else {
-            myPrimaryStage.setWidth(stageWidth);
-        }
-
-        if (stageHeight < WINDOW_HEIGHT) {
-            myPrimaryStage.setHeight(WINDOW_HEIGHT);
-        }
-        else {
-            myPrimaryStage.setHeight(stageHeight);
-
-        }
 
     }
 
