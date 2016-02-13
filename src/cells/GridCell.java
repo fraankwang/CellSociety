@@ -5,7 +5,6 @@
 package cells;
 
 import constants.Location;
-import javafx.scene.layout.StackPane;
 import states.State;
 
 
@@ -13,7 +12,7 @@ import states.State;
  * Abstract class for a cell in a grid
  *
  */
-public abstract class GridCell extends StackPane {
+public abstract class GridCell {
 
     private State myCurrentState;
     private State myNextState;
