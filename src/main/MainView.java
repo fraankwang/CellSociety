@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
@@ -22,6 +23,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -148,14 +150,19 @@ public class MainView {
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
                            event -> myController.saveXML());
 
+        ComboBox<String> cellShapeChooser = new ComboBox<String>();
+        cellShapeChooser.getItems().addAll("Rectangle","Triangle","Hexagon");
+//        cellShapeChooser.setOnAction(e -> myController.setCellShape(e.getSource().toString()));
+        
         list.add(startButton);
         list.add(stopButton);
         list.add(stepButton);
-        list.add(slider);
         list.add(resetButton);
         list.add(newGameButton);
         list.add(saveXMLButton);
-
+        list.add(slider);
+        list.add(cellShapeChooser);
+        
         return list;
 
     }

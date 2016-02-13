@@ -136,6 +136,15 @@ public class Game {
         myGrid.setMyGridView(gridView);
 
     }
+    
+//    public void changeCellShape (String type) {
+//    	if (type.equals("Hexagon")) {
+//    		myNeighborDirections = "All";
+//    		myGridShape = type;
+//    	}
+//    	initializeGridView();
+//    	
+//    }
 
     /**
      * Creates ScrollPane with current GridView and puts it in myGameRoot,

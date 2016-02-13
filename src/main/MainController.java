@@ -87,6 +87,12 @@ public class MainController {
 
     }
 
+//    public void setCellShape (String type) {
+//    	stopGame();
+//    	myPrimaryGame.changeCellShape(type);
+//    	
+//    }
+    
     /**
      * Constructs a new game based on a given file and switches to it
      *
