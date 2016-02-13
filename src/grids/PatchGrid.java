@@ -71,11 +71,12 @@ public abstract class PatchGrid extends Grid {
 
         List<Integer> xCoords = new ArrayList<Integer>();
         List<Integer> yCoords = new ArrayList<Integer>();
-        for (int i = 0; i < getRows(); i++) {
-            xCoords.add(i);
-        }
-        for (int i = 0; i < getColumns(); i++) {
-            yCoords.add(i);
+
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
+                xCoords.add(r);
+                yCoords.add(c);
+            }
         }
 
         Collections.shuffle(xCoords);
@@ -146,6 +147,7 @@ public abstract class PatchGrid extends Grid {
      * Determines the next state of each agent by calling setAgentState on each
      */
     protected void setAgentStates () {
+        System.out.println(myAgents.size());
         for (Agent agent : myAgents) {
             setAgentState(agent);
         }
