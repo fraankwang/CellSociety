@@ -25,8 +25,6 @@ import javafx.scene.Group;
  */
 public abstract class Grid {
 
-    private static final int GRID_SIZE = 500;
-
     private int[][] myInitialStates;
     private int myColumns;
     private int myRows;
@@ -180,10 +178,6 @@ public abstract class Grid {
         return new Location(neighborRow, neighborCol);
     }
 
-    // =========================================================================
-    // Getters and Setters
-    // =========================================================================
-
     /**
      * Aggregates current game parameters to be saved to an XML file.
      * Subclasses of Grid override the method by adding additional simulation-specific parameters
@@ -250,6 +244,10 @@ public abstract class Grid {
         return neighbors;
 
     }
+    
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
 
     public void setNeighborOffsets (List<Offset> offsets) {
         myNeighborOffsets = offsets;
