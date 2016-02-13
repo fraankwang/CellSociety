@@ -264,8 +264,15 @@ public class SugarscapeGrid extends PatchGrid {
 
 	@Override
 	public void updateParams(Map<String, Double> map) {
-		// TODO Auto-generated method stub
-		
+		myAgentSugarMin = map.get("agentSugarMin").intValue();
+		myAgentSugarMax = map.get("agentSugarMax").intValue();
+		myAgentMetabolismMin = map.get("agentMetabolismMin").intValue();
+		myAgentMetabolismMax = map.get("agentMetabolismMax").intValue();
+		myAgentVisionMin = map.get("agentVisionMin").intValue();
+		myAgentVisionMax = map.get("agentVisionMax").intValue();
+		mySugarGrowBackRate = map.get("sugarGrowBackRate").intValue();
+		mySugarGrowBackInterval =  map.get("sugarGrowBackInterval").intValue();
+
 	}
     
 }
