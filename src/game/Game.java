@@ -195,7 +195,7 @@ public class Game {
      * Sets myGrid's myNeighbor's attribute with appropriate directional headings
      */
     private void initializeNeighborOffsets () {
-
+        
         if (myNeighborDirections.equals("Cardinal")) {
             myGrid.setNeighborOffsets(neighborOffsetsCardinal());
 
@@ -331,6 +331,7 @@ public class Game {
 
     public void setNeighborDirections (String neighborDirections) {
     	myNeighborDirections = neighborDirections;
+    	initializeNeighborOffsets();
     }
     
     public Grid getMyGrid () {
