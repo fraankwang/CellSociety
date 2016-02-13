@@ -14,7 +14,7 @@ import states.State;
 
 
 /**
- * Grid subclass for Fire simulation
+ * Grid subclass for Segregation simulation
  *
  */
 public class SegregationGrid extends Grid {

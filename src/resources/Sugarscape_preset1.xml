@@ -8,7 +8,7 @@
 	<agentSugarMax>25</agentSugarMax>
 	<agentMetabolismMin>1</agentMetabolismMin>
 	<agentMetabolismMax>4</agentMetabolismMax>
-	<agentVisionMin>1</agentVisionMin>
+	<agentVisionMin>2</agentVisionMin>
 	<agentVisionMax>6</agentVisionMax>
 	<sugarGrowBackRate>3</sugarGrowBackRate>s
 	<sugarGrowBackInterval>1</sugarGrowBackInterval>
