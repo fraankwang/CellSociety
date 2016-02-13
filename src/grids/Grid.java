@@ -47,8 +47,6 @@ public abstract class Grid {
         myRows = params.getRows();
         myColumns = params.getColumns();
 
-
-
     }
 
     // =========================================================================
@@ -327,9 +325,16 @@ public abstract class Grid {
     
     public void setNeighborOffsets (List<Offset> offsets) {
         myNeighborOffsets = offsets;
+    
     }
+    
     protected List<Offset> getMyNeighborOffsets () {
         return myNeighborOffsets;
     }
+
+	public void setCellSize(int cellSize) {
+		getMyGridView().setMyCellSize(cellSize);
+		
+	}
 
 }
