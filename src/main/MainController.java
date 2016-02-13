@@ -105,6 +105,22 @@ public class MainController {
     }
     
     /**
+<<<<<<< HEAD
+=======
+	 * Updates Game and updates display
+	 * @param increment
+	 */
+	public void incrementCellSize (boolean increment) {
+		if (myPrimaryGame != null) {
+			myPrimaryGame.changeCellSize(increment);
+		}
+		
+		myView.displayGame(myPrimaryGame.getGameRoot());
+		
+	}
+	
+	/**
+>>>>>>> 323b52f62ba8d38eddcc09bde80f839eb7599085
      * 
      * @param neighborDirections
      */
@@ -170,6 +186,7 @@ public class MainController {
     /**
      * Reads user input and sets animation speed to given rate
      * 
+     * 
      * @param speed how fast the animation should go
      */
     public void setSpeed (double speed){
@@ -177,23 +194,13 @@ public class MainController {
     		myPrimaryGame.setTimelineRate(speed);
     	}
     }
-    /**
-     * Updates Game and updates display
-     * @param increment
-     */
-    public void incrementCellSize (boolean increment) {
-    	if (myPrimaryGame != null) {
-    		myPrimaryGame.changeCellSize(increment);
-    	}
-    	
-    	myView.displayGame(myPrimaryGame.getGameRoot());
-    	
-    }
+    
     
     
     public void updateParams() {
     	//myPrimaryGame.getMyGrid().updateParameters();
     }
+    
     
 
 }
