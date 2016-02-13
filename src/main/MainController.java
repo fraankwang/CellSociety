@@ -72,6 +72,7 @@ public class MainController {
     	if (myPrimaryGame != null) {
     		stopGame();
     		myPrimaryGame.initializeGrid();
+    		
     		myView.displayGame(myPrimaryGame.getGameRoot());
 
     	}
@@ -105,6 +106,19 @@ public class MainController {
     }
     
     /**
+	 * Updates Game and updates display
+	 * @param increment
+	 */
+	public void incrementCellSize (boolean increment) {
+		if (myPrimaryGame != null) {
+			myPrimaryGame.changeCellSize(increment);
+		}
+		
+		myView.displayGame(myPrimaryGame.getGameRoot());
+		
+	}
+
+	/**
      * 
      * @param neighborDirections
      */
@@ -167,19 +181,6 @@ public class MainController {
 
     }
 
-    /**
-     * Updates Game and updates display
-     * @param increment
-     */
-    public void incrementCellSize (boolean increment) {
-    	if (myPrimaryGame != null) {
-    		myPrimaryGame.changeCellSize(increment);
-    	}
-    	
-    	myView.displayGame(myPrimaryGame.getGameRoot());
-    	
-    }
-    
     /**
      * Reads user input and sets animation speed to given rate
      * 
