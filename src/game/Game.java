@@ -138,6 +138,11 @@ public class Game {
 
     }
     
+    /**
+     * Commanded by MainController to re-initialize GridView and create a new ScrollPane with
+     * re-initialized GridView
+     * @param type
+     */
     public void changeCellShape (String type) {
     	
     	if (type.equals("Hexagon")){
@@ -147,12 +152,20 @@ public class Game {
     	myGridShape = type;
     	initializeGridView();
     	
-    	Group newRoot = new Group();
-    	newRoot.getChildren().add(createScrollPane());
-    	myGameRoot = newRoot;
+    	setRoot();
     	
     }
 
+    /**
+     * Changes cell size parameter and re-initializes GridView
+     * @param increment
+     */
+    public void changeCellSize (boolean increment) {
+    	initializeGridView();
+    	getMyGrid().getMyGridView().incrementCellSize(increment);
+    	setRoot();
+    	
+    }
     /**
      * Creates ScrollPane with current GridView and puts it in myGameRoot,
      * the primary UI element to be displayed when MainController sets up a new Game
@@ -173,6 +186,7 @@ public class Game {
         sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
         sp.setContent(myGrid.getView());
         return sp;
+        
     }
 
     /**

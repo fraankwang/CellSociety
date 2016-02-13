@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.Map;
 import constants.Constants;
 import constants.Parameters;
-import exceptions.InvalidInputException;
 import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
@@ -136,13 +135,7 @@ public class MainController {
      */
     private Parameters parseXML (File file) {
         Parser parser = new Parser();
-        try {
-        	return parser.parse(file);
-        } catch (InvalidInputException e) {
-        	e.getMessage();
-        	return null;
-        }
-//        return parser.parse(file);
+    	return parser.parse(file);
 
     }
 
@@ -174,6 +167,18 @@ public class MainController {
 
     }
 
+    /**
+     * Updates Game and updates display
+     * @param increment
+     */
+    public void incrementCellSize (boolean increment) {
+    	if (myPrimaryGame != null) {
+    		myPrimaryGame.changeCellSize(increment);
+    	}
+    	
+    	myView.displayGame(myPrimaryGame.getGameRoot());
+    }
+    
     /**
      * Reads user input and sets animation speed to given rate
      * 

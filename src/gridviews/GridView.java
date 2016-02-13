@@ -71,6 +71,22 @@ public abstract class GridView {
 	}
 
 	/**
+	 * Changes cell size, recreated root in GridView
+	 * @param increment
+	 */
+	public void incrementCellSize (boolean increment) {
+		if (increment) {
+			myCellSize += 3;
+		}
+		else {
+			myCellSize -= 3;
+		}
+		
+		initialize(myGrid.getMyCells());
+		myView = createUI();
+	}
+	
+	/**
 	 * Formats Shape of GridCell based on specified parameters, then update's the Shape UI
 	 * @param shape
 	 * @param cell
@@ -161,11 +177,11 @@ public abstract class GridView {
 		this.myGrid = myGrid;
 	}
 
-	protected int getMyCellSize() {
+	public int getMyCellSize() {
 		return myCellSize;
 	}
 
-	protected void setMyCellSize(int cellSize) {
+	public void setMyCellSize(int cellSize) {
 		myCellSize = cellSize;
 	}
 

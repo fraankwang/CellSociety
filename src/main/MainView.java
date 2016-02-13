@@ -155,6 +155,12 @@ public class MainView {
 		Button saveXMLButton =
 				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
 						event -> myController.saveXML());
+		Button sizeUp =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonIncrement"),
+						event -> myController.incrementCellSize(true));
+		Button sizeDown =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonDecrement"),
+						event -> myController.incrementCellSize(false));
 		
 		ComboBox<String> cellShapeChooser = new ComboBox<String>();
 		cellShapeChooser.setPromptText(Constants.RESOURCES.getString("cellShapeChooserPrompt"));
@@ -181,6 +187,8 @@ public class MainView {
 		list.add(slider);
 		list.add(cellShapeChooser);
 		list.add(cellNeighborChooser);
+		list.add(sizeUp);
+		list.add(sizeDown);
 		
 		return list;
 
