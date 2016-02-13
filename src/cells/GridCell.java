@@ -63,7 +63,7 @@ public abstract class GridCell {
         return myGridLocation;
     }
 
-    private void setMyGridLocation (Location gridLocation) {
+    public void setMyGridLocation (Location gridLocation) {
         myGridLocation = gridLocation;
     }
 

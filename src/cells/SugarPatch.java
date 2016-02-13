@@ -29,11 +29,11 @@ public class SugarPatch extends Patch {
     }
 
     @Override
-    public void initializeWithAgent(Agent agent){
+    public void initializeWithAgent (Agent agent) {
         super.initializeWithAgent(agent);
         setMyCurrentState(SugarscapeState.AGENT);
     }
-    
+
     @Override
     public void update () {
         myStepCount++;
@@ -43,8 +43,9 @@ public class SugarPatch extends Patch {
             setMyNextState(stateFromSugarCount());
             myStepCount = 0;
         }
-        
-        if (isOccupied() == true){
+
+        if (isOccupied() == true) {
+
             setMyNextState(SugarscapeState.AGENT);
         }
 
@@ -77,7 +78,6 @@ public class SugarPatch extends Patch {
         setMySugar(0);
         setMyAgent(agent);
     }
-
 
     public int getMySugar () {
         return mySugar;
