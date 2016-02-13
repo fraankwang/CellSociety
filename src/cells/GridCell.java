@@ -14,7 +14,7 @@ import states.State;
  *
  */
 public abstract class GridCell extends StackPane {
-    
+
     private State myCurrentState;
     private State myNextState;
     private Location myGridLocation;
@@ -37,10 +37,9 @@ public abstract class GridCell extends StackPane {
      */
     public void transitionStates () {
         myCurrentState = myNextState;
-        myNextState = null;        
+        myNextState = null;
     }
 
-    
     // =========================================================================
     // Getters and Setters
     // =========================================================================

@@ -12,6 +12,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import main.MainView;
 
+
 public class HexagonGridView extends GridView {
 	
     public HexagonGridView (Grid grid) {
@@ -58,8 +59,7 @@ public class HexagonGridView extends GridView {
 		return coordinates;
 		
     }
-    
-    @Override
+
     protected Group createUI () {
         Group root = new Group();
     	

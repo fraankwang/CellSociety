@@ -14,7 +14,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import main.MainView;
 
+
 public abstract class GridView {
+
 	public static final boolean OUTLINED = Constants.RESOURCES.getString("outlined").equals("Yes");
 
 	private Shape[][] myCellShapes;
@@ -169,5 +171,7 @@ public abstract class GridView {
 	public Dimension getMyGridSize() {
 		return myGridSize;
 	}
+
+
 
 }

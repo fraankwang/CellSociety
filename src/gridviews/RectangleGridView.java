@@ -5,18 +5,16 @@
 package gridviews;
 
 
+import cells.GridCell;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import main.MainView;
 
 
 public class RectangleGridView extends GridView {
-
-    private GridPane gp;
 
     public RectangleGridView (Grid grid) {
         super(grid);
@@ -37,14 +35,14 @@ public class RectangleGridView extends GridView {
         Group group = new Group();
         group.getChildren().add(gridPane);
 
-        gp = gridPane;
-
         return group;
     }
 
-    protected Shape defaultShape(){
-//        return new Circle(getMyCellSize(),getMyCellSize(), getMyCellSize());
-        return new Rectangle(getMyCellSize(),getMyCellSize());
+
+    @Override
+    protected Shape defaultShape () {
+        return new Rectangle(getMyCellSize(), getMyCellSize());
+        
     }
 
 }

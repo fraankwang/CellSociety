@@ -27,10 +27,6 @@ public class PredatorPreyGrid extends Grid {
     private int sharkBreed;
     private int sharkHealth;
 
-    private static final int MY_STATE_VALUE_EMPTY = 0;
-    private static final int MY_STATE_VALUE_SHARK = 1;
-    private static final int MY_STATE_VALUE_FISH = 2;
-
     public PredatorPreyGrid (Parameters params) {
         super(params);
 
@@ -43,21 +39,25 @@ public class PredatorPreyGrid extends Grid {
 
     @Override
     protected GridCell initializeCell (int row, int col) {
-        GridCell cell = new SimpleCell(WatorState.EMPTY, row, col);
+        GridCell cell = null;
 
         int s = getMyInitialStates()[row][col];
-        switch (s) {
-            case MY_STATE_VALUE_EMPTY:
-                cell = new SimpleCell(WatorState.EMPTY, row, col);
-                break;
-            case MY_STATE_VALUE_SHARK:
-                cell = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
-                break;
-            case MY_STATE_VALUE_FISH:
-                cell = new FishCell(WatorState.FISH, row, col, fishBreed);
-            default:
-                // Display error message
-                break;
+
+        if (s == WatorState.EMPTY.getStateValue()) {
+            cell = new SimpleCell(WatorState.EMPTY, row, col);
+
+        }
+        else if (s == WatorState.SHARK.getStateValue()) {
+            cell = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
+
+        }
+        else if (s == WatorState.FISH.getStateValue()) {
+            cell = new FishCell(WatorState.FISH, row, col, fishBreed);
+
+        }
+
+        if (cell == null) {
+            // TODO: return error
         }
 
         return cell;
@@ -129,7 +129,7 @@ public class PredatorPreyGrid extends Grid {
     /**
      * Sets the state for the Fish Cell passed in. It will kill or move the
      * fish and then breeds if that is possible.
-     * 
+     *
      * @param fishCell the Fish Cell that needs to be updated
      */
     private void setFishCellState (FishCell fishCell) {
@@ -165,7 +165,7 @@ public class PredatorPreyGrid extends Grid {
     /**
      * Sets the state for the Shark Cell passed in. It will kill, move, or have the
      * shark eat and then breeds if that is possible.
-     * 
+     *
      * @param shark the Shark Cell that needs to be updated
      */
     private void setSharkCellState (SharkCell shark) {
@@ -181,7 +181,7 @@ public class PredatorPreyGrid extends Grid {
                 }
             }
             Collections.shuffle(edible);
-            shark.eat((FishCell) (edible.remove(edible.size() - 1)));
+            shark.eat((edible.remove(edible.size() - 1)));
             shark.setMyNextState(shark.getMyCurrentState());
         }
         else if (shark.getMyNextState() == WatorState.DEAD) {
@@ -195,7 +195,7 @@ public class PredatorPreyGrid extends Grid {
 
     /**
      * Breeds a new Shark or Fish
-     * 
+     *
      * @param toSpawn the place to spawn a new fish
      * @param fishOrShark determines whether to make a Fish or Shark
      */
@@ -220,7 +220,7 @@ public class PredatorPreyGrid extends Grid {
 
     /**
      * Moves the cell at origin to destination
-     * 
+     *
      * @param origin the start position
      * @param destination the end position
      */
@@ -265,7 +265,7 @@ public class PredatorPreyGrid extends Grid {
 
     /**
      * Kills the cell passed into it
-     * 
+     *
      * @param cell the state to kill
      * @param sharkOrFish determines whether or the cell is a shark or fish
      */
@@ -313,7 +313,7 @@ public class PredatorPreyGrid extends Grid {
 
     /**
      * Gets a random cell from list
-     * 
+     *
      * @param validCells should be cell that is either empty and hasn't had its next state set
      * @return a random cell
      */
@@ -325,7 +325,7 @@ public class PredatorPreyGrid extends Grid {
     /**
      * Takes the list of neighbors of a cell and returns
      * another list of cells that are valid for movement/breeding
-     * 
+     *
      * @param neighbors
      * @return a list of valid cells
      */

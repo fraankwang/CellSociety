@@ -12,8 +12,8 @@ import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 
 public class MainController {
@@ -27,10 +27,10 @@ public class MainController {
     /**
      * Kickoff method that shows the primaryScene on the primaryStage in MainView
      */
-    public void start(){
+    public void start () {
         myView.display();
     }
-    
+
     /**
      * Event handler for starting the current game
      */
@@ -67,9 +67,9 @@ public class MainController {
      */
     public void resetGame () {
         if (myPrimaryGame != null) {
-        	stopGame();
-        	myPrimaryGame.initializeGrid();
-        	myView.displayGame(myPrimaryGame.getGameRoot());        	
+            stopGame();
+            myPrimaryGame.initializeGrid();
+            myView.displayGame(myPrimaryGame.getGameRoot());
         }
 
     }
@@ -96,7 +96,7 @@ public class MainController {
         Parameters params = parseXML(file);
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
-        
+
     }
 
     /**
@@ -123,11 +123,11 @@ public class MainController {
         if (myPrimaryGame != null) {
             Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
             currentGameState.put("gameType", myPrimaryGame.getMyGameType());
-            
+
             if (!currentGameState.containsKey("delay")) {
-            	currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));            	
+                currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));
             }
-            
+
             int[][] currentStates = myPrimaryGame.getMyGrid().getCurrentStatesArray();
             generator.writeXML(currentGameState, currentStates);
         }
@@ -135,14 +135,15 @@ public class MainController {
         String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
         Alert savedAlert = new Alert(AlertType.INFORMATION, confirmation, new ButtonType("OK"));
         savedAlert.showAndWait();
-        
+
     }
 
     /**
      * Reads user input and sets animation speed to given rate
+     * 
      * @param time
      */
-    public void setSpeed (double rate){
-    	myPrimaryGame.setTimelineRate(rate);
+    public void setSpeed (double rate) {
+        myPrimaryGame.setTimelineRate(rate);
     }
 }
