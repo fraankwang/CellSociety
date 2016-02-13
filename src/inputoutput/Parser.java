@@ -14,15 +14,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import constants.Parameters;
+import exceptions.InvalidInputException;
 
 
 public class Parser {
 
     /**
-     * 
      * @param file picked by user
      * @return Parameters - a map of parameters and a 2D array of initial states (integers) packaged
-     *         together
+     * together
      */
     public Parameters parse (File file) {
         Map<String, String> params = new HashMap<String, String>();
@@ -35,13 +35,18 @@ public class Parser {
             doc.getDocumentElement().normalize();
 
             NodeList root = doc.getFirstChild().getChildNodes();
-
+            if (root.getLength() <= 1) { 
+            	throw new InvalidInputException("missing root");
+            }
+            
             for (int i = 0; i < root.getLength(); i++) {
                 Node elem = root.item(i);
                 if (elem.getNodeType() == Node.ELEMENT_NODE) {
-                    if (!elem.getNodeName().equalsIgnoreCase("initialStates")) {
+                    
+                	if (!elem.getNodeName().equalsIgnoreCase("initialStates")) {
                         params.put(elem.getNodeName(), elem.getTextContent());
                     }
+                	
                     else if (elem.getNodeName().equalsIgnoreCase("initialStates")) {
                         NodeList states = elem.getChildNodes();
                         ArrayList<String> stateValues = new ArrayList<String>();
@@ -49,20 +54,35 @@ public class Parser {
                         for (int k = 0; k < states.getLength(); k++) {
                             if (states.item(k).getNodeType() == Node.ELEMENT_NODE) {
                                 String row = states.item(k).getTextContent().trim();
+                                
+                                if (params.containsKey("columns") && 
+                                		row.length() != params.get("columns").length()) {
+                                	throw new InvalidInputException("incorrect number of columns");
+                                }
+                                
                                 stateValues.add(row);
                             }
 
                         }
+                        
+                        if (stateValues.size() != params.get("rows").length()) {
+                        	throw new InvalidInputException("incorrect number of rows");
+                        }
+                        
                         initialStates = createInitialStates(stateValues);
                     }
                 }
             }
 
+            if (initialStates == null) {
+            	throw new InvalidInputException("No initial states given");
+            }
+            
             params.remove("#text");
 
         }
         catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
 
         return new Parameters(params, initialStates);

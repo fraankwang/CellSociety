@@ -121,7 +121,7 @@ public class Game {
                 // TODO: return error
                 String errorMessage =
                         Constants.RESOURCES.getString("errorMsgInvalidNeighborDirections");
-                if (myNeighborDirections.equals("Cardinal") |
+                if (myNeighborDirections.equals("Cardinal") ||
                     myNeighborDirections.equals("Diagonal")) {
                     errorMessage =
                             String.format(Constants.RESOURCES
