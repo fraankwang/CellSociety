@@ -105,8 +105,6 @@ public class MainController {
     }
     
     /**
-<<<<<<< HEAD
-=======
 	 * Updates Game and updates display
 	 * @param increment
 	 */
@@ -120,8 +118,6 @@ public class MainController {
 	}
 	
 	/**
->>>>>>> 323b52f62ba8d38eddcc09bde80f839eb7599085
-     * 
      * @param neighborDirections
      */
     public void setNeighborDirections(String neighborDirections) {
