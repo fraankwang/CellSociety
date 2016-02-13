@@ -19,7 +19,7 @@ public abstract class DataCell extends GridCell {
 
     /**
      * allows the the DataCell to update its persistent information
-     * 
+     *
      */
     public abstract void update ();
 }

@@ -10,7 +10,6 @@ import java.util.Set;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import javafx.scene.shape.Rectangle;
 import states.GameOfLifeState;
 import states.State;
 
@@ -21,8 +20,6 @@ import states.State;
  */
 public class GameOfLifeGrid extends Grid {
 
-    private static final int MY_STATE_VALUE_DEAD = 0;
-    private static final int MY_STATE_VALUE_ALIVE = 1;
     private static final int NUM_NEIGHBORS_TO_RESURRECT = 3;
     private static final Set<Integer> NUM_NEIGHBORS_TO_STAY_ALIVE =
             new HashSet<Integer>(Arrays.asList(2, 3));
@@ -33,25 +30,18 @@ public class GameOfLifeGrid extends Grid {
     }
 
     @Override
-
     protected GridCell initializeCell (int row, int col) {
-        State state = GameOfLifeState.DEAD;
 
         int s = getMyInitialStates()[row][col];
 
-        switch (s) {
-            case MY_STATE_VALUE_DEAD:
-                state = GameOfLifeState.DEAD;
-                break;
-            case MY_STATE_VALUE_ALIVE:
-                state = GameOfLifeState.ALIVE;
-                break;
-            default:
-                // Display error message
-                break;
+        for (State state : GameOfLifeState.values()) {
+            if (s == state.getStateValue()) {
+                return new SimpleCell(state, row, col);
+            }
         }
 
-        return new SimpleCell(state, row, col);
+        // TODO: Return error: invalid initial state
+        return null;
 
     }
 
