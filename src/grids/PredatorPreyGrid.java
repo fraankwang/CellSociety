@@ -13,6 +13,9 @@ import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import states.State;
 import states.WatorState;
 
@@ -84,8 +87,10 @@ public class PredatorPreyGrid extends Grid {
 
     @Override
     protected void toggleState (GridCell cell) {
+    	int row = cell.getMyGridLocation().getRow();
+    	int col = cell.getMyGridLocation().getCol();
         if (cell.getMyCurrentState() == WatorState.EMPTY) {
-            cell.setMyCurrentState(WatorState.SHARK);
+        	 getMyCells()[row][col] = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
 
         }
         else if (cell.getMyCurrentState() == WatorState.SHARK) {
@@ -94,10 +99,6 @@ public class PredatorPreyGrid extends Grid {
         }
         else if (cell.getMyCurrentState() == WatorState.FISH) {
             cell.setMyCurrentState(WatorState.EMPTY);
-
-        }
-        else if (cell.getMyCurrentState() == WatorState.EMPTY) {
-            cell.setMyCurrentState(WatorState.DEAD);
 
         }
 
@@ -171,6 +172,9 @@ public class PredatorPreyGrid extends Grid {
      * @param shark the Shark Cell that needs to be updated
      */
     private void setSharkCellState (SharkCell shark) {
+        shark.setBreedTime(sharkBreed);
+        shark.setMaxHealth(sharkHealth);
+ 
         shark.update();
         List<GridCell> neighbors = getNeighbors(shark);
         List<FishCell> edible = new ArrayList<FishCell>();
@@ -307,7 +311,6 @@ public class PredatorPreyGrid extends Grid {
         if (timeUntilBreed == 0) {
             if (validMoves.size() > 0) {
                 GridCell toSpawn = getRandomValidCell(validMoves);
-                ;
                 breed(toSpawn, cell.getMyCurrentState());
             }
         }
@@ -380,4 +383,31 @@ public class PredatorPreyGrid extends Grid {
     public void setSharkHealth (int sharkHealth) {
         this.sharkHealth = sharkHealth;
     }
+
+	@Override
+	public VBox createParameterButtons() {
+		VBox box = new VBox();
+    	Label sharkHealthLabel = new Label("Shark Health");
+    	TextField sharkHealthField = new TextField(""+sharkHealth);
+    	
+    	sharkHealthField.textProperty().addListener(e -> setSharkHealth(Integer.parseInt(sharkHealthField.getText())));
+    	Label sharkBreedLabel = new Label("Shark Breed Time");
+    	TextField sharkBreedField = new TextField(""+sharkBreed);
+    	
+    	sharkBreedField.textProperty().addListener(e -> setSharkBreed(Integer.parseInt(sharkBreedField.getText())));
+    	
+    	Label fishBreedLabel = new Label("Fish Breed Time");
+    	TextField fishBreedField = new TextField(""+fishBreed);
+    	
+    	fishBreedField.textProperty().addListener(e -> setFishBreed(Integer.parseInt(fishBreedField.getText())));
+    	
+    	box.getChildren().addAll(sharkHealthLabel, sharkHealthField, 
+    							sharkBreedLabel, sharkBreedField,
+    							fishBreedLabel, fishBreedField);
+    	
+    	return box;
+	}
+	
+	
+
 }

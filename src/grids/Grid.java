@@ -16,6 +16,7 @@ import constants.Offset;
 import constants.Parameters;
 import gridviews.GridView;
 import javafx.scene.Group;
+import javafx.scene.layout.VBox;
 
 
 /**
@@ -238,6 +239,15 @@ public abstract class Grid {
 
         return new Location(neighborRow, neighborCol);
     }
+    
+    /**
+     * Allows each Grid to create its own sidebar that lets
+     * the user change the parameters of the simulation
+     * 
+     * @return the sidebar to be added to the BorderPane
+     */
+    public abstract VBox createParameterButtons ();
+    
 
     /**
      * Aggregates current game parameters to be saved to an XML file.

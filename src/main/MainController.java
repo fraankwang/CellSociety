@@ -138,7 +138,7 @@ public class MainController {
         Parameters params = parseXML(file);
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
-
+        myView.addParameterButtons(myPrimaryGame.getMyGrid().createParameterButtons());
     }
 
     /**
@@ -186,7 +186,18 @@ public class MainController {
      * 
      * @param time
      */
-    public void setSpeed (double rate) {
-        myPrimaryGame.setTimelineRate(rate);
+    public void setSpeed (double speed){
+    	if (myPrimaryGame != null){
+    		myPrimaryGame.setTimelineRate(speed);
+    	}
     }
+    
+    
+    
+    public void updateParams() {
+    	//myPrimaryGame.getMyGrid().updateParameters();
+
+    }
+    
+
 }

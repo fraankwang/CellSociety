@@ -10,6 +10,7 @@ import cells.SugarPatch;
 import constants.Location;
 import constants.Offset;
 import constants.Parameters;
+import javafx.scene.layout.VBox;
 import states.SugarscapeState;
 
 
@@ -261,6 +262,11 @@ public class SugarscapeGrid extends PatchGrid {
 		this.mySugarGrowBackInterval = mySugarGrowBackInterval;
 	}
 
+	@Override
+	public VBox createParameterButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
     
 }
