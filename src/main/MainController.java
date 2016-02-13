@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.Map;
 import constants.Constants;
 import constants.Parameters;
+import exceptions.InvalidInputException;
 import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
@@ -135,10 +136,17 @@ public class MainController {
      */
     private Parameters parseXML (File file) {
         Parser parser = new Parser();
-        return parser.parse(file);
+        try {
+        	return parser.parse(file);
+        } catch (InvalidInputException e) {
+        	e.getMessage();
+        	return null;
+        }
+//        return parser.parse(file);
 
     }
 
+    
     /**
      * Calls myGrid in myPrimaryGame to return updated game parameters, then
      * adds game parameters that are not visible to myGrid, then generating the .xml file
@@ -158,7 +166,6 @@ public class MainController {
 	
 	        int[][] currentStates = myPrimaryGame.getMyGrid().getCurrentStatesArray();
 	        generator.writeXML(currentGameState, currentStates);
-	
 	
 	        String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
 	        Alert savedAlert = new Alert(AlertType.INFORMATION, confirmation, new ButtonType("OK"));

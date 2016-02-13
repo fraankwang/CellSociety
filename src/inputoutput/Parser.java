@@ -47,6 +47,7 @@ public class Parser {
                         NodeList states = elem.getChildNodes();
                         ArrayList<String> stateValues = new ArrayList<String>();
 
+                        
                         for (int k = 0; k < states.getLength(); k++) {
                             if (states.item(k).getNodeType() == Node.ELEMENT_NODE) {
                                 String row = states.item(k).getTextContent().trim();
