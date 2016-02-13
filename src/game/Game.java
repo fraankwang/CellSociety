@@ -52,6 +52,7 @@ public class Game {
     public Game (Parameters params) {
         myGameType = params.getGameType();
         myParameters = params;
+        System.out.println(params.getColumns());
         myGridShape = Constants.RESOURCES.getString("defaultGridShape");
         myNeighborDirections = Constants.RESOURCES.getString("defaultNeighborDirections");
 

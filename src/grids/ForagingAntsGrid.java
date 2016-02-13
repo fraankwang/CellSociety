@@ -11,6 +11,7 @@ import constants.Location;
 import constants.NeighborOffset;
 import constants.Offset;
 import constants.Parameters;
+import javafx.scene.layout.VBox;
 
 public class ForagingAntsGrid extends PatchGrid {
     private int myMaxHomePheromones;
@@ -182,8 +183,13 @@ public class ForagingAntsGrid extends PatchGrid {
         ant.setHasFoodItem(true);
         // Pick up food item from ant location (food source)
     }
-    
-    
+
+	@Override
+	public VBox createParameterButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
     
     
 
