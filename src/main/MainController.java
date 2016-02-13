@@ -177,6 +177,7 @@ public class MainController {
     	}
     	
     	myView.displayGame(myPrimaryGame.getGameRoot());
+    	
     }
     
     /**
