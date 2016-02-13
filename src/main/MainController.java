@@ -78,6 +78,8 @@ public class MainController {
     		myPrimaryGame.initializeGrid(currentCellSize);
     		
     		myView.displayGame(myPrimaryGame.getGameRoot());
+    		myView.displayParameters(myPrimaryGame.getMyUIRoot());
+
     	}
     	
     }
@@ -145,7 +147,7 @@ public class MainController {
         
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
-        myView.addParameterButtons(myPrimaryGame.getMyGrid().createParameterButtons());
+        myView.displayParameters(myPrimaryGame.getMyUIRoot());
     }
 
     /**
@@ -190,6 +192,8 @@ public class MainController {
 
     /**
      * Reads user input and sets animation speed to given rate
+     * 
+     * 
      * @param speed how fast the animation should go
      */
     public void setAnimationSpeed (double speed){
@@ -197,10 +201,11 @@ public class MainController {
     		myPrimaryGame.setTimelineRate(speed);
     	}
     }
-        
+    
+    
+    
     public void updateParams() {
     	//myPrimaryGame.getMyGrid().updateParameters();
-
     }
     
     

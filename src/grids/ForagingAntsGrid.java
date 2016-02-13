@@ -1,6 +1,7 @@
 package grids;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import cells.Agent;
 import cells.Ant;
@@ -185,9 +186,9 @@ public class ForagingAntsGrid extends PatchGrid {
     }
 
 	@Override
-	public VBox createParameterButtons() {
+	public void updateParams(Map<String, Double> map) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
     
