@@ -68,8 +68,39 @@ public class SugarscapeGrid extends PatchGrid {
 
     @Override
     protected void toggleState (GridCell cell) {
-        // TODO Auto-generated method stub
+        boolean currentState = false;
+        System.out.println(SugarscapeState.values());
+        for (SugarscapeState state : SugarscapeState.values()){
+           
+            if (currentState == true){
+                SugarscapeState nextState = state;
+                toggleState(cell, nextState);
+                
+            }
+            if (state == cell.getMyCurrentState()){
+                currentState = true;
+                if(state == SugarscapeState.STRONG){
+                    toggleState(cell, SugarscapeState.AGENT);
+                }
+            }
+        }
 
+    }
+    
+    private void toggleState (GridCell cell, SugarscapeState nextState){
+        if (cell.getMyCurrentState() == SugarscapeState.AGENT){
+            addAgentToRemove((Agent) cell);
+        }else if (nextState == SugarscapeState.AGENT){
+            //TODO: add agent
+            Location location = cell.getMyGridLocation();
+            Agent agent = initializeAgent(location.getRow(), location.getCol());
+            addAgent(agent);
+            SugarPatch patch = (SugarPatch) cell;
+            patch.setOccupied(true);
+        }
+        cell.setMyCurrentState(nextState);
+        
+        //cell.setMyNextState(null);
     }
 
     @Override

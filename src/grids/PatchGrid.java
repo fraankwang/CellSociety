@@ -101,7 +101,11 @@ public abstract class PatchGrid extends Grid {
     }
 
     protected abstract void setAgentState (Agent agent);
-
+    
+    protected void addAgent (Agent agent) {
+        myAgents.add(agent);
+    }
+    
     private void removeAgents () {
         for(Agent agent : myAgentsToRemove){
             removeAgent(agent);
@@ -120,9 +124,6 @@ public abstract class PatchGrid extends Grid {
     protected abstract void moveAgent (Agent origin, Patch destination);
 
     @Override
-    protected void toggleState (GridCell cell) {
-        // TODO Auto-generated method stub
-
-    }
+    protected abstract void toggleState (GridCell cell);
 
 }
