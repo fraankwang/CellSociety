@@ -183,7 +183,7 @@ public class SugarscapeGrid extends PatchGrid {
     public Map<String, String> getMyGameState () {
         Map<String, String> currentGameState = super.getMyGameState();
         
-        currentGameState.put("myNumAgents", Integer.toString(getMyNumAgents()));
+        currentGameState.put("numAgents", Integer.toString(getMyNumAgents()));
         currentGameState.put("agentSugarMin",Integer.toString(getMyAgentSugarMin()));
         currentGameState.put("agentSugarMax",Integer.toString(getMyAgentSugarMax()));
         currentGameState.put("agentMetabolismMin",Integer.toString(getMyAgentMetabolismMin()));
