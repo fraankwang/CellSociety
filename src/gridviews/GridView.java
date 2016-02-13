@@ -65,6 +65,7 @@ public abstract class GridView {
 
 				shape.setOnMouseClicked(e -> myGrid.toggleStateAndUpdateUI(cell));
 				myCellShapes[row][col] = shape;
+
 			}
 		}
 	}

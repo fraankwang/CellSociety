@@ -87,13 +87,27 @@ public class MainController {
 
     }
 
-//    public void setCellShape (String type) {
-//    	stopGame();
-//    	myPrimaryGame.changeCellShape(type);
-//    	
-//    }
-    
     /**
+     * Tells myPrimaryGame to change relevant variables
+     * @param type
+     */
+    public void setCellShape (String type) {
+    	stopGame();
+    	if (myPrimaryGame != null){
+    		myPrimaryGame.changeCellShape(type);
+    		myView.displayGame(myPrimaryGame.getGameRoot());
+    	}
+    	
+    }
+    
+    public void setNeighborDirections(String neighborDirections) {
+		if (myPrimaryGame != null) {
+			myPrimaryGame.setNeighborDirections(neighborDirections);
+			
+		}
+	}
+
+	/**
      * Constructs a new game based on a given file and switches to it
      *
      * @param file The file containing the game parameters

@@ -50,8 +50,8 @@ public class Game {
     public Game (Parameters params) {
         myGameType = params.getGameType();
         myParameters = params;
-        myGridShape = Constants.RESOURCES.getString("gridShape");
-        myNeighborDirections = Constants.RESOURCES.getString("neighborDirections");
+        myGridShape = Constants.RESOURCES.getString("defaultGridShape");
+        myNeighborDirections = Constants.RESOURCES.getString("defaultNeighborDirections");
 
         initializeGrid();
         initializeGameLoop();
@@ -104,15 +104,15 @@ public class Game {
 
         GridView gridView = null;
 
-        if (myGridShape.equals("Rectangle")) {
+        if (myGridShape.equals(Constants.RESOURCES.getString("ShapeRectangle"))) {
             gridView = new RectangleGridView(myGrid);
 
         }
-        else if (myGridShape.equals("Triangle")) {
+        else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeTriangle"))) {
             gridView = new TriangleGridView(myGrid);
 
         }
-        else if (myGridShape.equals("Hexagon")) {
+        else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeHexagon"))) {
             if (myNeighborDirections.equals("All")) {
                 gridView = new HexagonGridView(myGrid);
                 
@@ -137,14 +137,20 @@ public class Game {
 
     }
     
-//    public void changeCellShape (String type) {
-//    	if (type.equals("Hexagon")) {
-//    		myNeighborDirections = "All";
-//    		myGridShape = type;
-//    	}
-//    	initializeGridView();
-//    	
-//    }
+    public void changeCellShape (String type) {
+    	
+    	if (type.equals("Hexagon")){
+    		myNeighborDirections = "All";
+    	}
+    	
+    	myGridShape = type;
+    	initializeGridView();
+    	
+    	Group newRoot = new Group();
+    	newRoot.getChildren().add(createScrollPane());
+    	myGameRoot = newRoot;
+    	
+    }
 
     /**
      * Creates ScrollPane with current GridView and puts it in myGameRoot,
@@ -306,6 +312,10 @@ public class Game {
         return myGameRoot;
     }
 
+    public void setNeighborDirections (String neighborDirections) {
+    	myNeighborDirections = neighborDirections;
+    }
+    
     public Grid getMyGrid () {
         return myGrid;
     }
