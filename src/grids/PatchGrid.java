@@ -3,20 +3,29 @@ package grids;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import cells.Agent;
 import cells.GridCell;
 import cells.Patch;
+import cells.SugarPatch;
+import constants.Location;
 import constants.Parameters;
 
 
+/**
+ * Abstract class for a Grid for a simulation that has a concept of Patches and Agents
+ *
+ */
 public abstract class PatchGrid extends Grid {
 
     private List<Agent> myAgents;
     private List<Agent> myAgentsToRemove;
-
     private int myNumAgents;
 
+    /**
+     * Constructor
+     * 
+     * @param params XML paramters for initial configuration
+     */
     public PatchGrid (Parameters params) {
         super(params);
         myNumAgents = Integer.parseInt(params.getParameter("numAgents"));
@@ -30,6 +39,9 @@ public abstract class PatchGrid extends Grid {
 
     }
 
+    /**
+     * Initialize the patches (cells) in the grid
+     */
     protected void initializePatches () {
         super.initializeCells();
 
@@ -40,8 +52,19 @@ public abstract class PatchGrid extends Grid {
         return initializePatch(row, column);
     }
 
+    /**
+     * Abstract method for initializing a patch (cell) in the grid
+     * 
+     * @param row The row of the patch
+     * @param column The column of the patch
+     * @return An initialized Patch to put at the given location in the grid
+     */
     protected abstract Patch initializePatch (int row, int column);
 
+    /**
+     * Initializes the Agents in the grid by randomly selecting x locations,
+     * where x = numAgents, and calling initializeAgent for each lcoation
+     */
     protected void initializeAgents () {
         myAgents = new ArrayList<Agent>();
         myAgentsToRemove = new ArrayList<Agent>();
@@ -59,19 +82,38 @@ public abstract class PatchGrid extends Grid {
         Collections.shuffle(yCoords);
 
         for (int i = 0; i < myNumAgents; i++) {
-           
-            Agent agent = initializeAgent(xCoords.get(i), yCoords.get(i));
-            Patch patch = (Patch) getMyCells()[xCoords.get(i)][yCoords.get(i)];
-            patch.initializeWithAgent(agent);
+            insertNewAgent(xCoords.get(i), yCoords.get(i));
 
-            myAgents.add(agent);
         }
     }
 
+    /**
+     * Inserts a new agent on the grid by calling initializeAgent, adding it
+     * to a patch, and storing it in myAgents
+     * 
+     * @param row The row to place to newly initialized Agent
+     * @param column The column to place to newly initialized Agent
+     */
+    private void insertNewAgent (int row, int column) {
+        Agent agent = initializeAgent(row, column);
+        Patch patch = (Patch) getMyCells()[row][column];
+        patch.initializeWithAgent(agent);
+
+        myAgents.add(agent);
+    }
+
+    /**
+     * Abstract method that initializes an Agent at a specific location in the grid
+     * 
+     * @param row The row of the initialized Agent
+     * @param column The column of the initialized Agent
+     * @return The Agent to insert in the grid
+     */
     protected abstract Agent initializeAgent (int row, int column);
 
     /**
-     * Updates each cell's next state by calling setCellState for each cell
+     * Called every step of the game loop - updates each cell's next state
+     * - sets Agent states, sets Patch states, and removes dead agents
      */
     protected void setCellStates () {
         setAgentStates();
@@ -80,6 +122,9 @@ public abstract class PatchGrid extends Grid {
 
     }
 
+    /**
+     * Determnines the next state of each patch by calling setPatchState on each
+     */
     protected void setPatchStates () {
         super.setCellStates();
 
@@ -90,36 +135,80 @@ public abstract class PatchGrid extends Grid {
         setPatchState((Patch) cell);
     }
 
+    /**
+     * Determines the next state of the given patch
+     * 
+     * @param patch The patch to determine next state
+     */
     protected abstract void setPatchState (Patch patch);
 
+    /**
+     * Determines the next state of each agent by calling setAgentState on each
+     */
     protected void setAgentStates () {
         for (Agent agent : myAgents) {
             setAgentState(agent);
         }
     }
 
+    /**
+     * Determines the next state of the given agent
+     * 
+     * @param agent The agent to determine next state
+     */
     protected abstract void setAgentState (Agent agent);
 
+    /**
+     * Adds an agent to the collection of stored agents
+     * 
+     * @param agent
+     */
     protected void addAgent (Agent agent) {
         myAgents.add(agent);
     }
 
+    /**
+     * Removes all agents in myAgentsToRemove from myAgents
+     */
     private void removeAgents () {
         for (Agent agent : myAgentsToRemove) {
-            removeAgent(agent);
+            myAgents.remove(agent);
         }
         myAgentsToRemove = new ArrayList<Agent>();
     }
 
-    private void removeAgent (Agent agent) {
-        myAgents.remove(agent);
-    }
-
+    /**
+     * Adds an agent to the list of agentsToBeRemoved that will get removed at
+     * the end of each game cycle
+     * 
+     * Note: Subclasses can override this method to add further necessary
+     * logic for removing an agent
+     * 
+     * @param agent The agent to remove
+     */
     protected void addAgentToRemove (Agent agent) {
         myAgentsToRemove.add(agent);
     }
 
-    protected abstract void moveAgent (Agent origin, Patch destination);
+    /**
+     * Moves an agent to a new Patch
+     * 
+     * Note: Subclasses can override this method to add further necessary
+     * logic for moving an agent
+     * 
+     * @param origin The agent to move
+     * @param destination The patch where the agent should move
+     */
+    protected void moveAgent (Agent agent, Patch destination) {
+        SugarPatch oldPatch =
+                (SugarPatch) getMyCells()[agent.getMyGridLocation().getRow()][agent
+                        .getMyGridLocation().getCol()];
+        oldPatch.setMyAgent(null);
+
+        agent.setMyGridLocation(new Location(destination.getMyGridLocation().getRow(),
+                                             destination.getMyGridLocation().getCol()));
+
+    }
 
     @Override
     public void toggleStateAndUpdateUI (GridCell cell) {
@@ -130,7 +219,10 @@ public abstract class PatchGrid extends Grid {
     @Override
     protected abstract void toggleState (GridCell cell);
 
+    // =========================================================================
+    // Getters and Setters
+    // =========================================================================
     public int getMyNumAgents () {
-    	return myNumAgents;
+        return myNumAgents;
     }
 }

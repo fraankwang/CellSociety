@@ -65,15 +65,21 @@ public class MainController {
     }
 
     /**
-     * Event handler for resetting the current game 
+     * Event handler for resetting the current game. Changes cell size for re-initializing 
+     * GridView as user may have changed cell size so resetting maintains current cell size. 
      */
     public void resetGame () {
     	
     	if (myPrimaryGame != null) {
     		stopGame();
-    		myPrimaryGame.initializeGrid();
+    		
+    		int currentCellSize = myPrimaryGame.getMyGrid().getMyGridView().getMyCellSize();
+    		myPrimaryGame.changeCellSizeParameter(currentCellSize);
+    		myPrimaryGame.initializeGrid(currentCellSize);
+    		
     		myView.displayGame(myPrimaryGame.getGameRoot());
     		myView.displayParameters(myPrimaryGame.getMyUIRoot());
+
     	}
     	
     }
@@ -105,19 +111,23 @@ public class MainController {
     }
     
     /**
-	 * Updates Game and updates display
+	 * Changes GridView's cell size parameter and updates UI display
 	 * @param increment
 	 */
 	public void incrementCellSize (boolean increment) {
 		if (myPrimaryGame != null) {
 			myPrimaryGame.changeCellSize(increment);
-		}
 		
-		myView.displayGame(myPrimaryGame.getGameRoot());
+			if (myView != null) {
+				myView.displayGame(myPrimaryGame.getGameRoot());
+				
+			}
+		}
 		
 	}
 	
 	/**
+     * Changes neighbor directions and reinitializes neighbors
      * @param neighborDirections
      */
     public void setNeighborDirections(String neighborDirections) {
@@ -134,6 +144,7 @@ public class MainController {
      */
     private void setUpGame (File file) {
         Parameters params = parseXML(file);
+        
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
         myView.displayParameters(myPrimaryGame.getMyUIRoot());
@@ -185,7 +196,7 @@ public class MainController {
      * 
      * @param speed how fast the animation should go
      */
-    public void setSpeed (double speed){
+    public void setAnimationSpeed (double speed){
     	if (myPrimaryGame != null){
     		myPrimaryGame.setTimelineRate(speed);
     	}

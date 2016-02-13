@@ -9,6 +9,12 @@ public class SugarPatch extends Patch {
     private int myMaxCapacity;
     private int myStepCount;
     private int mySugarGrowBackInterval;
+    
+    private int sugarThresholdLow = 5;
+    private int sugarThresholdMedium = 10;
+    private int sugarThresholdHigh = 15;
+    private int sugarThresholdStrong = 20;
+
 
     public SugarPatch (int row,
                        int col,
@@ -51,12 +57,29 @@ public class SugarPatch extends Patch {
 
     }
 
+    public int sugarCountFromState(SugarscapeState state){
+        int sugar = 0;
+        if (state == SugarscapeState.STRONG) {
+            sugar = sugarThresholdStrong;
+        }
+        else if (state == SugarscapeState.HIGH) {
+            sugar = sugarThresholdHigh;
+        }
+        else if (state == SugarscapeState.MEDIUM) {
+            sugar = sugarThresholdMedium;
+        }
+        else if (state == SugarscapeState.LOW) {
+            sugar = sugarThresholdLow;
+        }
+        else {
+            sugar = 0;
+        }
+        
+        return sugar;
+    }
+    
     public SugarscapeState stateFromSugarCount () {
-        int sugarThresholdLow = 5;
-        int sugarThresholdMedium = 10;
-        int sugarThresholdHigh = 15;
-        int sugarThresholdStrong = 20;
-
+       
         if (mySugar >= sugarThresholdStrong) {
             return SugarscapeState.STRONG;
         }
@@ -83,7 +106,7 @@ public class SugarPatch extends Patch {
         return mySugar;
     }
 
-    private void setMySugar (int mySugar) {
+    public void setMySugar (int mySugar) {
         this.mySugar = mySugar;
     }
 

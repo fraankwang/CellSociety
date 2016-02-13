@@ -6,6 +6,7 @@ package grids;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,6 @@ import constants.Offset;
 import constants.Parameters;
 import gridviews.GridView;
 import javafx.scene.Group;
-import javafx.scene.layout.VBox;
 
 
 /**
@@ -342,6 +342,7 @@ public abstract class Grid {
     }
     
     protected List<Offset> getMyNeighborOffsets () {
+        Collections.shuffle(myNeighborOffsets);
         return myNeighborOffsets;
     }
 
