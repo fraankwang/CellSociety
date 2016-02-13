@@ -1,5 +1,6 @@
 package grids;
 
+import java.util.Map;
 import java.util.Random;
 import cells.Agent;
 import cells.GridCell;
@@ -170,4 +171,89 @@ public class SugarscapeGrid extends PatchGrid {
        
 
     }
+    
+    @Override
+    public Map<String, String> getMyGameState () {
+        Map<String, String> currentGameState = super.getMyGameState();
+        
+        currentGameState.put("myNumAgents", Integer.toString(getMyNumAgents()));
+        currentGameState.put("agentSugarMin",Integer.toString(getMyAgentSugarMin()));
+        currentGameState.put("agentSugarMax",Integer.toString(getMyAgentSugarMax()));
+        currentGameState.put("agentMetabolismMin",Integer.toString(getMyAgentMetabolismMin()));
+        currentGameState.put("agentMetabolismMax",Integer.toString(getMyAgentMetabolismMax()));
+        currentGameState.put("agentVisionMin",Integer.toString(getMyAgentVisionMin()));
+        currentGameState.put("agentVisionMax",Integer.toString(getMyAgentVisionMax()));
+        currentGameState.put("sugarGrowBackRate",Integer.toString(getMySugarGrowBackRate()));
+        currentGameState.put("sugarGrowBackInterval",Integer.toString(getMySugarGrowBackInterval()));
+        
+        return currentGameState;
+
+    }
+
+	public int getMyAgentSugarMin() {
+		return myAgentSugarMin;
+	}
+
+	public void setMyAgentSugarMin(int myAgentSugarMin) {
+		this.myAgentSugarMin = myAgentSugarMin;
+	}
+
+	public int getMyAgentSugarMax() {
+		return myAgentSugarMax;
+	}
+
+	public void setMyAgentSugarMax(int myAgentSugarMax) {
+		this.myAgentSugarMax = myAgentSugarMax;
+	}
+
+	public int getMyAgentMetabolismMin() {
+		return myAgentMetabolismMin;
+	}
+
+	public void setMyAgentMetabolismMin(int myAgentMetabolismMin) {
+		this.myAgentMetabolismMin = myAgentMetabolismMin;
+	}
+
+	public int getMyAgentMetabolismMax() {
+		return myAgentMetabolismMax;
+	}
+
+	public void setMyAgentMetabolismMax(int myAgentMetabolismMax) {
+		this.myAgentMetabolismMax = myAgentMetabolismMax;
+	}
+
+	public int getMyAgentVisionMin() {
+		return myAgentVisionMin;
+	}
+
+	public void setMyAgentVisionMin(int myAgentVisionMin) {
+		this.myAgentVisionMin = myAgentVisionMin;
+	}
+
+	public int getMyAgentVisionMax() {
+		return myAgentVisionMax;
+	}
+
+	public void setMyAgentVisionMax(int myAgentVisionMax) {
+		this.myAgentVisionMax = myAgentVisionMax;
+	}
+
+	public int getMySugarGrowBackRate() {
+		return mySugarGrowBackRate;
+	}
+
+	public void setMySugarGrowBackRate(int mySugarGrowBackRate) {
+		this.mySugarGrowBackRate = mySugarGrowBackRate;
+	}
+
+	public int getMySugarGrowBackInterval() {
+		return mySugarGrowBackInterval;
+	}
+
+	public void setMySugarGrowBackInterval(int mySugarGrowBackInterval) {
+		this.mySugarGrowBackInterval = mySugarGrowBackInterval;
+	}
+
+	
+    
 }

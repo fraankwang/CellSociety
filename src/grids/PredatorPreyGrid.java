@@ -23,13 +23,15 @@ import states.WatorState;
  */
 public class PredatorPreyGrid extends Grid {
 
+	private int[][] myInitialStates;
     private int fishBreed;
     private int sharkBreed;
     private int sharkHealth;
 
     public PredatorPreyGrid (Parameters params) {
         super(params);
-
+        myInitialStates = params.getInitialStates();
+        
         fishBreed = Integer.parseInt(params.getParameter("fishbreed"));
         sharkBreed = Integer.parseInt(params.getParameter("sharkbreed"));
         sharkHealth = Integer.parseInt(params.getParameter("sharkhealth"));
@@ -41,7 +43,7 @@ public class PredatorPreyGrid extends Grid {
     protected GridCell initializeCell (int row, int col) {
         GridCell cell = null;
 
-        int s = getMyInitialStates()[row][col];
+        int s = myInitialStates[row][col];
 
         if (s == WatorState.EMPTY.getStateValue()) {
             cell = new SimpleCell(WatorState.EMPTY, row, col);

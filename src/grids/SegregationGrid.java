@@ -19,16 +19,20 @@ import states.State;
  */
 public class SegregationGrid extends Grid {
 
+	private int[][] myInitialStates;
     private double mySimilarityPercentage;
-
+    
     public SegregationGrid (Parameters params) {
         super(params);
         mySimilarityPercentage = Double.parseDouble(params.getParameter("similaritypercentage"));
+        myInitialStates = params.getInitialStates();
+        
+        initializeCells();
     }
 
     @Override
     protected GridCell initializeCell (int row, int col) {
-        int s = getMyInitialStates()[row][col];
+        int s = myInitialStates[row][col];
 
         for (State state : SegregationState.values()) {
             if (s == state.getStateValue()) {

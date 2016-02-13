@@ -49,7 +49,6 @@ public class Game {
      * @param params A map containing parsed XML data
      */
     public Game (Parameters params) {
-    	System.out.println(params.getParameter("gameType"));
         myGameType = params.getGameType();
         myParameters = params;
         myGridShape = Constants.RESOURCES.getString("defaultGridShape");

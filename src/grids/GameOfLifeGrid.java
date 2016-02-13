@@ -24,15 +24,19 @@ public class GameOfLifeGrid extends Grid {
     private static final Set<Integer> NUM_NEIGHBORS_TO_STAY_ALIVE =
             new HashSet<Integer>(Arrays.asList(2, 3));
 
+    private int[][] myInitialStates;
+    
     public GameOfLifeGrid (Parameters params) {
         super(params);
-
+        myInitialStates = params.getInitialStates();
+        
+        initializeCells();
     }
 
     @Override
     protected GridCell initializeCell (int row, int col) {
 
-        int s = getMyInitialStates()[row][col];
+        int s = myInitialStates[row][col];
 
         for (State state : GameOfLifeState.values()) {
             if (s == state.getStateValue()) {
