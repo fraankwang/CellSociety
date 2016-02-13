@@ -49,7 +49,6 @@ public class Game {
      * @param params A map containing parsed XML data
      */
     public Game (Parameters params) {
-    	System.out.println(params.getParameter("gameType"));
         myGameType = params.getGameType();
         myParameters = params;
         myGridShape = Constants.RESOURCES.getString("defaultGridShape");
@@ -164,11 +163,11 @@ public class Game {
      * @param increment
      */
     public void changeCellSize (boolean increment) {
-    	initializeGridView();
     	getMyGrid().getMyGridView().incrementCellSize(increment);
     	setRoot();
     	
     }
+    
     /**
      * Creates ScrollPane with current GridView and puts it in myGameRoot,
      * the primary UI element to be displayed when MainController sets up a new Game

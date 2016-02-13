@@ -134,4 +134,7 @@ public abstract class PatchGrid extends Grid {
     @Override
     protected abstract void toggleState (GridCell cell);
 
+    public int getMyNumAgents () {
+    	return myNumAgents;
+    }
 }

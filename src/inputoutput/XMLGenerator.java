@@ -34,7 +34,10 @@ public class XMLGenerator {
             doc.appendChild(root);
 
             addParameters(params, doc, root);
-            addInitialStates(currentStates, doc, root);
+            if (currentStates != null) {
+            	addInitialStates(currentStates, doc, root);
+            	
+            }
 
             TransformerFactory transfac = TransformerFactory.newInstance();
             Transformer trans = transfac.newTransformer();

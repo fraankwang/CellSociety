@@ -46,9 +46,8 @@ public abstract class Grid {
     public Grid (Parameters params) {
         myRows = params.getRows();
         myColumns = params.getColumns();
-        myInitialStates = params.getInitialStates();
 
-        initializeCells();
+
 
     }
 
@@ -283,9 +282,7 @@ public abstract class Grid {
 
     protected int[][] getMyInitialStates () {
         return myInitialStates;
-    }
-
-   
+    }   
 
     public GridCell[][] getMyCells () {
         return myCells;
