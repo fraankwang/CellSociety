@@ -9,6 +9,10 @@ public abstract class Patch extends DataCell {
         super(currentState, row, col);
         // TODO Auto-generated constructor stub
     }
+    
+    public void initializeWithAgent(Agent agent){
+        setMyAgent(agent);
+    }
 
     @Override
     public abstract void update ();

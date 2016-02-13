@@ -29,6 +29,12 @@ public class SugarPatch extends Patch {
     }
 
     @Override
+    public void initializeWithAgent(Agent agent){
+        super.initializeWithAgent(agent);
+        setMyCurrentState(SugarscapeState.AGENT);
+    }
+    
+    @Override
     public void update () {
         myStepCount++;
         if (myStepCount >= mySugarGrowBackInterval) {

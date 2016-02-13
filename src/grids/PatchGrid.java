@@ -64,8 +64,11 @@ public abstract class PatchGrid extends Grid {
         for (int i = 0; i < myNumAgents; i++) {
             int randomRow = r.nextInt(getRows());
             int randomCol = r.nextInt(getColumns());
-            Agent cell = initializeAgent(xCoords.get(randomRow), yCoords.get(randomCol));
-            myAgents.add(cell);
+            Agent agent = initializeAgent(xCoords.get(randomRow), yCoords.get(randomCol));
+            Patch patch = (Patch) getMyCells()[randomRow][randomCol];
+            patch.initializeWithAgent(agent);
+            
+            myAgents.add(agent);
         }
     }
 
@@ -75,8 +78,8 @@ public abstract class PatchGrid extends Grid {
      * Updates each cell's next state by calling setCellState for each cell
      */
     protected void setCellStates () {
-        setAgentStates();
         setPatchStates();
+        setAgentStates();
         removeAgents();
         
 
