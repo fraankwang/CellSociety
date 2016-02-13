@@ -70,43 +70,43 @@ public class SugarscapeGrid extends PatchGrid {
     @Override
     protected void toggleState (GridCell cell) {
         boolean currentState = false;
-        System.out.println(SugarscapeState.values());
-        for (SugarscapeState state : SugarscapeState.values()){
-           
-            if (currentState == true){
+        for (SugarscapeState state : SugarscapeState.values()) {
+
+            if (currentState == true) {
                 SugarscapeState nextState = state;
                 toggleState((SugarPatch) cell, nextState);
                 return;
-                
+
             }
-            if (state == cell.getMyCurrentState()){
+            if (state == cell.getMyCurrentState()) {
                 currentState = true;
-                if(state == SugarscapeState.STRONG){
-                    toggleState((SugarPatch)cell, SugarscapeState.AGENT);
+                if (state == SugarscapeState.STRONG) {
+                    toggleState((SugarPatch) cell, SugarscapeState.AGENT);
                 }
             }
         }
 
     }
-    
-    private void toggleState (SugarPatch patch, SugarscapeState nextState){
-        System.out.println(nextState);
-        if (patch.getMyCurrentState() == SugarscapeState.AGENT){
+
+    private void toggleState (SugarPatch patch, SugarscapeState nextState) {
+        if (patch.getMyCurrentState() == SugarscapeState.AGENT) {
             Agent agent = patch.getMyAgent();
             addAgentToRemove(agent);
             patch.setMyAgent(null);
-        }else if (nextState == SugarscapeState.AGENT){
+        }
+        else if (nextState == SugarscapeState.AGENT) {
             Location location = patch.getMyGridLocation();
             Agent agent = initializeAgent(location.getRow(), location.getCol());
             addAgent(agent);
             patch.setMyAgent(agent);
         }
         patch.setMyCurrentState(nextState);
-        
+
     }
 
     @Override
     protected void setAgentState (Agent agent) {
+
         SugarAgent sugarAgent = (SugarAgent) agent;
         // Set to -1 to guarantee that a patchToOccupy gets initialized (unless vision is 0)
         int maxSugarValue = -1;
@@ -131,13 +131,17 @@ public class SugarscapeGrid extends PatchGrid {
         }
 
         // why would this equal null?
-        if(patchToOccupy != null){
+        if (patchToOccupy != null) {
             moveAgent(agent, patchToOccupy);
+        }
+        else {
+            System.out.println("huh?");
         }
 
     }
 
     protected void moveAgent (Agent origin, Patch destination) {
+
         SugarPatch oldPatch =
                 (SugarPatch) getMyCells()[origin.getMyGridLocation().getRow()][origin
                         .getMyGridLocation().getCol()];
@@ -145,11 +149,16 @@ public class SugarscapeGrid extends PatchGrid {
 
         SugarAgent agent = (SugarAgent) origin;
         SugarPatch newPatch = (SugarPatch) destination;
+
+        agent.setMyGridLocation(new Location(newPatch.getMyGridLocation().getRow(),
+                                             newPatch.getMyGridLocation().getCol()));
+
         newPatch.didGetEaten(agent);
 
         agent.addSugar(newPatch.getMySugar());
 
         if (agent.getMySugar() <= 0) {
+
             addAgentToRemove(agent);
         }
 
@@ -167,8 +176,6 @@ public class SugarscapeGrid extends PatchGrid {
     protected void setPatchState (Patch patch) {
 
         patch.update();
-        
-       
 
     }
     

@@ -2,13 +2,19 @@ package cells;
 
 import states.State;
 
+
 public class SugarAgent extends Agent {
 
     private int mySugar;
     private int mySugarMetabolism;
     private int myVision;
-    
-    public SugarAgent (State currentState, int row, int col, int sugar, int sugarMetabolism, int vision) {
+
+    public SugarAgent (State currentState,
+                       int row,
+                       int col,
+                       int sugar,
+                       int sugarMetabolism,
+                       int vision) {
         super(currentState, row, col);
         mySugar = sugar;
         mySugarMetabolism = sugarMetabolism;
@@ -19,7 +25,7 @@ public class SugarAgent extends Agent {
         return myVision;
     }
 
-    public void addSugar(int addedSugar){
+    public void addSugar (int addedSugar) {
         mySugar += addedSugar;
         mySugar -= mySugarMetabolism;
     }
