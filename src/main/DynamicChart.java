@@ -15,10 +15,11 @@ import java.util.*;
 
 // Demonstrates dynamically changing the data series assigned to a chart and applying css styles to the 
 // chart based on user selection and data series attributes.
-public class dynamicchart extends Application {
+public class DynamicChart extends Application {
   private LineChart<Number, Number> lineChart;
   private ObservableList<Event> events;
-  private Pane layout = new HBox();
+  private ScrollPane layout = new ScrollPane();
+  public Group root = new Group();
 
   @Override public void init() throws Exception {
     //defining the axes
@@ -99,13 +100,14 @@ public class dynamicchart extends Application {
     HBox.setHgrow(lineChart, Priority.ALWAYS);
     VBox.setVgrow(captionedChart.getChildren().get(0), Priority.ALWAYS);
     layout.setStyle("-fx-background-color: cornsilk; -fx-padding: 10;");
-    layout.getChildren().addAll(captionedChart);
+//    layout.getChildren().addAll(captionedChart);
+    root.getChildren().add(layout);
   }
 
   @Override public void start(Stage stage) {
     stage.setTitle("Sports Day Results");
     
-    Scene scene = new Scene(layout, 800, 600);
+    Scene scene = new Scene(root, 800, 600);
     stage.setScene(scene);
     stage.show();
 

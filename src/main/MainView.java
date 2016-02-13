@@ -17,11 +17,13 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -42,6 +44,7 @@ public class MainView {
     private BorderPane myPrimaryPane;
     private Group myPrimaryRoot;
     private MainController myController; 
+    private DynamicChart myDynamicChart;
                                          
 
     /**
@@ -81,7 +84,9 @@ public class MainView {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
+//        createLineGraph();
         myPrimaryPane.setTop(toolbar);
+       // myPrimaryPane.setRight(myDynamicChart.root);
         myPrimaryPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Group root = new Group();
@@ -96,7 +101,7 @@ public class MainView {
      * @return The HBox tool bar
      */
     private HBox createToolbar () {
-        List<Control> buttons = createGameButtons();
+        List<Control> buttons = createGameControls();
 
         HBox toolbar = new HBox();
         toolbar.getChildren().addAll(buttons);
@@ -116,13 +121,23 @@ public class MainView {
 
     }
 
+    private void createLineGraph (){
+    	try {
+    		myDynamicChart = new DynamicChart();
+			myDynamicChart.init();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
  
     /**
      * Creates a list of buttons to display in the tool bar
      *
      * @return The list of buttons
      */
-    private List<Control> createGameButtons () {
+    private List<Control> createGameControls () {
         List<Control> list = new ArrayList<Control>();
     	
         Slider slider = new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")), 
@@ -174,6 +189,14 @@ public class MainView {
         button.setOnAction(handler);
         return button;
 
+    }
+    
+    
+    public void addParameterButtons(VBox box) {
+    	Button submit = makeButton("Submit", e-> myController.updateParams());
+    	box.getChildren().add(submit);
+    	myPrimaryPane.setLeft(box);
+    
     }
 
     /**

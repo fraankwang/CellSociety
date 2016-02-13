@@ -9,6 +9,9 @@ import java.util.Map;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import states.SegregationState;
 import states.State;
@@ -153,5 +156,21 @@ public class SegregationGrid extends Grid {
         return currentGameState;
 
     }
+
+	@Override
+	public VBox createParameterButtons() {
+		VBox box = new VBox();
+    	Label similarityLabel = new Label("Similarity Percentage");
+    	TextField similarityField = new TextField(""+mySimilarityPercentage);
+    	
+    	box.getChildren().addAll(similarityLabel, similarityField);
+    	return box;
+	}
+
+	@Override
+	public void updateParameters(Parameters params) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

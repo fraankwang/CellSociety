@@ -15,6 +15,7 @@ import constants.Offset;
 import constants.Parameters;
 import gridviews.GridView;
 import javafx.scene.Group;
+import javafx.scene.layout.VBox;
 
 
 /**
@@ -179,6 +180,10 @@ public abstract class Grid {
 
         return new Location(neighborRow, neighborCol);
     }
+    
+    public abstract VBox createParameterButtons ();
+    
+    public abstract void updateParameters (Parameters params);
 
     // =========================================================================
     // Getters and Setters

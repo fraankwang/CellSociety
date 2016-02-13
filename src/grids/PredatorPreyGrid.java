@@ -13,6 +13,9 @@ import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import states.State;
 import states.WatorState;
@@ -306,7 +309,6 @@ public class PredatorPreyGrid extends Grid {
         if (timeUntilBreed == 0) {
             if (validMoves.size() > 0) {
                 GridCell toSpawn = getRandomValidCell(validMoves);
-                ;
                 breed(toSpawn, cell.getMyCurrentState());
             }
         }
@@ -379,4 +381,29 @@ public class PredatorPreyGrid extends Grid {
     public void setSharkHealth (int sharkHealth) {
         this.sharkHealth = sharkHealth;
     }
+
+	@Override
+	public VBox createParameterButtons() {
+		VBox box = new VBox();
+    	Label sharkHealthLabel = new Label("Shark Health");
+    	TextField sharkHealthField = new TextField(""+sharkHealth);
+    	
+    	Label sharkBreedLabel = new Label("Shark Breed Time");
+    	TextField sharkBreedField = new TextField(""+sharkBreed)
+    			;
+    	Label fishBreedLabel = new Label("Fish Breed Time");
+    	TextField fishBreedField = new TextField(""+fishBreed);
+    	
+    	box.getChildren().addAll(sharkHealthLabel, sharkHealthField, 
+    							sharkBreedLabel, sharkBreedField,
+    							fishBreedLabel, fishBreedField);
+    	
+    	return box;
+	}
+
+	@Override
+	public void updateParameters(Parameters params) {
+		// TODO Auto-generated method stub
+		
+	}
 }

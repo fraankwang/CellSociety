@@ -6,10 +6,13 @@ package grids;
 
 import java.util.Map;
 import java.util.Random;
+
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import states.FireState;
 import states.State;
 
@@ -148,12 +151,31 @@ public class FireGrid extends Grid {
         return myProbCatch;
     }
     
+    private void setProbCatch (double set) {
+    	myProbCatch = set;
+    }
+    
     @Override
 	public Map<String,String> getMyGameState () {
 		Map<String,String> currentGameState = super.getMyGameState();
 		currentGameState.put("probcatch", Double.toString(getProbCatch()));
 		
 		return currentGameState;
+		
+	}
+
+	@Override
+	public VBox createParameterButtons () {
+    	Label textLabel = new Label("Probability to Catch Fire");
+    	TextField tf = new TextField(""+myProbCatch);
+    	VBox box = new VBox();
+    	box.getChildren().addAll(textLabel, tf);
+    	
+    	return box;
+	}
+
+	@Override
+	public void updateParameters (Parameters params) {
 		
 	}
 }

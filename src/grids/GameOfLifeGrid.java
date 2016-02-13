@@ -10,6 +10,7 @@ import java.util.Set;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import states.GameOfLifeState;
 import states.State;
@@ -112,5 +113,17 @@ public class GameOfLifeGrid extends Grid {
         return numNeighborsAlive;
 
     }
+
+	@Override
+	public VBox createParameterButtons() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateParameters(Parameters params) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
