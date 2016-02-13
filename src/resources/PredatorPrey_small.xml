@@ -1,0 +1,18 @@
+<root>
+<gameType>PredatorPrey</gameType>
+<width>500</width>
+<height>500</height>
+<fishbreed>6</fishbreed>
+<sharkbreed>4</sharkbreed>
+<sharkhealth>4</sharkhealth>
+<rows>5</rows>
+<columns>5</columns>
+<delay>50</delay>
+<initialStates>
+	<row>00200</row>
+	<row>00000</row>
+	<row>00000</row>
+	<row>00000</row>
+	<row>00000</row>
+</initialStates>
+</root>

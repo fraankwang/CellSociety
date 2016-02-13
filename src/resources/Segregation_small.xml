@@ -1,0 +1,16 @@
+<root>
+	<gameType>Segregation</gameType>
+	<width>500</width>
+	<height>500</height>
+	<similaritypercentage>50.0</similaritypercentage>
+	<rows>5</rows>
+	<columns>5</columns>
+	<delay>50</delay>
+	<initialStates>
+		<row>12021</row>
+		<row>02010</row>
+		<row>01201</row>
+		<row>12112</row>
+		<row>22200</row>
+	</initialStates>
+</root>
