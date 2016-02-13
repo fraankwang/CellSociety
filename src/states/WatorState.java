@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
 
 
 public enum WatorState implements State {
-                                         EMPTY(Color.WHITE, 0),
-                                         SHARK(Color.GRAY, 1),
+                                         EMPTY(Color.BLUE, 0),
+                                         SHARK(Color.RED, 1),
                                          FISH(Color.YELLOW, 2),
                                          DEAD(Color.WHITE, 3);
 

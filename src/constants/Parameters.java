@@ -43,9 +43,13 @@ public class Parameters {
     }
 
     public int getCellSize () {
-        return Integer.parseInt(myParameters.get("width")) / getRows();
+        return Integer.parseInt(myParameters.get("cellSize"));
     }
 
+    public void setCellSize (int cellSize) {
+    	myParameters.replace("cellSize", Integer.toString(cellSize));
+    }
+    
     public int[][] getInitialStates () {
         return initialStates;
     }

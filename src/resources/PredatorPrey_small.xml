@@ -9,10 +9,10 @@
 <columns>5</columns>
 <delay>50</delay>
 <initialStates>
-	<row>00100</row>
-	<row>00000</row>
-	<row>00000</row>
-	<row>00000</row>
-	<row>00000</row>
+	<row>00111</row>
+	<row>10010</row>
+	<row>01110</row>
+	<row>11210</row>
+	<row>11110</row>
 </initialStates>
 </root>
