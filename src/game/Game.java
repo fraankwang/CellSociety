@@ -33,7 +33,8 @@ import javafx.util.Duration;
  */
 public class Game {
     public static final int MILLISECONDS_PER_SECOND = 1000;
-
+    
+    private int myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
     private String myGameType;
     private Grid myGrid;
     private Parameters myParameters;
@@ -94,8 +95,11 @@ public class Game {
         }
         else if (myGameType.equals("PredatorPrey")) {
             myGrid = new PredatorPreyGrid(myParameters);
-        }else if (myGameType.equals("Sugarscape")) {
+            
+        }
+        else if (myGameType.equals("Sugarscape")) {
             myGrid = new SugarscapeGrid(myParameters);
+        
         }
 
     }
@@ -106,18 +110,22 @@ public class Game {
     private void initializeGridView () {
 
         GridView gridView = null;
-
+        
+        if (myGrid != null && myGrid.getMyGridView() != null && myGrid.getMyGridView().getMyCellSize() != 0) {
+        	myCellSize = myGrid.getMyGridView().getMyCellSize();
+        }
+        
         if (myGridShape.equals(Constants.RESOURCES.getString("ShapeRectangle"))) {
-            gridView = new RectangleGridView(myGrid);
+            gridView = new RectangleGridView(myGrid, myCellSize);
 
         }
         else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeTriangle"))) {
-            gridView = new TriangleGridView(myGrid);
+            gridView = new TriangleGridView(myGrid, myCellSize);
 
         }
         else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeHexagon"))) {
             if (myNeighborDirections.equals("All")) {
-                gridView = new HexagonGridView(myGrid);
+                gridView = new HexagonGridView(myGrid, myCellSize);
                 
             }
             else {
@@ -163,7 +171,17 @@ public class Game {
      * @param increment
      */
     public void changeCellSize (boolean increment) {
-    	getMyGrid().getMyGridView().incrementCellSize(increment);
+    	if (increment) {
+    		myCellSize += getMyGrid().getMyGridView().getCellSizeIncrement();
+    		
+    	}
+    	else {
+    		myCellSize -= getMyGrid().getMyGridView().getCellSizeIncrement();
+    		
+    	}
+    	
+    	getMyGrid().setCellSize(myCellSize);
+    	getMyGrid().getMyGridView().updateUI();
     	setRoot();
     	
     }
@@ -187,6 +205,7 @@ public class Game {
         ScrollPane sp = new ScrollPane();
         sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
         sp.setContent(myGrid.getView());
+        
         return sp;
         
     }

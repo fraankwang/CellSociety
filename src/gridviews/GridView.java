@@ -35,9 +35,11 @@ public abstract class GridView {
 	 * 
 	 * @param grid
 	 */
-	public GridView (Grid grid) {
+	public GridView (Grid grid, int cellSize) {
 		myGrid = grid;
-		myCellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
+		
+		myCellSize = cellSize;
+		
 		myGridSize = new Dimension(MainView.GRID_VIEW_SIZE, MainView.GRID_VIEW_SIZE);
 
 		GridCell[][] cells = grid.getMyCells();
@@ -74,16 +76,10 @@ public abstract class GridView {
 	 * Changes cell size, recreated root in GridView
 	 * @param increment
 	 */
-	public void incrementCellSize (boolean increment) {
-		if (increment) {
-			myCellSize += CELL_SIZE_INCREMENT;
-		}
-		else {
-			myCellSize -= CELL_SIZE_INCREMENT;
-		}
-		
+	public void updateUI () {
 		initialize(myGrid.getMyCells());
 		myView = createUI();
+		
 	}
 	
 	/**
@@ -187,6 +183,14 @@ public abstract class GridView {
 
 	public Dimension getMyGridSize() {
 		return myGridSize;
+	}
+
+	public static boolean isOutlined() {
+		return OUTLINED;
+	}
+
+	public int getCellSizeIncrement() {
+		return CELL_SIZE_INCREMENT;
 	}
 
 
