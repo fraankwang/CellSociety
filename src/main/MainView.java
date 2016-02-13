@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -154,7 +153,7 @@ public class MainView {
 				new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
 						Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
 		
-		slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
+		slider.valueProperty().addListener(e -> myController.setAnimationSpeed(slider.getValue()));
 		
 		Button startButton =
 				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
@@ -234,7 +233,7 @@ public class MainView {
      * 
      * @param sidebar The bar to be added
      */
-    public void addParameterButtons(VBox sidebar) {
+    public void displayParameters(Group sidebar) {
     	myPrimaryPane.setLeft(sidebar);
     }
 

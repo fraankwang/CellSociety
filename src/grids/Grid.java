@@ -17,7 +17,6 @@ import constants.Offset;
 import constants.Parameters;
 import gridviews.GridView;
 import javafx.scene.Group;
-import javafx.scene.layout.VBox;
 
 
 /**
@@ -247,7 +246,9 @@ public abstract class Grid {
      * 
      * @return the sidebar to be added to the BorderPane
      */
-    public abstract VBox createParameterButtons ();
+ //   public abstract VBox createParameterButtons ();
+    
+    public abstract void updateParams(Map<String, Double> map);
     
 
     /**
