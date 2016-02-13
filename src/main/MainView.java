@@ -17,11 +17,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -41,7 +43,8 @@ public class MainView {
     private Stage myPrimaryStage;
     private BorderPane myPrimaryPane;
     private Group myPrimaryRoot;
-    private MainController myController;
+    private MainController myController; 
+    private DynamicChart myDynamicChart;
 
     /**
      * Instantiates all UI variables to be displayed
@@ -81,7 +84,9 @@ public class MainView {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
+//        createLineGraph();
         myPrimaryPane.setTop(toolbar);
+       // myPrimaryPane.setRight(myDynamicChart.root);
         myPrimaryPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Group root = new Group();
@@ -96,6 +101,7 @@ public class MainView {
      * @return The HBox tool bar 
      */
     private HBox createToolbar () {
+
         List<Control> buttons;
 		
         try {
@@ -121,6 +127,19 @@ public class MainView {
         return toolbar;
 
     }
+
+
+    private void createLineGraph (){
+    	try {
+    		myDynamicChart = new DynamicChart();
+			myDynamicChart.init();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+ 
 
     /**
      * Creates a list of buttons to display in the tool bar
@@ -207,6 +226,16 @@ public class MainView {
         button.setOnAction(handler);
         return button;
 
+    }
+    
+    /**
+     * Adds the parameter sidebar to the left side of the
+     * window
+     * 
+     * @param sidebar The bar to be added
+     */
+    public void addParameterButtons(VBox sidebar) {
+    	myPrimaryPane.setLeft(sidebar);
     }
 
     

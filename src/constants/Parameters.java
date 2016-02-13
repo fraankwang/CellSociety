@@ -39,7 +39,7 @@ public class Parameters {
     }
 
     public int getColumns () {
-        return Integer.parseInt(myParameters.get("rows"));
+        return Integer.parseInt(myParameters.get("columns"));
     }
 
     public int getCellSize () {

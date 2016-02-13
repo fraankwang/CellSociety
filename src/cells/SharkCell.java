@@ -90,6 +90,14 @@ public class SharkCell extends DataCell {
     // Getters and Setters
     // =========================================================================
 
+    public void setMaxHealth (int health){
+    	sharkMaxHealth = health;
+    }
+    
+    public void setBreedTime (int time) {
+    	sharkBreedTime = time;
+    }
+    
     public int getTimeUntilBreed () {
         return sharkCurrentBreedTime;
     }
