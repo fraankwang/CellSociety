@@ -93,10 +93,16 @@ public class MainView {
     /**
      * Creates a formatted tool bar to display in the top of the screen
      *
-     * @return The HBox tool bar
+     * @return The HBox tool bar 
      */
     private HBox createToolbar () {
-        List<Control> buttons = createGameButtons();
+        List<Control> buttons;
+		
+        try {
+			buttons = createGameButtons();
+		} catch (Throwable e) {
+			return null;
+		}
 
         HBox toolbar = new HBox();
         toolbar.getChildren().addAll(buttons);
@@ -122,60 +128,61 @@ public class MainView {
      * @return The list of buttons
      */
     private List<Control> createGameButtons () {
-        List<Control> list = new ArrayList<Control>();
 
-        Slider slider =
-                new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
-                           Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
-
-        slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
-
-        Button startButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
-                           event -> myController.startGame());
-        Button stopButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
-                           event -> myController.stopGame());
-        Button stepButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
-                           event -> myController.stepGame());
-        Button resetButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"),
-                           event -> myController.resetGame());
-        Button newGameButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"),
-                           event -> myController.chooseNewGame());
-        Button saveXMLButton =
-                makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
-                           event -> myController.saveXML());
-
-        ComboBox<String> cellShapeChooser = new ComboBox<String>();
-        cellShapeChooser.setPromptText(Constants.RESOURCES.getString("cellShapeChooserPrompt"));
-        cellShapeChooser.getItems().addAll(
-        		Constants.RESOURCES.getString("ShapeRectangle"),
-        		Constants.RESOURCES.getString("ShapeTriangle"),
-        		Constants.RESOURCES.getString("ShapeHexagon"));
-        cellShapeChooser.setOnAction(e -> myController.setCellShape(cellShapeChooser.getValue()));
-        
-        ComboBox<String> cellNeighborChooser = new ComboBox<String>();
-        cellNeighborChooser.setPromptText(Constants.RESOURCES.getString("neighborChooserPrompt"));
-        cellNeighborChooser.getItems().addAll(
-        		Constants.RESOURCES.getString("neighborCardinal"),
-        		Constants.RESOURCES.getString("neighborDiagonal"),
-        		Constants.RESOURCES.getString("neighborAll"));
-        cellNeighborChooser.setOnAction(e -> myController.setNeighborDirections(cellNeighborChooser.getValue()));
-        
-        list.add(startButton);
-        list.add(stopButton);
-        list.add(stepButton);
-        list.add(resetButton);
-        list.add(newGameButton);
-        list.add(saveXMLButton);
-        list.add(slider);
-        list.add(cellShapeChooser);
-        list.add(cellNeighborChooser);
-        
-        return list;
+    	List<Control> list = new ArrayList<Control>();
+		
+		Slider slider =
+				new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
+						Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
+		
+		slider.valueProperty().addListener(e -> myController.setSpeed(slider.getValue()));
+		
+		Button startButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
+						event -> myController.startGame());
+		Button stopButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
+						event -> myController.stopGame());
+		Button stepButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
+						event -> myController.stepGame());
+		Button resetButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleReset"),
+						event -> myController.resetGame());
+		Button newGameButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleNewGame"),
+						event -> myController.chooseNewGame());
+		Button saveXMLButton =
+				makeButton(Constants.RESOURCES.getString("toolbarButtonTitleSaveXML"),
+						event -> myController.saveXML());
+		
+		ComboBox<String> cellShapeChooser = new ComboBox<String>();
+		cellShapeChooser.setPromptText(Constants.RESOURCES.getString("cellShapeChooserPrompt"));
+		cellShapeChooser.getItems().addAll(
+				Constants.RESOURCES.getString("ShapeRectangle"),
+				Constants.RESOURCES.getString("ShapeTriangle"),
+				Constants.RESOURCES.getString("ShapeHexagon"));
+		cellShapeChooser.setOnAction(e -> myController.setCellShape(cellShapeChooser.getValue()));
+		
+		ComboBox<String> cellNeighborChooser = new ComboBox<String>();
+		cellNeighborChooser.setPromptText(Constants.RESOURCES.getString("neighborChooserPrompt"));
+		cellNeighborChooser.getItems().addAll(
+				Constants.RESOURCES.getString("neighborCardinal"),
+				Constants.RESOURCES.getString("neighborDiagonal"),
+				Constants.RESOURCES.getString("neighborAll"));
+		cellNeighborChooser.setOnAction(e -> myController.setNeighborDirections(cellNeighborChooser.getValue()));
+		
+		list.add(startButton);
+		list.add(stopButton);
+		list.add(stepButton);
+		list.add(resetButton);
+		list.add(newGameButton);
+		list.add(saveXMLButton);
+		list.add(slider);
+		list.add(cellShapeChooser);
+		list.add(cellNeighborChooser);
+		
+		return list;
 
     }
 
