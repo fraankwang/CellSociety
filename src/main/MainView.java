@@ -228,12 +228,14 @@ public class MainView {
 
     }
     
-    
-    public void addParameterButtons(VBox box) {
-    	Button submit = makeButton("Submit", e-> myController.updateParams());
-    	box.getChildren().add(submit);
-    	myPrimaryPane.setLeft(box);
-    
+    /**
+     * Adds the parameter sidebar to the left side of the
+     * window
+     * 
+     * @param sidebar The bar to be added
+     */
+    public void addParameterButtons(VBox sidebar) {
+    	myPrimaryPane.setLeft(sidebar);
     }
 
     

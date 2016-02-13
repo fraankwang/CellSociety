@@ -11,6 +11,7 @@ import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import states.FireState;
@@ -127,7 +128,7 @@ public class FireGrid extends Grid {
         Random r = new Random();
         double value = r.nextDouble();
 
-        return value >= getProbCatch();
+        return value <= getProbCatch();
 
     }
 
@@ -155,16 +156,16 @@ public class FireGrid extends Grid {
 	@Override
 	public VBox createParameterButtons () {
     	Label textLabel = new Label("Probability to Catch Fire");
-    	TextField tf = new TextField(""+myProbCatch);
+    	Slider slider = new Slider(0,1, myProbCatch);
+    	slider.setMajorTickUnit(0.25);
+    	slider.setShowTickLabels(true);
+    	slider.valueProperty().addListener(e -> setProbCatch(slider.getValue()));
     	VBox box = new VBox();
-    	box.getChildren().addAll(textLabel, tf);
+    	box.getChildren().addAll(textLabel, slider);
     	
     	return box;
 	}
 
-	@Override
-	public void updateParameters (Parameters params) {
-		
-	}
+
 
 }
