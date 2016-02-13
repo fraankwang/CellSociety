@@ -9,7 +9,6 @@ import java.util.Random;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import javafx.scene.shape.Rectangle;
 import states.FireState;
 import states.State;
 

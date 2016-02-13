@@ -10,7 +10,6 @@ import java.util.Set;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import javafx.scene.shape.Rectangle;
 import states.GameOfLifeState;
 import states.State;
 
@@ -38,7 +37,7 @@ public class GameOfLifeGrid extends Grid {
         State state = GameOfLifeState.DEAD;
 
         int s = getMyInitialStates()[row][col];
-
+        
         switch (s) {
             case MY_STATE_VALUE_DEAD:
                 state = GameOfLifeState.DEAD;

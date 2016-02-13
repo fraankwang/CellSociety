@@ -76,7 +76,7 @@ public class Game {
 
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
-
+            
         }
         else if (myGameType.equals("GameOfLife")) {
             myGrid = new GameOfLifeGrid(myParameters);
@@ -110,6 +110,7 @@ public class Game {
         else if (myGridShape.equals("Hexagon")) {
             if (myNeighborsToConsider.equals("All")) {
                 gridView = new HexagonGridView(myGrid);
+                
             }
             else {
                 // TODO: return error
@@ -167,6 +168,8 @@ public class Game {
      */
     private ScrollPane createScrollPane() {
         ScrollPane sp = new ScrollPane();
+        System.out.println(myGrid.getMyGridSize().getWidth() + " " + myGrid.getMyGridSize().getHeight());
+        
         sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
         sp.setContent(myGrid.getView());
         return sp;
@@ -209,16 +212,11 @@ public class Game {
     }
 
     public List<Offset> neighborOffsetsAllHexagon () {
-        List<Offset> offsets1 = neighborOffsetsCardinal();
-        List<Offset> offsets2 = neighborOffsetsCardinal();
+        List<Offset> offsets = neighborOffsetsCardinal();
+        offsets.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
+        offsets.add(NeighborOffset.TOP_RIGHT.getOffset());
 
-        offsets1.add(NeighborOffset.TOP_LEFT.getOffset());
-        offsets1.add(NeighborOffset.TOP_RIGHT.getOffset());
-
-        offsets2.add(NeighborOffset.BOTTOM_LEFT.getOffset());
-        offsets2.add(NeighborOffset.BOTTOM_RIGHT.getOffset());
-
-        return offsets1;
+        return offsets;
 
     }
 

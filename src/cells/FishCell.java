@@ -5,7 +5,6 @@
 package cells;
 
 import constants.Location;
-import javafx.scene.shape.Shape;
 import states.State;
 
 /**

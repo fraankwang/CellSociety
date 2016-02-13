@@ -25,8 +25,6 @@ import javafx.scene.Group;
  */
 public abstract class Grid {
 
-    private static final int GRID_SIZE = 500;
-
     private int[][] myInitialStates;
     private int myColumns;
     private int myRows;
@@ -285,30 +283,6 @@ public abstract class Grid {
 
     public Dimension getMyGridSize () {
         return myGridView.getMyGridSize();
-    }
-
-    /**
-     * Loops through each GridCell and returns the State value (same translation as
-     * initialStates parameter from XML file) to be converted to String format
-     * 
-     * @return
-     */
-    private String getCurrentStatesArrayString () {
-        String currentStates = "";
-
-        for (int row = 0; row < getRows(); row++) {
-            for (int col = 0; col < getColumns(); col++) {
-                GridCell cell = myCells[row][col];
-                int currentStateValue = cell.getMyCurrentState().getStateValue();
-                currentStates += Integer.toString(currentStateValue);
-            }
-            if (row != getRows() - 1) {
-                currentStates += ",";
-            }
-        }
-
-        return currentStates;
-
     }
 
     public GridView getMyGridView () {

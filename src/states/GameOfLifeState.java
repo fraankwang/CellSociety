@@ -7,8 +7,8 @@ package states;
 import javafx.scene.paint.Color;
 
 public enum GameOfLifeState implements State {
-    DEAD(Color.BLACK, 0),
-    ALIVE(Color.WHITE, 1);
+    DEAD(Color.WHITE, 0),
+    ALIVE(Color.BLACK, 1);
 	
     private Color myColor;
     private int stateValue;

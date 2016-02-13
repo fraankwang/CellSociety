@@ -9,7 +9,6 @@ import java.util.Map;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import javafx.scene.shape.Rectangle;
 import states.SegregationState;
 import states.State;
 
