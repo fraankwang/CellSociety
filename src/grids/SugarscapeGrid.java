@@ -7,7 +7,6 @@ import cells.GridCell;
 import cells.Patch;
 import cells.SugarAgent;
 import cells.SugarPatch;
-import constants.Constants;
 import constants.Location;
 import constants.Offset;
 import constants.Parameters;
@@ -157,7 +156,8 @@ public class SugarscapeGrid extends PatchGrid {
         newPatch.didGetEaten(agent);
 
         agent.addSugar(newPatch.getMySugar());
-
+        System.out.println(agent.getMySugar());
+        
         if (agent.getMySugar() <= 0) {
 
             addAgentToRemove(agent);

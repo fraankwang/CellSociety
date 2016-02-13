@@ -15,8 +15,8 @@ import main.MainView;
 
 public class RectangleGridView extends GridView {
 
-    public RectangleGridView (Grid grid) {
-        super(grid);
+    public RectangleGridView (Grid grid, int cellSize) {
+        super(grid, cellSize);
     }
 
     @Override

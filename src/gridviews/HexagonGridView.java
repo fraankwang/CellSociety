@@ -14,8 +14,8 @@ import main.MainView;
 
 public class HexagonGridView extends GridView {
 	
-    public HexagonGridView (Grid grid) {
-        super(grid);
+    public HexagonGridView (Grid grid, int cellSize) {
+        super(grid, cellSize);
         
     }
 

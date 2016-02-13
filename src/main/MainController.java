@@ -177,7 +177,6 @@ public class MainController {
     		myPrimaryGame.setTimelineRate(speed);
     	}
     }
-    
     /**
      * Updates Game and updates display
      * @param increment
