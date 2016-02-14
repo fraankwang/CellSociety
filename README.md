@@ -55,7 +55,6 @@ Description of XML parameters:
   	* Game of Life
     	* 0 --> Dead
   		* 1 --> Alive
-  	    
   	* Fire
   	    * 0 --> Empty
   	    * 1 --> Tree
@@ -103,6 +102,7 @@ Description of XML parameters:
   * Each time the program is run, the saved file counting mechanism resets, and previously saved files may be overwritten if not renamed
   * Infinite grid does not work but it is an option in the code.
   * XML parsing does not differentiate between randomization of initial states or given initial states. Therefore XML file must be written explicitly for each simulation.
+  * Predator Prey is not perfected
 
 #### Extra Features
   * Cell sizes and shapes can be changed dynamically and do not affect current simulation
