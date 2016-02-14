@@ -145,8 +145,7 @@ public class GameOfLifeGrid extends Grid {
 	}
 	
 	/**
-	 * Current percentage of non-burned trees
-	 * @param states
+	 * Percentage Alive cells
 	 * @return
 	 */
 	private int percentageAlive () {
@@ -155,8 +154,7 @@ public class GameOfLifeGrid extends Grid {
 	}
 	
 	/**
-	 * Accumulated percentage of burned trees
-	 * @param states
+	 * Percentage Dead cells
 	 * @return
 	 */
 	private double percentageDead () {

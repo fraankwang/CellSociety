@@ -32,4 +32,10 @@ public class SegregationUIView extends UIView{
 		return root;
 	}
 
+	@Override
+	public void createChart() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

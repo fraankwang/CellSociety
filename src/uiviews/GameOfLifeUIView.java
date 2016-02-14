@@ -15,9 +15,9 @@ import main.MainView;
 
 public class GameOfLifeUIView extends UIView {
 
-	LineChart<Number,Number> myChart;
-	XYChart.Series<Number, Number> alivePopulation;
-	XYChart.Series<Number, Number> deadPopulation;
+	private LineChart<Number,Number> myChart;
+	private XYChart.Series<Number, Number> alivePopulation;
+	private XYChart.Series<Number, Number> deadPopulation;
 	
 	public GameOfLifeUIView(Grid grid, Parameters params) {
 		super(grid, params);

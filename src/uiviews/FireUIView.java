@@ -18,9 +18,9 @@ import main.MainView;
 
 public class FireUIView extends UIView {
 	
-	LineChart<Number,Number> myChart;
-	XYChart.Series<Number, Number> treePopulation;
-	XYChart.Series<Number, Number> burnedTrees;
+	private LineChart<Number,Number> myChart;
+	private XYChart.Series<Number, Number> treePopulation;
+	private XYChart.Series<Number, Number> burnedTrees;
 	
 	public FireUIView(Grid grid, Parameters params) {
 		super(grid, params);

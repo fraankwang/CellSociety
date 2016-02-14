@@ -13,8 +13,10 @@ import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.chart.XYChart;
 import states.State;
 import states.WatorState;
+import uiviews.PredatorPreyUIView;
 
 
 /**
@@ -23,6 +25,9 @@ import states.WatorState;
  */
 public class PredatorPreyGrid extends Grid {
 
+	private int fishCount = 0;
+    private int sharkCount = 0;
+    
 	private int[][] myInitialStates;
     private int fishBreed;
     private int sharkBreed;
@@ -51,15 +56,11 @@ public class PredatorPreyGrid extends Grid {
         }
         else if (s == WatorState.SHARK.getStateValue()) {
             cell = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
-
+            sharkCount++;
         }
         else if (s == WatorState.FISH.getStateValue()) {
             cell = new FishCell(WatorState.FISH, row, col, fishBreed);
-
-        }
-
-        if (cell == null) {
-            // TODO: return error
+            fishCount++;
         }
 
         return cell;
@@ -88,15 +89,16 @@ public class PredatorPreyGrid extends Grid {
     	int col = cell.getMyGridLocation().getCol();
         if (cell.getMyCurrentState() == WatorState.EMPTY) {
         	 getMyCells()[row][col] = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
-
+        	 sharkCount++;
         }
         else if (cell.getMyCurrentState() == WatorState.SHARK) {
         	getMyCells()[row][col] = new FishCell(WatorState.FISH, row, col, fishBreed);
-
+        	sharkCount--;
+        	fishCount++;
         }
         else if (cell.getMyCurrentState() == WatorState.FISH) {
         	getMyCells()[row][col] = new SimpleCell(WatorState.EMPTY, row, col);
-
+        	fishCount--;
         }
 
     }
@@ -139,6 +141,7 @@ public class PredatorPreyGrid extends Grid {
         List<GridCell> validMoves = getValidCellList(neighbors);
         if (fishCell.getMyNextState() == WatorState.DEAD) {
             kill(fishCell, WatorState.FISH);
+
         }
         else {
             moveAndBreed(fishCell, validMoves, fishCell.getTimeUntilBreed());
@@ -190,6 +193,7 @@ public class PredatorPreyGrid extends Grid {
         }
         else if (shark.getMyNextState() == WatorState.DEAD) {
             kill(shark, shark.getMyCurrentState());
+
         }
         else {
             moveAndBreed(shark, validMoves, shark.getTimeUntilBreed());
@@ -207,18 +211,20 @@ public class PredatorPreyGrid extends Grid {
         int row = toSpawn.getMyGridLocation().getRow();
         int col = toSpawn.getMyGridLocation().getCol();
 
-        // getMyGridPane().getChildren().remove(toSpawn.getMyShape());
         if (fishOrShark == WatorState.SHARK) {
             toSpawn = new SharkCell(WatorState.EMPTY, row, col, sharkHealth, sharkBreed);
             toSpawn.setMyNextState(fishOrShark);
+            sharkCount++;
+            
         }
         else if (fishOrShark == WatorState.FISH) {
             toSpawn = new FishCell(WatorState.EMPTY, row, col, fishBreed);
             toSpawn.setMyNextState(fishOrShark);
+            fishCount++;
+            
         }
 
         getMyCells()[row][col] = toSpawn;
-        // getMyGridPane().add(toSpawn.getMyShape(), col, row);
 
     }
 
@@ -236,10 +242,7 @@ public class PredatorPreyGrid extends Grid {
         int destinationRow = destination.getMyGridLocation().getRow();
 
         GridCell destinationCell = getMyCells()[destinationRow][destinationCol];
-        // getMyGridPane().getChildren().remove(destinationCell.getMyShape());
-
         GridCell originCell = getMyCells()[originRow][originCol];
-        // getMyGridPane().getChildren().remove(originCell.getMyShape());
 
         if (origin instanceof SharkCell) {
             destinationCell = new SharkCell((SharkCell) origin, destination.getMyGridLocation());
@@ -262,8 +265,6 @@ public class PredatorPreyGrid extends Grid {
         getMyCells()[originRow][originCol] = originCell;
         originCell.setMyNextState(WatorState.EMPTY);
 
-        // getMyGridPane().add(destinationCell.getMyShape(), destinationCol, destinationRow);
-        // getMyGridPane().add(originCell.getMyShape(), originCol, originRow);
 
     }
 
@@ -277,21 +278,21 @@ public class PredatorPreyGrid extends Grid {
         int row = cell.getMyGridLocation().getRow();
         int col = cell.getMyGridLocation().getCol();
         GridCell deadCell = getMyCells()[row][col];
-        // getMyGridPane().getChildren().remove(deadCell.getMyShape());
 
         if (sharkOrFish == WatorState.FISH) {
             deadCell =
                     new SimpleCell(WatorState.FISH, deadCell.getMyGridLocation().getRow(),
                                    deadCell.getMyGridLocation().getCol());
+            fishCount--;
         }
         else if (sharkOrFish == WatorState.SHARK) {
             deadCell =
                     new SimpleCell(WatorState.SHARK, deadCell.getMyGridLocation().getRow(),
                                    deadCell.getMyGridLocation().getCol());
+            sharkCount--;
         }
 
         getMyCells()[row][col] = deadCell;
-        // getMyGridPane().add(deadCell.getMyShape(), col, row);
         deadCell.setMyNextState(WatorState.EMPTY);
 
     }
@@ -388,6 +389,34 @@ public class PredatorPreyGrid extends Grid {
 		setSharkBreed(map.get("sharkbreed").intValue());
 		setFishBreed(map.get("fishbreed").intValue());
 	}
+
+	@Override
+	protected void updateUIView() {
+		PredatorPreyUIView PredPreyUIView = (PredatorPreyUIView) getMyUIView();
+		XYChart.Series<Number, Number> fishSeries = PredPreyUIView.getFishPopulationSeries();
+		XYChart.Series<Number, Number> sharkSeries = PredPreyUIView.getSharkPopulationSeries();
+		    
+		PredPreyUIView.addDataPoint(fishSeries, getElapsedTime(), percentageFish());
+		PredPreyUIView.addDataPoint(sharkSeries, getElapsedTime(), percentageShark());
+		
+	}
 	
+	/**
+	 * Percentage of fish
+	 * @return
+	 */
+	private int percentageFish () {
+		return fishCount * 100 / (getRows() * getColumns());
+		
+	}
+	
+	/**
+	 * Percentage of sharks
+	 * @return
+	 */
+	private double percentageShark () {
+		return sharkCount * 100 / (getRows() * getColumns());
+		
+	}
 	
 }
