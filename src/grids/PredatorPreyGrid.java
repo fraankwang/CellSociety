@@ -94,11 +94,11 @@ public class PredatorPreyGrid extends Grid {
 
         }
         else if (cell.getMyCurrentState() == WatorState.SHARK) {
-            cell.setMyCurrentState(WatorState.FISH);
+        	getMyCells()[row][col] = new FishCell(WatorState.FISH, row, col, fishBreed);
 
         }
         else if (cell.getMyCurrentState() == WatorState.FISH) {
-            cell.setMyCurrentState(WatorState.EMPTY);
+        	getMyCells()[row][col] = new SimpleCell(WatorState.EMPTY, row, col);
 
         }
 
@@ -136,6 +136,7 @@ public class PredatorPreyGrid extends Grid {
      * @param fishCell the Fish Cell that needs to be updated
      */
     private void setFishCellState (FishCell fishCell) {
+    	fishCell.setBreedTime(fishBreed);
         fishCell.update();
         List<GridCell> neighbors = getNeighbors(fishCell);
         List<GridCell> validMoves = getValidCellList(neighbors);
