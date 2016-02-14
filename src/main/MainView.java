@@ -30,13 +30,12 @@ import javafx.stage.Stage;
 
 public class MainView {
 
-	public static final int WINDOW_HEIGHT = 800;
-	public static final int WINDOW_WIDTH = 1000;
-
 	public static final int TOOLBAR_HEIGHT = 50;
-	public static final int GRID_VIEW_SIZE = 500;
-	public static final int GRAPH_SIZE = WINDOW_HEIGHT - GRID_VIEW_SIZE - TOOLBAR_HEIGHT;
-	public static final int PARAMETER_WIDTH = (WINDOW_WIDTH - GRID_VIEW_SIZE)/2;
+	public static final int GRID_VIEW_SIZE = 700;
+	public static final int GRAPH_SIZE = GRID_VIEW_SIZE;
+	public static final int PARAMETER_WIDTH = 150;
+	public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
+	public static final int WINDOW_WIDTH = GRID_VIEW_SIZE + GRAPH_SIZE;
 
     public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;
     public static final int TOOLBAR_BUTTON_INSET_VERTICAL = 2;
@@ -221,7 +220,7 @@ public class MainView {
      * @param sidebar The bar to be added
      */
     public void displayParameters(Group sidebar) {
-    	myPrimaryPane.setLeft(sidebar);
+    	myPrimaryPane.setRight(sidebar);
     	
     }
     
@@ -230,7 +229,7 @@ public class MainView {
      * @param root
      */
     public void displayLineChart(Group root) {
-    	myPrimaryPane.setBottom(root);  
+    	myPrimaryPane.setLeft(root);  
     	
 	}
 

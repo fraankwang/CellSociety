@@ -12,7 +12,6 @@ import constants.Offset;
 import constants.Parameters;
 import javafx.scene.chart.XYChart;
 import states.SugarscapeState;
-import uiviews.PredatorPreyUIView;
 import uiviews.SugarscapeUIView;
 
 

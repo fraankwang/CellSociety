@@ -17,7 +17,7 @@ public class Parameters {
         initialStates = states;
     }
 
-    public String getGameType () {
+    public String getSimulationType () {
         return myParameters.get("gameType");
     }
 

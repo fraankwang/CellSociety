@@ -66,7 +66,7 @@ public class SugarscapeUIView extends UIView {
 	}
 	
 	/**
-	 * Specifies Predator Prey specific parameters to graph
+	 * Specifies Sugarscape specific parameters to graph
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

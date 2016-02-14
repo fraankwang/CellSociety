@@ -8,17 +8,17 @@ import java.io.File;
 import java.util.Map;
 import constants.Constants;
 import constants.Parameters;
-import game.Game;
 import inputoutput.Parser;
 import inputoutput.XMLGenerator;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import manager.SimulationManager;
 import javafx.scene.control.ButtonType;
 
 
 public class MainController {
     private MainView myView;
-    private Game myPrimaryGame;
+    private SimulationManager mySimulation;
 
     public MainController (MainView view) {
         myView = view;
@@ -32,62 +32,62 @@ public class MainController {
     }
 
     /**
-     * Event handler for starting the current game 
+     * Event handler for starting the current Simulation 
      */
     public void startGame () {
-    	if (myPrimaryGame != null) {
-    		myPrimaryGame.startGame();
+    	if (mySimulation != null) {
+    		mySimulation.startGame();
         
     	}
 
     }
 
     /**
-     * Event handler for stopping the current game 
+     * Event handler for stopping the current Simulation 
      */
     public void stopGame () {
-    	if (myPrimaryGame != null) {
-    		myPrimaryGame.stopGame();
+    	if (mySimulation != null) {
+    		mySimulation.stopGame();
     	}
 
     }
 
     /**
-     * Event handler for a single step through a game 
+     * Event handler for a single step through a Simulation 
      */
     public void stepGame () {
-    	if (myPrimaryGame != null) {
+    	if (mySimulation != null) {
     		stopGame();
-    		myPrimaryGame.getMyGrid().step();
+    		mySimulation.getMyGrid().step();
     	
     	}
 
     }
 
     /**
-     * Event handler for resetting the current game. Changes cell size for re-initializing 
+     * Event handler for resetting the current Simulation. Changes cell size for re-initializing 
      * GridView as user may have changed cell size so resetting maintains current cell size. 
      */
     public void resetGame () {
     	
-    	if (myPrimaryGame != null) {
+    	if (mySimulation != null) {
     		stopGame();
     		
-    		int currentCellSize = myPrimaryGame.getMyGrid().getMyGridView().getMyCellSize();
-    		myPrimaryGame.changeCellSizeParameter(currentCellSize);
-    		myPrimaryGame.initializeGrid(currentCellSize);
-    		myPrimaryGame.resetGraph();
+    		int currentCellSize = mySimulation.getMyGrid().getMyGridView().getMyCellSize();
+    		mySimulation.changeCellSizeParameter(currentCellSize);
+    		mySimulation.initializeGrid(currentCellSize);
+    		mySimulation.resetGraph();
     		
-    		myView.displayGame(myPrimaryGame.getGameRoot());
-    		myView.displayParameters(myPrimaryGame.getMyUIRoot());
-    		myView.displayLineChart(myPrimaryGame.getLineChartRoot());
+    		myView.displayGame(mySimulation.getGameRoot());
+    		myView.displayParameters(mySimulation.getMyUIRoot());
+    		myView.displayLineChart(mySimulation.getLineChartRoot());
     		
     	}
     	
     }
 
     /**
-     * Event handler for choosing a new game to start 
+     * Event handler for choosing a new Simulation to start 
      */
     public void chooseNewGame () {
 
@@ -99,14 +99,14 @@ public class MainController {
     }
 
     /**
-     * Tells myPrimaryGame to change relevant variables
+     * Tells mySimulation to change relevant variables
      * @param type
      */
     public void setCellShape (String type) {
     	stopGame();
-    	if (myPrimaryGame != null) {
-    		myPrimaryGame.changeCellShape(type);
-    		myView.displayGame(myPrimaryGame.getGameRoot());
+    	if (mySimulation != null) {
+    		mySimulation.changeCellShape(type);
+    		myView.displayGame(mySimulation.getGameRoot());
     	
     	}
     	
@@ -117,11 +117,11 @@ public class MainController {
 	 * @param increment
 	 */
 	public void incrementCellSize (boolean increment) {
-		if (myPrimaryGame != null) {
-			myPrimaryGame.changeCellSize(increment);
+		if (mySimulation != null) {
+			mySimulation.changeCellSize(increment);
 		
 			if (myView != null) {
-				myView.displayGame(myPrimaryGame.getGameRoot());
+				myView.displayGame(mySimulation.getGameRoot());
 				
 			}
 		}
@@ -133,25 +133,25 @@ public class MainController {
      * @param neighborDirections
      */
     public void setNeighborDirections(String neighborDirections) {
-    	if (myPrimaryGame != null) {
-    		myPrimaryGame.setNeighborDirections(neighborDirections);
+    	if (mySimulation != null) {
+    		mySimulation.setNeighborDirections(neighborDirections);
     	}
 
     }
 
 	/**
-     * Constructs a new game based on a given file and switches to it
+     * Constructs a new Simulation based on a given file and switches to it
      *
-     * @param file The file containing the game parameters
+     * @param file The file containing the Simulation parameters
      */
     private void setUpGame (File file) {
         Parameters params = parseXML(file);
         
-        myPrimaryGame = new Game(params);
+        mySimulation = new SimulationManager(params);
         
-        myView.displayGame(myPrimaryGame.getGameRoot());
-        myView.displayParameters(myPrimaryGame.getMyUIRoot());
-        myView.displayLineChart(myPrimaryGame.getLineChartRoot());
+        myView.displayGame(mySimulation.getGameRoot());
+        myView.displayParameters(mySimulation.getMyUIRoot());
+        myView.displayLineChart(mySimulation.getLineChartRoot());
         
     }
 
@@ -169,23 +169,23 @@ public class MainController {
 
     
     /**
-     * Calls myGrid in myPrimaryGame to return updated game parameters, then
-     * adds game parameters that are not visible to myGrid, then generating the .xml file
+     * Calls myGrid in mySimulation to return updated Simulation parameters, then
+     * adds Simulation parameters that are not visible to myGrid, then generating the .xml file
      * Delay is not accessible from the grid. If the user modifies delay time, then it will
      * be included in currentGameState. If not, the default is used. 
      */
     public void saveXML () {
         XMLGenerator generator = new XMLGenerator();
 
-        if (myPrimaryGame != null) {
-	        Map<String, String> currentGameState = myPrimaryGame.getMyGrid().getMyGameState();
-	        currentGameState.put("gameType", myPrimaryGame.getMyGameType());
+        if (mySimulation != null) {
+	        Map<String, String> currentGameState = mySimulation.getMyGrid().getMyGameState();
+	        currentGameState.put("gameType", mySimulation.getMyGameType());
 	
 	        if (!currentGameState.containsKey("delay")) {
-	            currentGameState.put("delay", Double.toString(myPrimaryGame.getDelay()));
+	            currentGameState.put("delay", Double.toString(mySimulation.getDelay()));
 	        }
 	
-	        int[][] currentStates = myPrimaryGame.getMyGrid().getCurrentStatesArray();
+	        int[][] currentStates = mySimulation.getMyGrid().getCurrentStatesArray();
 	        generator.writeXML(currentGameState, currentStates);
 	
 	        String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
@@ -202,8 +202,8 @@ public class MainController {
      * @param speed how fast the animation should go
      */
     public void setAnimationSpeed (double speed){
-    	if (myPrimaryGame != null){
-    		myPrimaryGame.setTimelineRate(speed);
+    	if (mySimulation != null){
+    		mySimulation.setTimelineRate(speed);
     	}
     }
         

@@ -87,7 +87,7 @@ Description of XML parameters:
   	* Cell neighbor type: choose between Cardinal (compass directions), Diagonal, All (Cardinal and Diagonal) 
   	* + and - buttons to increase/decrease the size of the cells displayed (will not affect current game)
   * Button names and further descriptions can be found in the resources package in the resources.properties file. The default values are as follows:
-  	* Cell size: 15
+  	* Cell size: 45
   	* Cell shape: Rectangle
   	* Edge type: Finite
   	* Outline: Yes
@@ -112,9 +112,10 @@ Description of XML parameters:
   * Current game state can be saved as an XML file into the same folder
   * Grid edge types can be changed from finite to toroidal.
   * User can press on each cell to toggle states and affect the simulation in real time.
+  * Dynamically changing Line Chart shows populations as time goes on
   
 
 #### Impressions/Suggestions
   * Overall we are very impressed by our code hierarchy and cohesiveness. Classes do exactly what they need to do, and most of the backend and frontend are separated. Code has been painstakingly vetted to ensure all toolbar buttons and most parameter-configuring functionalities do not break the program. As such, adding new functionalities required only changing code in relevant classes, allowing for lower coupling and dry-er code in general.
-  * We would have liked to see completed implementations of the Foraging Ants and Slimemold simulations, an infinitely expanding grid, and a dynamically changing line chart that graphs populations over time. We believe that, given more time, we would be able to implement these without significantly changing our code hierarchy. We valued extraction of interfaces and minimizing duplicated code over adding novel implementations, and as such we focused on more robustly built code rather than fragile but flashy functionalities. 
+  * We would have liked to see completed implementations of the Foraging Ants and Slimemold simulations, an infinitely expanding grid, and a bug-free Predator-Prey grid. We believe that, given more time, we would be able to implement these without significantly changing our code hierarchy. We valued extraction of interfaces and minimizing duplicated code over adding novel implementations, and as such we focused on more robustly built code rather than fragile but flashy functionalities. 
   
