@@ -7,6 +7,7 @@ package main;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import constants.Constants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,12 +18,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -35,7 +36,7 @@ public class MainView {
     public static final int TOOLBAR_HEIGHT = 50;
     public static final int GRID_VIEW_SIZE = 600;
     public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
-    public static final int WINDOW_WIDTH = 1000;
+    public static final int WINDOW_WIDTH = 1020;
     public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;
     public static final int TOOLBAR_BUTTON_INSET_VERTICAL = 2;
 
@@ -83,9 +84,7 @@ public class MainView {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
-//        createLineGraph();
         myPrimaryPane.setTop(toolbar);
-       // myPrimaryPane.setRight(myDynamicChart.root);
         myPrimaryPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Group root = new Group();
@@ -152,7 +151,8 @@ public class MainView {
 		Slider slider =
 				new Slider(0, Float.parseFloat(Constants.RESOURCES.getString("sliderMaxValue")),
 						Float.parseFloat(Constants.RESOURCES.getString("sliderDefaultValue")));
-		
+		Label label = new Label(Constants.RESOURCES.getString("speedSliderTitle"));
+		label.setTextFill(Color.WHITE);
 		slider.valueProperty().addListener(e -> myController.setAnimationSpeed(slider.getValue()));
 		
 		Button startButton =
@@ -202,6 +202,7 @@ public class MainView {
 		list.add(resetButton);
 		list.add(newGameButton);
 		list.add(saveXMLButton);
+		list.add(label);
 		list.add(slider);
 		list.add(cellShapeChooser);
 		list.add(cellNeighborChooser);
