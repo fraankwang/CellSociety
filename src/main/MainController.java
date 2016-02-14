@@ -147,7 +147,9 @@ public class MainController {
         
         myPrimaryGame = new Game(params);
         myView.displayGame(myPrimaryGame.getGameRoot());
+        myView.displayLineChart(myPrimaryGame.getLineChartRoot());
         myView.displayParameters(myPrimaryGame.getMyUIRoot());
+        
     }
 
     /**

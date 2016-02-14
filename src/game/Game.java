@@ -11,6 +11,7 @@ import constants.NeighborOffset;
 import constants.Offset;
 import constants.Parameters;
 import grids.FireGrid;
+import grids.ForagingAntsGrid;
 import grids.GameOfLifeGrid;
 import grids.Grid;
 import grids.PredatorPreyGrid;
@@ -48,6 +49,7 @@ public class Game {
 
     private Group myGameRoot;
     private Group myUIRoot;
+    private Group myLineChartRoot;
     private Timeline myGameLoop;
 
     /**
@@ -88,6 +90,7 @@ public class Game {
      */
     private void initializeGridModel () {
     	UIView uiView = null;
+    	
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
             uiView = new FireUIView(myGrid, myParameters);
@@ -112,9 +115,13 @@ public class Game {
             myGrid = new SugarscapeGrid(myParameters);
             uiView = new SugarscapeUIView(myGrid, myParameters);
         
+        }else if (myGameType.equals("ForagingAnts")) {
+            myGrid = new ForagingAntsGrid(myParameters);
+        
         }
         
         myUIRoot = uiView.getView();
+        myLineChartRoot = uiView.getLineChart();
 
     }
 
@@ -403,7 +410,10 @@ public class Game {
 
 	public Group getMyUIRoot() {
 		return myUIRoot;
-		
+	}
+
+	public Group getLineChartRoot() {
+		return myLineChartRoot;
 	}
 
 }

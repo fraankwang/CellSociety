@@ -22,7 +22,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -43,7 +42,6 @@ public class MainView {
     private BorderPane myPrimaryPane;
     private Group myPrimaryRoot;
     private MainController myController; 
-    private DynamicChart myDynamicChart;
 
     /**
      * Instantiates all UI variables to be displayed
@@ -83,9 +81,8 @@ public class MainView {
     private Group initializeRoot () {
         myPrimaryPane = new BorderPane();
         HBox toolbar = createToolbar();
-//        createLineGraph();
+
         myPrimaryPane.setTop(toolbar);
-       // myPrimaryPane.setRight(myDynamicChart.root);
         myPrimaryPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Group root = new Group();
@@ -126,19 +123,6 @@ public class MainView {
         return toolbar;
 
     }
-
-
-    private void createLineGraph (){
-    	try {
-    		myDynamicChart = new DynamicChart();
-			myDynamicChart.init();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    }
- 
 
     /**
      * Creates a list of buttons to display in the tool bar
@@ -235,10 +219,15 @@ public class MainView {
      */
     public void displayParameters(Group sidebar) {
     	myPrimaryPane.setLeft(sidebar);
+    	
     }
-
     
-    /**
+    public void displayLineChart(Group lineChartRoot) {
+    	myPrimaryPane.setBottom(lineChartRoot);
+		
+	}
+
+	/**
      * Switches to a new game by displaying the game root in the center of the BorderPane
      *
      * @param myPrimaryGame The game to be displayed
@@ -246,9 +235,6 @@ public class MainView {
     public void displayGame (Group gameRoot) {
         BorderPane.setAlignment(gameRoot, Pos.TOP_LEFT);
         myPrimaryPane.setCenter(gameRoot);
-
-        // TODO: deal with infinite scroll
-        // setStageSizeToMatchGrid(myPrimaryGame.getMyGrid().getMyGridSize());
 
     }
 
@@ -261,10 +247,8 @@ public class MainView {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(Constants.RESOURCES.getString("fileChooserTitle"));
         fileChooser.getExtensionFilters().add(
-                                              new ExtensionFilter(Constants.RESOURCES
-                                                      .getString("fileExtensionFilterDescription"),
-                                                                  Constants.RESOURCES
-                                                                          .getString("fileExtensionFilterExtension")));
+        		new ExtensionFilter(Constants.RESOURCES.getString("fileExtensionFilterDescription"),
+        							Constants.RESOURCES.getString("fileExtensionFilterExtension")));
 
         return fileChooser.showOpenDialog(myPrimaryStage);
 

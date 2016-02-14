@@ -1,6 +1,8 @@
-package uiviews;
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
 
-import java.util.Map;
+package uiviews;
 
 import constants.Parameters;
 import grids.Grid;

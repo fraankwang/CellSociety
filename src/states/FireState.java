@@ -6,12 +6,15 @@ package states;
 
 import javafx.scene.paint.Color;
 
-
+/**
+ *  Enum of states for the Fire simulation 
+ *
+ */
 public enum FireState implements State {
-                                        EMPTY(Color.WHITE, 0),
-                                        TREE(Color.GREEN, 1),
-                                        BURNING(Color.RED, 2),
-                                        BURNED(Color.YELLOW, 3);
+	EMPTY(Color.WHITE, 0),
+	TREE(Color.GREEN, 1),
+	BURNING(Color.RED, 2),
+	BURNED(Color.YELLOW, 3);
 
     private Color myColor;
     private int stateValue;

@@ -1,9 +1,12 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package uiviews;
 
 import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
