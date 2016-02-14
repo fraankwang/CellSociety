@@ -54,8 +54,6 @@ public class FireUIView extends UIView {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void createChart() {
-		myChart = null;
-		
 		NumberAxis xAxis = formatXAxis("Time");
 
 		double upperBound = 100.0;
@@ -66,15 +64,14 @@ public class FireUIView extends UIView {
 		myChart.setTitle(Constants.RESOURCES.getString("FireGraphTitle"));
 		
 		treePopulation = new XYChart.Series<>();
-		treePopulation.setName("Trees");
+		treePopulation.setName(Constants.RESOURCES.getString("FireTreeSeries"));
 		burnedTrees = new XYChart.Series<>();
-		burnedTrees.setName("Burned Trees");
+		burnedTrees.setName(Constants.RESOURCES.getString("FireBurnedTreeSeries"));
 
 		myChart.getData().addAll(treePopulation, burnedTrees);
 		
 		myChart.setHorizontalGridLinesVisible(false);
 		myChart.setVerticalGridLinesVisible(false);
-		
 		
 		Group root = new Group();
 		root.getChildren().add(myChart);
@@ -83,11 +80,11 @@ public class FireUIView extends UIView {
 		
 	}
 	
-	public XYChart.Series<Number, Number> getTreePopulation () {
+	public XYChart.Series<Number, Number> getTreePopulationSeries () {
 		return treePopulation;
 	}
 
-	public XYChart.Series<Number, Number> getBurnedTrees () {
+	public XYChart.Series<Number, Number> getBurnedTreesSeries () {
 		return burnedTrees;
 	}
 	

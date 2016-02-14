@@ -4,9 +4,6 @@
 
 package grids;
 
-import java.sql.Time;
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.Map;
 import java.util.Random;
 import cells.GridCell;
@@ -47,6 +44,9 @@ public class FireGrid extends Grid {
             if (s == state.getStateValue()) {
             	if (state == FireState.TREE) {
             		treeCount++;
+            	}
+            	if (state == FireState.BURNED) {
+            		burnedCount++;
             	}
             	
                 return new SimpleCell(state, row, col);
@@ -167,12 +167,11 @@ public class FireGrid extends Grid {
 	@Override
 	protected void updateUIView() {
 		FireUIView fireView = (FireUIView) getMyUIView();
-		XYChart.Series<Number, Number> treePopulationSeries = fireView.getTreePopulation();
-		XYChart.Series<Number, Number> burnedTrees = fireView.getBurnedTrees();
-		    
-		int[][] currentStates = getCurrentStatesArray();
-		fireView.addDataPoint(treePopulationSeries, getElapsedTime(), percentageTrees(currentStates));
-		fireView.addDataPoint(burnedTrees, getElapsedTime(), percentagedBurnedTrees(currentStates));
+		XYChart.Series<Number, Number> treePopulationSeries = fireView.getTreePopulationSeries();
+		XYChart.Series<Number, Number> burnedTrees = fireView.getBurnedTreesSeries();
+
+		fireView.addDataPoint(treePopulationSeries, getElapsedTime(), percentageTrees());
+		fireView.addDataPoint(burnedTrees, getElapsedTime(), percentagedBurnedTrees());
 		
 	}
 
@@ -181,7 +180,7 @@ public class FireGrid extends Grid {
 	 * @param states
 	 * @return
 	 */
-	private int percentageTrees (int[][] states) {
+	private int percentageTrees () {
 		return treeCount * 100 / (getRows() * getColumns());
 		
 	}
@@ -191,7 +190,7 @@ public class FireGrid extends Grid {
 	 * @param states
 	 * @return
 	 */
-	private double percentagedBurnedTrees (int[][] states) {
+	private double percentagedBurnedTrees () {
 		return burnedCount * 100 / (getRows() * getColumns());
 		
 	}

@@ -11,8 +11,10 @@ import java.util.Set;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.chart.XYChart;
 import states.GameOfLifeState;
 import states.State;
+import uiviews.GameOfLifeUIView;
 
 
 /**
@@ -21,6 +23,9 @@ import states.State;
  */
 public class GameOfLifeGrid extends Grid {
 
+    private int aliveCount = 0;
+    private int deadCount = 0;
+    
     private static final int NUM_NEIGHBORS_TO_RESURRECT = 3;
     private static final Set<Integer> NUM_NEIGHBORS_TO_STAY_ALIVE =
             new HashSet<Integer>(Arrays.asList(2, 3));
@@ -41,11 +46,17 @@ public class GameOfLifeGrid extends Grid {
 
         for (State state : GameOfLifeState.values()) {
             if (s == state.getStateValue()) {
+            	if (state == GameOfLifeState.ALIVE) {
+            		aliveCount++;
+            	}
+            	if (state == GameOfLifeState.DEAD) {
+            		deadCount++;
+            	}
                 return new SimpleCell(state, row, col);
             }
 
         }
-
+        
         // TODO: Return error: invalid initial state
         return null;
 
@@ -63,11 +74,15 @@ public class GameOfLifeGrid extends Grid {
             }
             else {
                 cell.setMyNextState(GameOfLifeState.DEAD);
+                deadCount++;
+                aliveCount--;
             }
         }
         else if (cell.getMyCurrentState() == GameOfLifeState.DEAD) {
             if (numNeighborsAlive == NUM_NEIGHBORS_TO_RESURRECT) {
                 cell.setMyNextState(GameOfLifeState.ALIVE);
+                deadCount--;
+                aliveCount++;
             }
             else {
                 cell.setMyNextState(GameOfLifeState.DEAD);
@@ -80,11 +95,13 @@ public class GameOfLifeGrid extends Grid {
     protected void toggleState (GridCell cell) {
         if (cell.getMyCurrentState() == GameOfLifeState.DEAD) {
             cell.setMyCurrentState(GameOfLifeState.ALIVE);
-
+            deadCount--;
+            aliveCount++;
         }
         else if (cell.getMyCurrentState() == GameOfLifeState.ALIVE) {
             cell.setMyCurrentState(GameOfLifeState.DEAD);
-
+            deadCount++;
+            aliveCount--;
         }
 
     }
@@ -109,11 +126,41 @@ public class GameOfLifeGrid extends Grid {
 
     }
 
-
+    /**
+     * Do nothing since there are no parameters to alter
+     */
 	@Override
 	public void updateParams(Map<String, Double> map) {
-		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void updateUIView() {
+		GameOfLifeUIView GoLView = (GameOfLifeUIView) getMyUIView();
+		XYChart.Series<Number, Number> alivePopulationSeries = GoLView.getAlivePopulationSeries();
+		XYChart.Series<Number, Number> deadPopulationSeries = GoLView.getDeadPopulationSeries();
+		    
+		GoLView.addDataPoint(alivePopulationSeries, getElapsedTime(), percentageAlive());
+		GoLView.addDataPoint(deadPopulationSeries, getElapsedTime(), percentageDead());
 		
 	}
 	
+	/**
+	 * Current percentage of non-burned trees
+	 * @param states
+	 * @return
+	 */
+	private int percentageAlive () {
+		return aliveCount * 100 / (getRows() * getColumns());
+		
+	}
+	
+	/**
+	 * Accumulated percentage of burned trees
+	 * @param states
+	 * @return
+	 */
+	private double percentageDead () {
+		return deadCount * 100 / (getRows() * getColumns());
+		
+	}
 }

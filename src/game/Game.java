@@ -25,9 +25,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import uiviews.FireUIView;
 import uiviews.GameOfLifeUIView;
@@ -124,7 +122,6 @@ public class Game {
         }
         
         myGrid.setMyUIView(uiView);
-        
         myUIRoot = uiView.getView();
         
         uiView.createChart();
