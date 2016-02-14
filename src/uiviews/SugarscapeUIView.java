@@ -4,13 +4,22 @@
 
 package uiviews;
 
+import constants.Constants;
 import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import main.MainView;
 
 public class SugarscapeUIView extends UIView {
+
+	private LineChart<Number,Number> myChart;
+	private XYChart.Series<Number, Number> agentPopulation;
+	private XYChart.Series<Number, Number> sugarCount;
 
 	public SugarscapeUIView(Grid grid, Parameters params) {
 		super(grid, params);
@@ -54,6 +63,47 @@ public class SugarscapeUIView extends UIView {
 		
 		root.getChildren().add(box);
 		return root;
+	}
+	
+	/**
+	 * Specifies Predator Prey specific parameters to graph
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void createChart() {
+		NumberAxis xAxis = formatXAxis("Time");
+
+		double upperBound = 100.0;
+		NumberAxis yAxis = formatYAxis("Counts", upperBound);
+		yAxis.setAutoRanging(true);
+		
+		myChart = new LineChart<Number,Number>(xAxis, yAxis);
+		myChart.setMaxSize(MainView.WINDOW_WIDTH, MainView.GRAPH_SIZE);		
+		myChart.setTitle(Constants.RESOURCES.getString("SugarscapeGraphTitle"));
+		
+		agentPopulation = new XYChart.Series<>();
+		agentPopulation.setName(Constants.RESOURCES.getString("SugarscapeAgentSeries"));
+		sugarCount = new XYChart.Series<>();
+		sugarCount.setName(Constants.RESOURCES.getString("SugarscapeSugarSeries"));
+
+		myChart.getData().addAll(agentPopulation, sugarCount);
+		
+		myChart.setHorizontalGridLinesVisible(false);
+		myChart.setVerticalGridLinesVisible(false);
+		
+		Group root = new Group();
+		root.getChildren().add(myChart);
+		
+		setLineChart(root);
+		
+	}
+	
+	public XYChart.Series<Number, Number> getAgentPopulationSeries () {
+		return agentPopulation;
+	}
+
+	public XYChart.Series<Number, Number> getSugarCountSeries () {
+		return sugarCount;
 	}
 
 }

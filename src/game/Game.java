@@ -358,7 +358,7 @@ public class Game {
     private void initializeGameLoop () {
 
         double framesPerSecond =
-                MILLISECONDS_PER_SECOND * 1 / myParameters.getDelay() / 10;
+                MILLISECONDS_PER_SECOND * 1 / myParameters.getDelay();
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
                                       e -> myGrid.step());
 

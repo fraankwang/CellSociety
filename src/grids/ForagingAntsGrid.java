@@ -294,5 +294,11 @@ public class ForagingAntsGrid extends PatchGrid {
 		
 	}
 
+	@Override
+	protected void updateUIView() {
+		// TODO Auto-generated method stub
+		
+	}
+
     
 }

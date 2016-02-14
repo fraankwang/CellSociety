@@ -10,7 +10,10 @@ import cells.SugarPatch;
 import constants.Location;
 import constants.Offset;
 import constants.Parameters;
+import javafx.scene.chart.XYChart;
 import states.SugarscapeState;
+import uiviews.PredatorPreyUIView;
+import uiviews.SugarscapeUIView;
 
 
 /**
@@ -32,6 +35,7 @@ public class SugarscapeGrid extends PatchGrid {
     private int mySugarThresholdStrong;
     private int myPatchSugarMax;
 
+	private int agentCount = 0;
 
     /**
      * Constructor - sets up parameters and initializes cells
@@ -70,6 +74,7 @@ public class SugarscapeGrid extends PatchGrid {
 
         Agent agent =
                 new SugarAgent(SugarscapeState.AGENT, row, column, sugar, sugarMetabolism, vision);
+        agentCount++;		
         return agent;
     }
 
@@ -78,6 +83,7 @@ public class SugarscapeGrid extends PatchGrid {
 
         Random r = new Random();
         int sugar = r.nextInt(myPatchSugarMax - 0 + 1) + 0;
+
         return new SugarPatch(row, column, mySugarGrowBackRate, sugar, myPatchSugarMax,
                               mySugarGrowBackInterval, mySugarThresholdLow, mySugarThresholdMedium,
                               mySugarThresholdHigh, mySugarThresholdStrong);
@@ -118,6 +124,7 @@ public class SugarscapeGrid extends PatchGrid {
             Agent agent = patch.getMyAgent();
             addAgentToRemove(agent);
             patch.setMyAgent(null);
+            agentCount--;
         }
         else if (nextState == SugarscapeState.AGENT) {
             Location location = patch.getMyGridLocation();
@@ -177,9 +184,11 @@ public class SugarscapeGrid extends PatchGrid {
         SugarPatch newPatch = (SugarPatch) destination;
 
         agent.eat(newPatch.getMySugar());
+
         newPatch.didGetEaten(agent);
 
         if (agent.getMySugar() <= 0) {
+        	agentCount--;
             addAgentToRemove(agent);
         }
 
@@ -197,6 +206,7 @@ public class SugarscapeGrid extends PatchGrid {
     @Override
     protected void setPatchState (Patch patch) {
         patch.update();
+
     }
 
     @Override
@@ -296,6 +306,44 @@ public class SugarscapeGrid extends PatchGrid {
 		mySugarGrowBackRate = map.get("sugarGrowBackRate").intValue();
 		mySugarGrowBackInterval =  map.get("sugarGrowBackInterval").intValue();
 
+	}
+
+	@Override
+	protected void updateUIView() {
+		SugarscapeUIView SugarscapeUIView = (SugarscapeUIView) getMyUIView();
+		XYChart.Series<Number, Number> agentSeries = SugarscapeUIView.getAgentPopulationSeries();
+		XYChart.Series<Number, Number> sugarSeries = SugarscapeUIView.getSugarCountSeries();
+		    
+		SugarscapeUIView.addDataPoint(agentSeries, getElapsedTime(), agentCount());
+		SugarscapeUIView.addDataPoint(sugarSeries, getElapsedTime(), sugarCount());
+		
+	}
+	
+	/**
+	 * Number of Agents
+	 * @return
+	 */
+	private int agentCount () {
+		return agentCount;
+		
+	}
+	
+	/**
+	 * Total Sugar Count
+	 * @return
+	 */
+	private double sugarCount () {
+		long count = 0;
+		
+		GridCell[][] myCells = getMyCells();
+		for (int row = 0; row < getRows(); row++) {
+			for (int col = 0; col < getColumns(); col++) {
+				SugarscapeState state = (SugarscapeState) myCells[row][col].getMyCurrentState();
+				count += state.getStateValue();
+			}
+		}
+		return count;
+		
 	}
     
 }
