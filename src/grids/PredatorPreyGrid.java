@@ -23,7 +23,7 @@ import states.WatorState;
  */
 public class PredatorPreyGrid extends Grid {
 
-	private int[][] myInitialStates;
+    private int[][] myInitialStates;
     private int fishBreed;
     private int sharkBreed;
     private int sharkHealth;
@@ -31,7 +31,7 @@ public class PredatorPreyGrid extends Grid {
     public PredatorPreyGrid (Parameters params) {
         super(params);
         myInitialStates = params.getInitialStates();
-        
+
         fishBreed = Integer.parseInt(params.getParameter("fishbreed"));
         sharkBreed = Integer.parseInt(params.getParameter("sharkbreed"));
         sharkHealth = Integer.parseInt(params.getParameter("sharkhealth"));
@@ -84,18 +84,19 @@ public class PredatorPreyGrid extends Grid {
 
     @Override
     protected void toggleState (GridCell cell) {
-    	int row = cell.getMyGridLocation().getRow();
-    	int col = cell.getMyGridLocation().getCol();
+        int row = cell.getMyGridLocation().getRow();
+        int col = cell.getMyGridLocation().getCol();
         if (cell.getMyCurrentState() == WatorState.EMPTY) {
-        	 getMyCells()[row][col] = new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
+            getMyCells()[row][col] =
+                    new SharkCell(WatorState.SHARK, row, col, sharkHealth, sharkBreed);
 
         }
         else if (cell.getMyCurrentState() == WatorState.SHARK) {
-        	getMyCells()[row][col] = new FishCell(WatorState.FISH, row, col, fishBreed);
+            getMyCells()[row][col] = new FishCell(WatorState.FISH, row, col, fishBreed);
 
         }
         else if (cell.getMyCurrentState() == WatorState.FISH) {
-        	getMyCells()[row][col] = new SimpleCell(WatorState.EMPTY, row, col);
+            getMyCells()[row][col] = new SimpleCell(WatorState.EMPTY, row, col);
 
         }
 
@@ -133,7 +134,7 @@ public class PredatorPreyGrid extends Grid {
      * @param fishCell the Fish Cell that needs to be updated
      */
     private void setFishCellState (FishCell fishCell) {
-    	fishCell.setBreedTime(fishBreed);
+        fishCell.setBreedTime(fishBreed);
         fishCell.update();
         List<GridCell> neighbors = getNeighbors(fishCell);
         List<GridCell> validMoves = getValidCellList(neighbors);
@@ -172,7 +173,7 @@ public class PredatorPreyGrid extends Grid {
     private void setSharkCellState (SharkCell shark) {
         shark.setBreedTime(sharkBreed);
         shark.setMaxHealth(sharkHealth);
- 
+
         shark.update();
         List<GridCell> neighbors = getNeighbors(shark);
         List<FishCell> edible = new ArrayList<FishCell>();
@@ -382,12 +383,11 @@ public class PredatorPreyGrid extends Grid {
         this.sharkHealth = sharkHealth;
     }
 
-	@Override
-	public void updateParams(Map<String, Double> map) {
-		setSharkHealth(map.get("sharkhealth").intValue());
-		setSharkBreed(map.get("sharkbreed").intValue());
-		setFishBreed(map.get("fishbreed").intValue());
-	}
-	
-	
+    @Override
+    public void updateParams (Map<String, Double> map) {
+        setSharkHealth(map.get("sharkhealth").intValue());
+        setSharkBreed(map.get("sharkbreed").intValue());
+        setFishBreed(map.get("fishbreed").intValue());
+    }
+
 }

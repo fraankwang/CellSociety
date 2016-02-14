@@ -28,6 +28,7 @@ import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.util.Duration;
 import uiviews.FireUIView;
+import uiviews.ForagingAntsUIView;
 import uiviews.GameOfLifeUIView;
 import uiviews.PredatorPreyUIView;
 import uiviews.SegregationUIView;
@@ -40,7 +41,7 @@ import uiviews.UIView;
  */
 public class Game {
     public static final int MILLISECONDS_PER_SECOND = 1000;
-    
+
     private String myGameType;
     private Grid myGrid;
     private Parameters myParameters;
@@ -75,7 +76,7 @@ public class Game {
      * the resource file.
      */
     public void initializeGrid (int cellSize) {
-    	initializeGridModel();
+        initializeGridModel();
         initializeGridView(cellSize);
         initializeNeighborOffsets();
         setRoot();
@@ -89,12 +90,12 @@ public class Game {
      * button (in the Main class) at any time
      */
     private void initializeGridModel () {
-    	UIView uiView = null;
-    	
+        UIView uiView = null;
+
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
             uiView = new FireUIView(myGrid, myParameters);
-            
+
         }
         else if (myGameType.equals("GameOfLife")) {
             myGrid = new GameOfLifeGrid(myParameters);
@@ -109,17 +110,20 @@ public class Game {
         else if (myGameType.equals("PredatorPrey")) {
             myGrid = new PredatorPreyGrid(myParameters);
             uiView = new PredatorPreyUIView(myGrid, myParameters);
-            
+
         }
         else if (myGameType.equals("Sugarscape")) {
             myGrid = new SugarscapeGrid(myParameters);
             uiView = new SugarscapeUIView(myGrid, myParameters);
-        
-        }else if (myGameType.equals("ForagingAnts")) {
-            myGrid = new ForagingAntsGrid(myParameters);
-        
+
         }
-        
+        else if (myGameType.equals("ForagingAnts")) {
+            myGrid = new ForagingAntsGrid(myParameters);
+            uiView = new ForagingAntsUIView(myGrid, myParameters);
+
+
+        }
+
         myUIRoot = uiView.getView();
         myLineChartRoot = uiView.getLineChart();
 
@@ -132,10 +136,10 @@ public class Game {
 
         GridView gridView = null;
         if (cellSize == 0) {
-        	cellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
-        	
+            cellSize = Integer.parseInt(Constants.RESOURCES.getString("cellSize"));
+
         }
-        
+
         if (myGridShape.equals(Constants.RESOURCES.getString("ShapeRectangle"))) {
             gridView = new RectangleGridView(myGrid, cellSize);
 
@@ -147,7 +151,7 @@ public class Game {
         else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeHexagon"))) {
             if (myNeighborDirections.equals("All")) {
                 gridView = new HexagonGridView(myGrid, cellSize);
-                
+
             }
             else {
                 // TODO: return error
@@ -168,99 +172,101 @@ public class Game {
         myGrid.setMyGridView(gridView);
 
     }
-    
 
-    
     /**
-	 * Creates a scroll pane surrounding the GridView
-	 *
-	 * @return ScrollPane with appropriate GridView
-	 */
-	private ScrollPane createScrollPane () {
-	    ScrollPane sp = new ScrollPane();
-	    sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
-	    sp.setContent(myGrid.getView());
-	    
-	    return sp;
-	    
-	}
+     * Creates a scroll pane surrounding the GridView
+     *
+     * @return ScrollPane with appropriate GridView
+     */
+    private ScrollPane createScrollPane () {
+        ScrollPane sp = new ScrollPane();
+        sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
+        sp.setContent(myGrid.getView());
 
-	/**
-	 * Creates ScrollPane with current GridView and puts it in myGameRoot,
-	 * the primary UI element to be displayed when MainController sets up a new Game
-	 */
-	private void setRoot () {
-	    Group group = new Group();
-	    group.getChildren().add(createScrollPane());
-	    myGameRoot = group;
-	    
-	}
+        return sp;
 
-	/**
+    }
+
+    /**
+     * Creates ScrollPane with current GridView and puts it in myGameRoot,
+     * the primary UI element to be displayed when MainController sets up a new Game
+     */
+    private void setRoot () {
+        Group group = new Group();
+        group.getChildren().add(createScrollPane());
+        myGameRoot = group;
+
+    }
+
+    /**
      * Commanded by MainController to re-initialize GridView and create a new ScrollPane with
      * re-initialized GridView
+     *
      * @param type
      */
     public void changeCellShape (String type) {
-    	
-    	if (type.equals("Hexagon")){
-    		myNeighborDirections = "All";
-    	}
-    	
-    	myGridShape = type;
-    	initializeGridView(getMyGrid().getMyGridView().getMyCellSize());
-    	
-    	setRoot();
-    	
+
+        if (type.equals("Hexagon")) {
+            myNeighborDirections = "All";
+        }
+
+        myGridShape = type;
+        initializeGridView(getMyGrid().getMyGridView().getMyCellSize());
+
+        setRoot();
+
     }
 
     /**
      * Changes cell size parameter and re-initializes GridView
+     *
      * @param increment
      */
     public void changeCellSize (boolean increment) {
-    	int cellSize = getMyGrid().getMyGridView().getMyCellSize();
+        int cellSize = getMyGrid().getMyGridView().getMyCellSize();
 
-    	if (increment) {
-    		cellSize += getMyGrid().getMyGridView().getCellSizeIncrement();
-    		
-    	}
-    	else {
-    		cellSize -= getMyGrid().getMyGridView().getCellSizeIncrement();
-    		
-    	}
-    	
-    	getMyGrid().setCellSize(cellSize);
-    	getMyGrid().getMyGridView().updateUI();
-    	setRoot();
-    	
+        if (increment) {
+            cellSize += getMyGrid().getMyGridView().getCellSizeIncrement();
+
+        }
+        else {
+            cellSize -= getMyGrid().getMyGridView().getCellSizeIncrement();
+
+        }
+
+        getMyGrid().setCellSize(cellSize);
+        getMyGrid().getMyGridView().updateUI();
+        setRoot();
+
     }
-    
+
     /**
      * Modifies cell size parameter (to be read by initialize methods) to
+     *
      * @param currentCellSize
      */
-    public void changeCellSizeParameter(int currentCellSize) {
-		myParameters.setCellSize(currentCellSize);
-		
-	}
-    
+    public void changeCellSizeParameter (int currentCellSize) {
+        myParameters.setCellSize(currentCellSize);
+
+    }
+
     /**
-     * Changes myNeighborDirections and resets Grid's neighbors-to-be-looked at 
+     * Changes myNeighborDirections and resets Grid's neighbors-to-be-looked at
      * for various state-determining algorithms
+     *
      * @param neighborDirections
      */
     public void setNeighborDirections (String neighborDirections) {
-		myNeighborDirections = neighborDirections;
-		initializeNeighborOffsets();
-		
-	}
+        myNeighborDirections = neighborDirections;
+        initializeNeighborOffsets();
 
-	/**
+    }
+
+    /**
      * Sets myGrid's myNeighbor's attribute with appropriate directional headings
      */
     private void initializeNeighborOffsets () {
-        
+
         if (myNeighborDirections.equals("Cardinal")) {
             myGrid.setNeighborOffsets(neighborOffsetsCardinal());
 
@@ -278,7 +284,6 @@ public class Game {
             }
         }
     }
- 
 
     /**
      * Returns a list of offsets to check to find a GridCell's cardinal neighbors
@@ -353,7 +358,7 @@ public class Game {
         myGameLoop = new Timeline();
         myGameLoop.setCycleCount(Animation.INDEFINITE);
         myGameLoop.getKeyFrames().add(frame);
-        
+
     }
 
     /**
@@ -376,8 +381,6 @@ public class Game {
 
     }
 
-    
-    
     // =========================================================================
     // Getters and Setters
     // =========================================================================
@@ -389,7 +392,7 @@ public class Game {
      * @param speed the speed to set the animation
      */
     public void setTimelineRate (double speed) {
-    	myGameLoop.setRate(speed);
+        myGameLoop.setRate(speed);
     }
 
     public Group getGameRoot () {
@@ -408,12 +411,12 @@ public class Game {
         return myGameType;
     }
 
-	public Group getMyUIRoot() {
-		return myUIRoot;
-	}
+    public Group getMyUIRoot () {
+        return myUIRoot;
+    }
 
-	public Group getLineChartRoot() {
-		return myLineChartRoot;
-	}
+    public Group getLineChartRoot () {
+        return myLineChartRoot;
+    }
 
 }

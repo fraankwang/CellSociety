@@ -47,9 +47,9 @@ public class Parameters {
     }
 
     public void setCellSize (int cellSize) {
-    	myParameters.replace("cellSize", Integer.toString(cellSize));
+        myParameters.replace("cellSize", Integer.toString(cellSize));
     }
-    
+
     public int[][] getInitialStates () {
         return initialStates;
     }

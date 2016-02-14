@@ -24,21 +24,26 @@ public class Location {
 
     }
 
-    
     @Override
-    public boolean equals(Object other){
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof Location)) return false;
+    public boolean equals (Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Location)) {
+            return false;
+        }
         Location otherLocation = (Location) other;
-        return otherLocation.getRow() == this.getRow() && otherLocation.getCol() == this.getCol();
+        return otherLocation.getRow() == getRow() && otherLocation.getCol() == getCol();
     }
-    
+
     @Override
-    public int hashCode(){
-        return 13*getRow() + 17*getCol();
+    public int hashCode () {
+        return 13 * getRow() + 17 * getCol();
     }
-    
+
     public int getRow () {
         return myRow;
     }

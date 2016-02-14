@@ -46,7 +46,7 @@ public abstract class Grid {
     public Grid (Parameters params) {
         myRows = params.getRows();
         myColumns = params.getColumns();
-     
+
     }
 
     // =========================================================================
@@ -60,7 +60,7 @@ public abstract class Grid {
         myCells = new GridCell[myRows][myColumns];
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
-                GridCell cell = initializeCell(row, col);              
+                GridCell cell = initializeCell(row, col);
 
                 myCells[row][col] = cell;
 
@@ -152,7 +152,7 @@ public abstract class Grid {
             for (int col = 0; col < getColumns(); col++) {
                 myCells[row][col].transitionStates();
                 myGridView.updateCellShape(myCells[row][col]);
-                
+
             }
         }
 
@@ -201,7 +201,7 @@ public abstract class Grid {
             }
             else if (EDGE_TYPE.equals("Infinite")) {
                 neighborLocation = neighborLocationFinite(cell, offset);
-                
+
             }
 
             if (cellInBounds(neighborLocation)) {
@@ -243,16 +243,15 @@ public abstract class Grid {
 
         return new Location(neighborRow, neighborCol);
     }
-    
+
     /**
      * Allows each Grid to create its own sidebar that lets
      * the user change the parameters of the simulation
-     * 
+     *
      * @return the sidebar to be added to the BorderPane
      */
-    
-    public abstract void updateParams(Map<String, Double> map);
-    
+
+    public abstract void updateParams (Map<String, Double> map);
 
     /**
      * Aggregates current game parameters to be saved to an XML file.
@@ -296,7 +295,7 @@ public abstract class Grid {
 
     protected int[][] getMyInitialStates () {
         return myInitialStates;
-    }   
+    }
 
     public GridCell[][] getMyCells () {
         return myCells;
@@ -338,20 +337,20 @@ public abstract class Grid {
         this.myGridView = myGridView;
 
     }
-    
+
     public void setNeighborOffsets (List<Offset> offsets) {
         myNeighborOffsets = offsets;
-    
+
     }
-    
+
     protected List<Offset> getMyNeighborOffsets () {
         Collections.shuffle(myNeighborOffsets);
         return myNeighborOffsets;
     }
 
-	public void setCellSize(int cellSize) {
-		getMyGridView().setMyCellSize(cellSize);
-		
-	}
+    public void setCellSize (int cellSize) {
+        getMyGridView().setMyCellSize(cellSize);
+
+    }
 
 }

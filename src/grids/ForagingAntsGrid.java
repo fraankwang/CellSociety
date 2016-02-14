@@ -114,7 +114,7 @@ public class ForagingAntsGrid extends PatchGrid {
 
     /**
      * Initialize a nest at the given row and column
-     * 
+     *
      * @param row
      * @param column
      * @return The nest
@@ -126,7 +126,7 @@ public class ForagingAntsGrid extends PatchGrid {
 
     /**
      * Initialize a food source at the given row and column
-     * 
+     *
      * @param row
      * @param column
      * @return The nest
@@ -256,7 +256,7 @@ public class ForagingAntsGrid extends PatchGrid {
         for (Location location : locations) {
 
             AntPatch patch = (AntPatch) getMyCells()[location.getRow()][location.getCol()];
-            int probability = (myK + patch.getMyNumFoodPheromones()) ^ myN;
+            patch.getMyNumFoodPheromones();
 
             if (patch.getMyNumFoodPheromones() > maxFoodPheromonesAtLocation) {
                 maxFoodPheromonesAtLocation = patch.getMyNumFoodPheromones();
@@ -288,11 +288,10 @@ public class ForagingAntsGrid extends PatchGrid {
         // Pick up food item from ant location (food source)
     }
 
-	@Override
-	public void updateParams(Map<String, Double> map) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void updateParams (Map<String, Double> map) {
+        // TODO Auto-generated method stub
 
-    
+    }
+
 }

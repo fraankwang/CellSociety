@@ -127,9 +127,9 @@ public class FireGrid extends Grid {
     }
 
     @Override
-    public void updateParams(Map<String, Double> map) {
-    	myProbCatch = map.get("probcatch");
-    	
+    public void updateParams (Map<String, Double> map) {
+        myProbCatch = map.get("probcatch");
+
     }
 
     // =========================================================================
@@ -138,15 +138,14 @@ public class FireGrid extends Grid {
     private double getProbCatch () {
         return myProbCatch;
     }
-    
-    @Override
-	public Map<String,String> getMyGameState () {
-		Map<String,String> currentGameState = super.getMyGameState();
-		currentGameState.put("probcatch", Double.toString(getProbCatch()));
-		
-		return currentGameState;
-		
-	}
 
+    @Override
+    public Map<String, String> getMyGameState () {
+        Map<String, String> currentGameState = super.getMyGameState();
+        currentGameState.put("probcatch", Double.toString(getProbCatch()));
+
+        return currentGameState;
+
+    }
 
 }
