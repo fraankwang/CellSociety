@@ -9,9 +9,6 @@ import java.util.Map;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.VBox;
 import states.SegregationState;
 import states.State;
 

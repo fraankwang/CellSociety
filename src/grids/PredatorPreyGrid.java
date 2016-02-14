@@ -13,9 +13,6 @@ import cells.GridCell;
 import cells.SharkCell;
 import cells.SimpleCell;
 import constants.Parameters;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import states.State;
 import states.WatorState;
 

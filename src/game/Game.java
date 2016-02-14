@@ -48,6 +48,7 @@ public class Game {
 
     private Group myGameRoot;
     private Group myUIRoot;
+    private Group myLineChartRoot;
     private Timeline myGameLoop;
 
     /**
@@ -88,6 +89,7 @@ public class Game {
      */
     private void initializeGridModel () {
     	UIView uiView = null;
+    	
         if (myGameType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
             uiView = new FireUIView(myGrid, myParameters);
@@ -115,6 +117,7 @@ public class Game {
         }
         
         myUIRoot = uiView.getView();
+        myLineChartRoot = uiView.getLineChart();
 
     }
 
@@ -403,7 +406,10 @@ public class Game {
 
 	public Group getMyUIRoot() {
 		return myUIRoot;
-		
+	}
+
+	public Group getLineChartRoot() {
+		return myLineChartRoot;
 	}
 
 }
