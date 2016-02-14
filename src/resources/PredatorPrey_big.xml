@@ -2,22 +2,22 @@
 <gameType>PredatorPrey</gameType>
 <width>500</width>
 <height>500</height>
-<fishbreed>4</fishbreed>
-<sharkbreed>4</sharkbreed>
-<sharkhealth>5</sharkhealth>
+<fishbreed>3</fishbreed>
+<sharkbreed>7</sharkbreed>
+<sharkhealth>3</sharkhealth>
 <rows>10</rows>
 <columns>10</columns>
 <delay>50</delay>
 <initialStates>
-	<row>0120102200</row>
-	<row>0120201210</row>
-	<row>2010022000</row>
-	<row>1012000002</row>
-	<row>2022110020</row>
-	<row>0120102200</row>
-	<row>0120201210</row>
-	<row>2010022000</row>
-	<row>1012000002</row>
-	<row>2022110020</row>
+	<row>0000200200</row>
+	<row>0200202020</row>
+	<row>2020000000</row>
+	<row>2020000000</row>
+	<row>2000020000</row>
+	<row>0200200000</row>
+	<row>0010202020</row>
+	<row>0000000000</row>
+	<row>2020000002</row>
+	<row>0020220000</row>
 </initialStates>
 </root>
