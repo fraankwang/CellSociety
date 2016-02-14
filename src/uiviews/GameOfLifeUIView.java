@@ -1,3 +1,6 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
 package uiviews;
 
 import constants.Parameters;

@@ -148,11 +148,5 @@ public class FireGrid extends Grid {
 		
 	}
 
-	
-    private void setProbCatch (double set) {
-        myProbCatch = set;
-        
-    }
-
 
 }

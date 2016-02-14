@@ -92,10 +92,13 @@ public class SharkCell extends DataCell {
 
     public void setMaxHealth (int health){
     	sharkMaxHealth = health;
+    	sharkCurrentHealth = health;
+
     }
     
     public void setBreedTime (int time) {
     	sharkBreedTime = time;
+    	sharkCurrentBreedTime = time;
     }
     
     public int getTimeUntilBreed () {

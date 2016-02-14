@@ -53,5 +53,10 @@ public class FishCell extends DataCell {
     private int getBreedTime () {
         return fishBreedTime;
     }
+    
+    public void setBreedTime (int setTime){
+    	fishBreedTime = setTime;
+    	fishCurrentBreedTime = setTime;
+    }
 
 }
