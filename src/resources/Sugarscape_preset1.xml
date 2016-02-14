@@ -6,13 +6,10 @@
 	<numAgents>50</numAgents>
 	<agentSugarMin>5</agentSugarMin>
 	<agentSugarMax>25</agentSugarMax>
-<<<<<<< HEAD
 	<agentMetabolismMin>20</agentMetabolismMin>
 	<agentMetabolismMax>30</agentMetabolismMax>
-=======
 	<agentMetabolismMin>4</agentMetabolismMin>
 	<agentMetabolismMax>10</agentMetabolismMax>
->>>>>>> 90b69b69535ec590747172e2b3fd3d5b9b1d0b52
 	<agentVisionMin>2</agentVisionMin>
 	<agentVisionMax>6</agentVisionMax>
 	<sugarGrowBackRate>1</sugarGrowBackRate>s

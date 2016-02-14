@@ -12,9 +12,9 @@ import javafx.scene.paint.Color;
  *
  */
 public enum SegregationState implements State {
-                                               EMPTY(Color.WHITE, 0),
-                                               RED(Color.RED, 1),
-                                               BLUE(Color.BLUE, 2);
+	EMPTY(Color.WHITE, 0),
+   	RED(Color.RED, 1),
+   	BLUE(Color.BLUE, 2);
 
     private Color myColor;
     private int stateValue;

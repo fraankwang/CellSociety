@@ -160,10 +160,11 @@ public class SugarscapeGrid extends PatchGrid {
 
         if (patchToOccupy != null) {
             moveAgent(agent, patchToOccupy);
+            
         }
         else {
-            // Code should never reach here
             System.out.println("Error");
+            
         }
 
     }
