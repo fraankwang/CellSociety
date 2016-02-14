@@ -21,6 +21,8 @@ public abstract class PatchGrid extends Grid {
     private List<Agent> myAgentsToRemove;
     private int myNumAgents;
 
+    private List<Location> myRandomLocations;
+    
     /**
      * Constructor
      * 
@@ -29,6 +31,7 @@ public abstract class PatchGrid extends Grid {
     public PatchGrid (Parameters params) {
         super(params);
         myNumAgents = Integer.parseInt(params.getParameter("numAgents"));
+        myRandomLocations = createRandomLocationsList();
 
     }
 
@@ -69,25 +72,34 @@ public abstract class PatchGrid extends Grid {
         myAgents = new ArrayList<Agent>();
         myAgentsToRemove = new ArrayList<Agent>();
 
-        List<Integer> xCoords = new ArrayList<Integer>();
-        List<Integer> yCoords = new ArrayList<Integer>();
-
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getColumns(); c++) {
-                xCoords.add(r);
-                yCoords.add(c);
-            }
-        }
-
-        Collections.shuffle(xCoords);
-        Collections.shuffle(yCoords);
-
         for (int i = 0; i < myNumAgents; i++) {
-            insertNewAgent(xCoords.get(i), yCoords.get(i));
+            Location location = getMyRandomLocations().get(i);
+            insertNewAgent(location.getRow(), location.getCol());
 
         }
     }
 
+    /**
+     * Creates random pairings of all possible x coordinates and y coordinates in the grid
+     * 
+     * @return Lists of <xCoords, yCoords>
+     */
+    protected List<Location> createRandomLocationsList(){
+      
+        List<Location> locations = new ArrayList<Location>();
+        
+        for (int r = 0; r < getRows(); r++) {
+            for (int c = 0; c < getColumns(); c++) {
+               
+                locations.add(new Location(r, c));
+            }
+        }
+
+        
+        Collections.shuffle(locations);
+       
+        return locations;
+    }
     /**
      * Inserts a new agent on the grid by calling initializeAgent, adding it
      * to a patch, and storing it in myAgents
@@ -124,7 +136,7 @@ public abstract class PatchGrid extends Grid {
     }
 
     /**
-     * Determnines the next state of each patch by calling setPatchState on each
+     * Determines the next state of each patch by calling setPatchState on each
      */
     protected void setPatchStates () {
         super.setCellStates();
@@ -226,5 +238,13 @@ public abstract class PatchGrid extends Grid {
     // =========================================================================
     public int getMyNumAgents () {
         return myNumAgents;
+    }
+
+    protected List<Location> getMyRandomLocations () {
+        return myRandomLocations;
+    }
+
+    protected void shuffleRandomLocations() {
+        Collections.shuffle(myRandomLocations);
     }
 }

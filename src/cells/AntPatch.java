@@ -1,35 +1,49 @@
 package cells;
 
+import java.util.HashSet;
 import java.util.Set;
 import states.ForagingAntsState;
-import states.State;
-import states.SugarscapeState;
 
 
 public class AntPatch extends Patch {
+    private Set<Ant> myAnts;
+
     private int myNumFoodPheromones;
     private int myNumHomePheromones;
     private int myMaxAnts;
-    private Set<Ant> myAnts;
 
     private int myFoodThresholdHigh;
     private int myFoodThresholdLow;
     private int myHomeThresholdHigh;
     private int myHomeThresholdLow;
 
-    public AntPatch (State currentState,
-                     int row,
+    public AntPatch (int row,
                      int col,
-                     int foodP,
-                     int homeP,
                      int maxAnts,
                      int fTHigh,
                      int fTLow,
                      int hTHigh,
                      int hTLow) {
-        super(currentState, row, col);
+        super(null, row, col);
+        myNumFoodPheromones = 0;
+        myNumHomePheromones = 0;
+        myAnts = new HashSet<Ant>();
+        myMaxAnts = maxAnts;
+        myFoodThresholdHigh = fTHigh;
+        myFoodThresholdLow = fTLow;
+        myHomeThresholdHigh = hTHigh;
+        myHomeThresholdLow = hTLow;
+        initializeState();
+        
     }
 
+    /**
+     * Initializes the patch state based on pheromone levels and threshold values
+     */
+    public void initializeState(){
+        setMyCurrentState(stateFromPheromoneLevels());
+    }
+    
     @Override
     public void update () {
         if (isOccupied()) {

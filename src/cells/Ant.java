@@ -12,7 +12,6 @@ public class Ant extends Agent {
     
     public Ant (State currentState, int row, int col) {
         super(currentState, row, col);
-        // TODO Auto-generated constructor stub
     }
     
     public NeighborOffset getOrientation () {

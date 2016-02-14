@@ -63,7 +63,11 @@ public abstract class Grid {
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 GridCell cell = initializeCell(row, col);
+                //System.out.println(cell.getMyCurrentState() + " " + cell.getMyNextState() );
+
                 myCells[row][col] = cell;
+                //System.out.println(myCells[row][col].getMyCurrentState() + " " + myCells[row][col].getMyNextState() );
+
             }
         }
 
@@ -124,11 +128,14 @@ public abstract class Grid {
      * Updates each cell's next state by calling setCellState for each cell
      */
     protected void setCellStates () {
+        System.out.println("setCellSTates" );
 
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 GridCell cell = myCells[row][col];
                 setCellState(cell);
+                //System.out.println(myCells[row][col].getMyCurrentState() + " " + myCells[row][col].getMyNextState() );
+
             }
         }
 
@@ -146,9 +153,12 @@ public abstract class Grid {
      * Transitions each cell to its next state and updates the UI
      */
     private void updateCellStates () {
+        System.out.println("ypdateCellSTates" );
+
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 myCells[row][col].transitionStates();
+                //System.out.println(myCells[row][col].getMyCurrentState() + " " + myCells[row][col].getMyNextState() );
                 myGridView.updateCellShape(myCells[row][col]);
             }
         }

@@ -11,6 +11,7 @@ import constants.NeighborOffset;
 import constants.Offset;
 import constants.Parameters;
 import grids.FireGrid;
+import grids.ForagingAntsGrid;
 import grids.GameOfLifeGrid;
 import grids.Grid;
 import grids.PredatorPreyGrid;
@@ -99,6 +100,9 @@ public class Game {
         }
         else if (myGameType.equals("Sugarscape")) {
             myGrid = new SugarscapeGrid(myParameters);
+        
+        }else if (myGameType.equals("ForagingAnts")) {
+            myGrid = new ForagingAntsGrid(myParameters);
         
         }
 
