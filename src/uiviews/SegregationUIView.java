@@ -4,6 +4,7 @@
 
 package uiviews;
 
+import constants.Constants;
 import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
@@ -13,6 +14,8 @@ import javafx.scene.layout.VBox;
 
 public class SegregationUIView extends UIView{
 
+	private static final String SIMILARITY_PERCENTAGE = "similaritypercentage";
+
 	public SegregationUIView(Grid grid, Parameters params) {
 		super(grid, params);
 	}
@@ -21,10 +24,10 @@ public class SegregationUIView extends UIView{
 	protected Group createView() {
 		Group root = new Group();
 		VBox box = new VBox();
-		Label similarityLabel = new Label("Similarity Percentage");
-		double similarityPercent = Double.parseDouble(getMyParams().getParameter("similaritypercentage"));
+		Label similarityLabel = new Label(Constants.RESOURCES.getString("similaritySliderTitle"));
+		double similarityPercent = Double.parseDouble(getMyParams().getParameter(SIMILARITY_PERCENTAGE));
 		Slider slider = createSlider(0, 100, similarityPercent);
-		slider.valueProperty().addListener(e -> updateParamsAndGrid("similaritypercentage", slider.getValue()));
+		slider.valueProperty().addListener(e -> updateParamsAndGrid(SIMILARITY_PERCENTAGE, slider.getValue()));
 
 		box.getChildren().addAll(similarityLabel, slider);
 		root.getChildren().add(box);
