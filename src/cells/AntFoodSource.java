@@ -6,20 +6,15 @@ package cells;
 
 import states.State;
 
-/**
- * Abstract class for an Agent 
- * 
- *  
- */
-public abstract class Agent extends DataCell {
+public class AntFoodSource extends Patch {
 
-    public Agent (State currentState, int row, int col) {
+    public AntFoodSource (State currentState, int row, int col) {
         super(currentState, row, col);
     }
 
     @Override
     public void update () {
-
+        setMyNextState(getMyCurrentState());
     }
 
 }

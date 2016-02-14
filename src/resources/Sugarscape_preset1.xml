@@ -3,13 +3,21 @@
 	<rows>15</rows>
 	<columns>15</columns>
 	<delay>50</delay>
-	<numAgents>5</numAgents>
+	<numAgents>50</numAgents>
 	<agentSugarMin>5</agentSugarMin>
 	<agentSugarMax>25</agentSugarMax>
 	<agentMetabolismMin>20</agentMetabolismMin>
 	<agentMetabolismMax>30</agentMetabolismMax>
+	<agentMetabolismMin>4</agentMetabolismMin>
+	<agentMetabolismMax>10</agentMetabolismMax>
 	<agentVisionMin>2</agentVisionMin>
 	<agentVisionMax>6</agentVisionMax>
-	<sugarGrowBackRate>3</sugarGrowBackRate>s
+	<sugarGrowBackRate>1</sugarGrowBackRate>s
 	<sugarGrowBackInterval>1</sugarGrowBackInterval>
+	<sugarThresholdLow>5</sugarThresholdLow> 
+    <sugarThresholdMedium>10</sugarThresholdMedium>
+    <sugarThresholdHigh>15</sugarThresholdHigh>
+    <sugarThresholdStrong>20</sugarThresholdStrong>
+    <patchSugarMax>20</patchSugarMax>
+    
 </root>

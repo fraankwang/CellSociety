@@ -1,3 +1,7 @@
+/**
+ * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
+ */
+
 package exceptions;
 
 /**
@@ -6,7 +10,9 @@ package exceptions;
 
 
 public class InvalidInputException extends RuntimeException {
-    public InvalidInputException (String message) {
+	private static final long serialVersionUID = 1L;
+
+	public InvalidInputException (String message) {
         super(message);
     }
 }

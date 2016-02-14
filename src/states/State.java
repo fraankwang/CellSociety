@@ -13,6 +13,5 @@ import javafx.scene.paint.Color;
  */
 public interface State {
     public Color getColor ();
-
     public int getStateValue ();
 }

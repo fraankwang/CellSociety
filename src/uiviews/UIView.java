@@ -10,6 +10,7 @@ import java.util.Map;
 import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
+import javafx.scene.chart.Chart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -22,11 +23,11 @@ import javafx.scene.layout.VBox;
  */
 public abstract class UIView {
 
-
 	private Map<String, Double> paramsMap;
 	private Group myView;
 	private Grid myGrid;
 	private Parameters myParams;
+	protected Group myLineChart;
 	
 	public UIView(Grid grid, Parameters params) {
 		myParams = params;
@@ -127,7 +128,16 @@ public abstract class UIView {
 		return paramsMap;
 	}
 
-	protected Parameters getMyParams (){
+	protected Parameters getMyParams() {
 		return myParams;
+	}
+
+	public Group getLineChart() {
+		return myLineChart;
+	}
+	
+	protected void setLineChart(Chart chart) {
+		myLineChart = new Group();
+		myLineChart.getChildren().add(chart);
 	}
 }

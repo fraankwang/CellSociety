@@ -33,7 +33,6 @@ public abstract class Grid {
     private int myRows;
     private GridCell[][] myCells;
 
-    // Determined by resource properties gridShape and neighborDirections
     private List<Offset> myNeighborOffsets;
 
     // View
@@ -61,8 +60,10 @@ public abstract class Grid {
         myCells = new GridCell[myRows][myColumns];
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
-                GridCell cell = initializeCell(row, col);
+                GridCell cell = initializeCell(row, col);              
+
                 myCells[row][col] = cell;
+
             }
         }
 
@@ -128,6 +129,7 @@ public abstract class Grid {
             for (int col = 0; col < getColumns(); col++) {
                 GridCell cell = myCells[row][col];
                 setCellState(cell);
+
             }
         }
 
@@ -145,10 +147,12 @@ public abstract class Grid {
      * Transitions each cell to its next state and updates the UI
      */
     private void updateCellStates () {
+
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < getColumns(); col++) {
                 myCells[row][col].transitionStates();
                 myGridView.updateCellShape(myCells[row][col]);
+                
             }
         }
 
@@ -197,7 +201,7 @@ public abstract class Grid {
             }
             else if (EDGE_TYPE.equals("Infinite")) {
                 neighborLocation = neighborLocationFinite(cell, offset);
-                // If out of bounds then expand grid
+                
             }
 
             if (cellInBounds(neighborLocation)) {
@@ -246,7 +250,6 @@ public abstract class Grid {
      * 
      * @return the sidebar to be added to the BorderPane
      */
- //   public abstract VBox createParameterButtons ();
     
     public abstract void updateParams(Map<String, Double> map);
     

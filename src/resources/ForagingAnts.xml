@@ -1,0 +1,19 @@
+<root>
+	<gameType>ForagingAnts</gameType>
+	<rows>15</rows>
+	<columns>15</columns>
+	<delay>50</delay>
+	<numAgents>0</numAgents>
+	<numFoodSources>5</numFoodSources>
+	<numObstacles>0</numObstacles>
+	<maxAnts>1</maxAnts>
+	<foodThresholdHigh>4</foodThresholdHigh>
+	<foodThresholdLow>2</foodThresholdLow>
+	<homeThresholdHigh>4</homeThresholdHigh>
+	<homeThresholdLow>2</homeThresholdLow>
+	<maxHomePheromones>10</maxHomePheromones>
+	<maxFoodPheromones>10</maxFoodPheromones>
+	<K>1</K>
+	<N>2</N>
+    
+</root>
