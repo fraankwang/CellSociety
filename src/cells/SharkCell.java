@@ -31,7 +31,7 @@ public class SharkCell extends DataCell {
 
     /**
      * A constructor used to make a copy of the shark
-     * 
+     *
      * @param shark
      * @param location
      */
@@ -73,7 +73,7 @@ public class SharkCell extends DataCell {
 
     /**
      * Checks to see if the shark can eat
-     * 
+     *
      * @param neighbors
      * @return true if there's a fish in its neighbors
      */
@@ -90,17 +90,17 @@ public class SharkCell extends DataCell {
     // Getters and Setters
     // =========================================================================
 
-    public void setMaxHealth (int health){
-    	sharkMaxHealth = health;
-    	sharkCurrentHealth = health;
+    public void setMaxHealth (int health) {
+        sharkMaxHealth = health;
+        sharkCurrentHealth = health;
 
     }
-    
+
     public void setBreedTime (int time) {
-    	sharkBreedTime = time;
-    	sharkCurrentBreedTime = time;
+        sharkBreedTime = time;
+        sharkCurrentBreedTime = time;
     }
-    
+
     public int getTimeUntilBreed () {
         return sharkCurrentBreedTime;
     }

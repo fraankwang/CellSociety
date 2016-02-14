@@ -15,7 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import main.MainView;
 
+
 public class SugarscapeUIView extends UIView {
+
 
 	private LineChart<Number,Number> myChart;
 	private XYChart.Series<Number, Number> agentPopulation;

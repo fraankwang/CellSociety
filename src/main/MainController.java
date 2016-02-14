@@ -34,7 +34,7 @@ public class MainController {
     /**
      * Event handler for starting the current Simulation 
      */
-    public void startGame () {
+    public void startSimulation () {
     	if (mySimulation != null) {
     		mySimulation.startGame();
         
@@ -45,7 +45,7 @@ public class MainController {
     /**
      * Event handler for stopping the current Simulation 
      */
-    public void stopGame () {
+    public void stopSimulation () {
     	if (mySimulation != null) {
     		mySimulation.stopGame();
     	}
@@ -57,7 +57,7 @@ public class MainController {
      */
     public void stepGame () {
     	if (mySimulation != null) {
-    		stopGame();
+    		stopSimulation();
     		mySimulation.getMyGrid().step();
     	
     	}
@@ -71,14 +71,14 @@ public class MainController {
     public void resetGame () {
     	
     	if (mySimulation != null) {
-    		stopGame();
+    		stopSimulation();
     		
     		int currentCellSize = mySimulation.getMyGrid().getMyGridView().getMyCellSize();
     		mySimulation.changeCellSizeParameter(currentCellSize);
     		mySimulation.initializeGrid(currentCellSize);
     		mySimulation.resetGraph();
     		
-    		myView.displayGame(mySimulation.getGameRoot());
+    		myView.displayGame(mySimulation.getSimulationRoot());
     		myView.displayParameters(mySimulation.getMyUIRoot());
     		myView.displayLineChart(mySimulation.getLineChartRoot());
     		
@@ -86,14 +86,15 @@ public class MainController {
     	
     }
 
+
     /**
-     * Event handler for choosing a new Simulation to start 
+     * Event handler for choosing a new simulation to start
      */
     public void chooseNewGame () {
 
         File file = myView.getFileFromUser();
         if (file != null) {
-            setUpGame(file);
+            setUpSimulation(file);
         }
 
     }
@@ -103,16 +104,17 @@ public class MainController {
      * @param type
      */
     public void setCellShape (String type) {
-    	stopGame();
+    	stopSimulation();
     	if (mySimulation != null) {
     		mySimulation.changeCellShape(type);
-    		myView.displayGame(mySimulation.getGameRoot());
+    		myView.displayGame(mySimulation.getSimulationRoot());
     	
     	}
     	
     }
-    
+
     /**
+
 	 * Changes GridView's cell size parameter and updates UI display
 	 * @param increment
 	 */
@@ -121,7 +123,7 @@ public class MainController {
 			mySimulation.changeCellSize(increment);
 		
 			if (myView != null) {
-				myView.displayGame(mySimulation.getGameRoot());
+				myView.displayGame(mySimulation.getSimulationRoot());
 				
 			}
 		}
@@ -130,8 +132,10 @@ public class MainController {
 	
 	/**
      * Changes neighbor directions and reinitializes neighbors
+     *
      * @param neighborDirections
      */
+
     public void setNeighborDirections(String neighborDirections) {
     	if (mySimulation != null) {
     		mySimulation.setNeighborDirections(neighborDirections);
@@ -141,18 +145,17 @@ public class MainController {
 
 	/**
      * Constructs a new Simulation based on a given file and switches to it
-     *
      * @param file The file containing the Simulation parameters
      */
-    private void setUpGame (File file) {
+    private void setUpSimulation (File file) {
         Parameters params = parseXML(file);
         
         mySimulation = new SimulationManager(params);
         
-        myView.displayGame(mySimulation.getGameRoot());
+        myView.displayGame(mySimulation.getSimulationRoot());
         myView.displayParameters(mySimulation.getMyUIRoot());
         myView.displayLineChart(mySimulation.getLineChartRoot());
-        
+
     }
 
     /**
@@ -163,16 +166,15 @@ public class MainController {
      */
     private Parameters parseXML (File file) {
         Parser parser = new Parser();
-    	return parser.parse(file);
+        return parser.parse(file);
 
     }
 
-    
     /**
      * Calls myGrid in mySimulation to return updated Simulation parameters, then
      * adds Simulation parameters that are not visible to myGrid, then generating the .xml file
      * Delay is not accessible from the grid. If the user modifies delay time, then it will
-     * be included in currentGameState. If not, the default is used. 
+     * be included in currentGameState. If not, the default is used.
      */
     public void saveXML () {
         XMLGenerator generator = new XMLGenerator();
@@ -191,14 +193,15 @@ public class MainController {
 	        String confirmation = Constants.RESOURCES.getString("XMLSavedConfirmation");
 	        Alert savedAlert = new Alert(AlertType.INFORMATION, confirmation, new ButtonType("OK"));
 	        savedAlert.showAndWait();
+
         }
 
     }
 
     /**
      * Reads user input and sets animation speed to given rate
-     * 
-     * 
+     *
+     *
      * @param speed how fast the animation should go
      */
     public void setAnimationSpeed (double speed){
@@ -207,5 +210,6 @@ public class MainController {
     	}
     }
         
+
 
 }

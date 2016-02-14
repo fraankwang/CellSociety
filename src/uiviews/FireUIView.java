@@ -16,6 +16,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 import main.MainView;
 
+
 public class FireUIView extends UIView {
 	
 	private LineChart<Number,Number> myChart;
@@ -87,7 +88,6 @@ public class FireUIView extends UIView {
 	public XYChart.Series<Number, Number> getBurnedTreesSeries () {
 		return burnedTrees;
 	}
-	
 	
 }
 	

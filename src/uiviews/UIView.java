@@ -6,7 +6,6 @@ package uiviews;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
@@ -16,9 +15,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
+
 /**
  * The abstract class for the View for the UI.
- * This is where the buttons are made for adjusting 
+ * This is where the buttons are made for adjusting
  * parameters of the simulation
  *
  */
@@ -187,4 +188,5 @@ public abstract class UIView {
 		myLineChart = chart;
 		
 	}
+
 }

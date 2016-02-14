@@ -13,6 +13,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import main.MainView;
 
+
 public class GameOfLifeUIView extends UIView {
 
 	private LineChart<Number,Number> myChart;
@@ -23,11 +24,11 @@ public class GameOfLifeUIView extends UIView {
 		super(grid, params);
 	}
 
-	@Override
-	protected Group createView() {
-		Group root = new Group();
-		return root;
-	}
+    @Override
+    protected Group createView () {
+        Group root = new Group();
+        return root;
+    }
 
 	/**
 	 * Specifies GameOfLife specific parameters to graph

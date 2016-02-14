@@ -38,7 +38,7 @@ public class SugarscapeGrid extends PatchGrid {
 
     /**
      * Constructor - sets up parameters and initializes cells
-     * 
+     *
      * @param params The XML parameters
      */
     public SugarscapeGrid (Parameters params) {
@@ -68,7 +68,6 @@ public class SugarscapeGrid extends PatchGrid {
         int sugar = r.nextInt(myAgentSugarMax - myAgentSugarMin + 1) + myAgentSugarMin;
         int sugarMetabolism =
                 r.nextInt(myAgentMetabolismMax - myAgentMetabolismMin + 1) + myAgentMetabolismMin;
-        ;
         int vision = r.nextInt(myAgentVisionMax - myAgentVisionMin + 1) + myAgentVisionMin;
 
         Agent agent =
@@ -112,7 +111,7 @@ public class SugarscapeGrid extends PatchGrid {
     /**
      * Helper method used in toggleState(cell) to copy persistent data in addition
      * to state
-     * 
+     *
      * @param patch The patch to toggle
      * @param nextState The state to toggle to
      */
@@ -166,11 +165,11 @@ public class SugarscapeGrid extends PatchGrid {
 
         if (patchToOccupy != null) {
             moveAgent(agent, patchToOccupy);
-            
+
         }
         else {
             System.out.println("Error");
-            
+
         }
 
     }
@@ -344,5 +343,6 @@ public class SugarscapeGrid extends PatchGrid {
 		return count;
 		
 	}
-    
+   
+
 }

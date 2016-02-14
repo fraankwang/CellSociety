@@ -41,6 +41,7 @@ public class SegregationUIView extends UIView{
 		return root;
 	}
 
+
 	/**
 	 * Specifies Segregation specific parameters to graph
 	 */
@@ -72,11 +73,11 @@ public class SegregationUIView extends UIView{
 		
 	}
 	
-	public XYChart.Series<Number, Number> getAgentPopulationSeries () {
+	public XYChart.Series<Number, Number> getRedPopulation () {
 		return redPopulation;
 	}
 
-	public XYChart.Series<Number, Number> getSugarCountSeries () {
+	public XYChart.Series<Number, Number> getBluePopulation () {
 		return bluePopulation;
 	}
 }

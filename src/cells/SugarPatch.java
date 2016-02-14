@@ -6,6 +6,7 @@ package cells;
 
 import states.SugarscapeState;
 
+
 /**
  * A SugarPatch is the Patch used in the Sugarscape simulation
  *
@@ -16,16 +17,16 @@ public class SugarPatch extends Patch {
     private int myMaxCapacity;
     private int myStepCount;
     private int mySugarGrowBackInterval;
-    
+
     private int mySugarThresholdLow = 5;
     private int mySugarThresholdMedium = 10;
     private int mySugarThresholdHigh = 15;
     private int mySugarThresholdStrong = 20;
 
-
     /**
      * Constructor
-     * @param row 
+     *
+     * @param row
      * @param col
      * @param sugarGrowBackRate The rate at which the patch grows sugar
      * @param sugar The amount of sugar in the patch
@@ -37,10 +38,10 @@ public class SugarPatch extends Patch {
                        int sugarGrowBackRate,
                        int sugar,
                        int maxCapacity,
-                       int sugarGrowBackInterval, 
-                       int sugarThresholdLow, 
-                       int sugarThresholdMedium, 
-                       int sugarThresholdHigh, 
+                       int sugarGrowBackInterval,
+                       int sugarThresholdLow,
+                       int sugarThresholdMedium,
+                       int sugarThresholdHigh,
                        int sugarThresholdStrong) {
         super(null, row, col);
         setMySugar(sugar);
@@ -83,13 +84,13 @@ public class SugarPatch extends Patch {
 
     /**
      * Return the threshold amount of sugar from a given state
-     * 
+     *
      * Note: used for setting the sugar count when toggling states
-     * 
+     *
      * @param state The Sugarscape state
      * @return The amount of sugar
      */
-    public int sugarCountFromState(SugarscapeState state){
+    public int sugarCountFromState (SugarscapeState state) {
         int sugar = 0;
         if (state == SugarscapeState.STRONG) {
             sugar = mySugarThresholdStrong;
@@ -106,16 +107,17 @@ public class SugarPatch extends Patch {
         else {
             sugar = 0;
         }
-        
+
         return sugar;
     }
-    
+
     /**
      * Returns the state based on mySugar and threshold values
+     *
      * @return The current SugarscapeState of the patch
      */
     public SugarscapeState stateFromSugarCount () {
-       
+
         if (mySugar >= mySugarThresholdStrong) {
             return SugarscapeState.STRONG;
         }
@@ -135,13 +137,14 @@ public class SugarPatch extends Patch {
 
     /**
      * Called when an agent eats a sugar patch
+     *
      * @param agent The agent
      */
     public void didGetEaten (SugarAgent agent) {
         setMySugar(0);
         setMyAgent(agent);
     }
-    
+
     // =========================================================================
     // Getters and Setters
     // =========================================================================

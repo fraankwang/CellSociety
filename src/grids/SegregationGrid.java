@@ -21,17 +21,19 @@ import uiviews.SegregationUIView;
  */
 public class SegregationGrid extends Grid {
 
+
 	private int redCount;
 	private int blueCount;
 	
 	private int[][] myInitialStates;
+
     private double mySimilarityPercentage;
-    
+
     public SegregationGrid (Parameters params) {
         super(params);
         mySimilarityPercentage = Double.parseDouble(params.getParameter("similaritypercentage"));
         myInitialStates = params.getInitialStates();
-        
+
         initializeCells();
     }
 
@@ -147,7 +149,7 @@ public class SegregationGrid extends Grid {
     private double getSimilarityPercentage () {
         return mySimilarityPercentage;
     }
-    
+
     @Override
     public Map<String, String> getMyGameState () {
         Map<String, String> currentGameState = super.getMyGameState();
@@ -157,6 +159,7 @@ public class SegregationGrid extends Grid {
 
     }
 
+
 	@Override
 	public void updateParams(Map<String, Double> map) {
 		mySimilarityPercentage = map.get("similaritypercentage");
@@ -165,8 +168,8 @@ public class SegregationGrid extends Grid {
 	@Override
 	protected void updateUIView() {
 		SegregationUIView SegregationUIView = (SegregationUIView) getMyUIView();
-		XYChart.Series<Number, Number> agentSeries = SegregationUIView.getAgentPopulationSeries();
-		XYChart.Series<Number, Number> sugarSeries = SegregationUIView.getSugarCountSeries();
+		XYChart.Series<Number, Number> agentSeries = SegregationUIView.getRedPopulation();
+		XYChart.Series<Number, Number> sugarSeries = SegregationUIView.getBluePopulation();
 		    
 		SegregationUIView.addDataPoint(agentSeries, getElapsedTime(), getRedCount());
 		SegregationUIView.addDataPoint(sugarSeries, getElapsedTime(), getBlueCount());
@@ -189,7 +192,6 @@ public class SegregationGrid extends Grid {
 		return blueCount * 100 / (getRows() * getColumns());
 		
 	}
-
 
 
 }
