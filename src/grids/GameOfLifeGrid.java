@@ -26,11 +26,11 @@ public class GameOfLifeGrid extends Grid {
             new HashSet<Integer>(Arrays.asList(2, 3));
 
     private int[][] myInitialStates;
-    
+
     public GameOfLifeGrid (Parameters params) {
         super(params);
         myInitialStates = params.getInitialStates();
-        
+
         initializeCells();
     }
 
@@ -109,11 +109,10 @@ public class GameOfLifeGrid extends Grid {
 
     }
 
+    @Override
+    public void updateParams (Map<String, Double> map) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void updateParams(Map<String, Double> map) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+    }
+
 }

@@ -6,6 +6,7 @@ package cells;
 
 import states.State;
 
+
 public class AntFoodSource extends Patch {
 
     public AntFoodSource (State currentState, int row, int col) {

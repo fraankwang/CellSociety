@@ -8,10 +8,9 @@ import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
 
+public class ForagingAntsUIView extends UIView {
 
-public class GameOfLifeUIView extends UIView {
-
-    public GameOfLifeUIView (Grid grid, Parameters params) {
+    public ForagingAntsUIView (Grid grid, Parameters params) {
         super(grid, params);
     }
 

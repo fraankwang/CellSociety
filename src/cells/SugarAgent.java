@@ -19,7 +19,7 @@ public class SugarAgent extends Agent {
 
     /**
      * Constructor
-     * 
+     *
      * @param currentState
      * @param row
      * @param col
@@ -41,7 +41,7 @@ public class SugarAgent extends Agent {
 
     /**
      * Method called when agent moves to a new patch and eats its sugar
-     * 
+     *
      * @param addedSugar The amount of sugar the Agent eats
      */
     public void eat (int addedSugar) {

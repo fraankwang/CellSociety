@@ -38,16 +38,16 @@ public class AntPatch extends Patch {
         myHomeThresholdHigh = hTHigh;
         myHomeThresholdLow = hTLow;
         initializeState();
-        
+
     }
 
     /**
      * Initializes the patch state based on pheromone levels and threshold values
      */
-    public void initializeState(){
+    public void initializeState () {
         setMyCurrentState(stateFromPheromoneLevels());
     }
-    
+
     @Override
     public void update () {
         if (isOccupied()) {
@@ -94,8 +94,8 @@ public class AntPatch extends Patch {
         else if (homeLow) {
             return ForagingAntsState.FOOD_LOW;
         }
-        
-        else{
+
+        else {
             return ForagingAntsState.EMPTY;
         }
 

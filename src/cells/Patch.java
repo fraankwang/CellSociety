@@ -23,7 +23,7 @@ public abstract class Patch extends DataCell {
 
     /**
      * Initializes the Patch to contain an agent
-     * 
+     *
      * @param agent
      */
     public void initializeWithAgent (Agent agent) {
@@ -32,7 +32,7 @@ public abstract class Patch extends DataCell {
 
     /**
      * Returns true if the Patch cell contains an Agent
-     * 
+     *
      * @return Boolean
      */
     public boolean isOccupied () {

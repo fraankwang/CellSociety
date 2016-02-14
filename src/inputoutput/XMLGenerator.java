@@ -35,8 +35,8 @@ public class XMLGenerator {
 
             addParameters(params, doc, root);
             if (currentStates != null) {
-            	addInitialStates(currentStates, doc, root);
-            	
+                addInitialStates(currentStates, doc, root);
+
             }
 
             TransformerFactory transfac = TransformerFactory.newInstance();
@@ -72,7 +72,7 @@ public class XMLGenerator {
     /**
      * Translates 2D array of integer states to multiple row attributes with columns concatenated as
      * a String
-     * 
+     *
      * @param currentStates
      * @param doc to write the elements to
      * @param root to add the initialStates element to
@@ -99,7 +99,7 @@ public class XMLGenerator {
 
     /**
      * Takes Map of parameters and adds key as tag and value as node value
-     * 
+     *
      * @param params
      * @param doc
      * @param root

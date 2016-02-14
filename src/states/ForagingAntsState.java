@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 
 public enum ForagingAntsState implements State{
         
-
     EMPTY(Color.WHITE, 0),
     ANT(Color.BLACK, 1),
     NEST(Color.BROWN, 2),
@@ -21,9 +20,7 @@ public enum ForagingAntsState implements State{
     FOOD_HIGH_HOME_LOW(Color.web("0xb82e8a"), 9), // bluish red
     FOOD_HOME_LOW(Color.web("0xe6b3e6"), 10), // light purple
     FOOD_HOME_HIGH(Color.web("0xac39ac"), 11); // dark purple
-
-    
-    
+  
 
     private Color myColor;
     private int stateValue;

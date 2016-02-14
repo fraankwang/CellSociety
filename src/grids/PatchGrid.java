@@ -22,10 +22,10 @@ public abstract class PatchGrid extends Grid {
     private int myNumAgents;
 
     private List<Location> myRandomLocations;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param params XML paramters for initial configuration
      */
     public PatchGrid (Parameters params) {
@@ -57,7 +57,7 @@ public abstract class PatchGrid extends Grid {
 
     /**
      * Abstract method for initializing a patch (cell) in the grid
-     * 
+     *
      * @param row The row of the patch
      * @param column The column of the patch
      * @return An initialized Patch to put at the given location in the grid
@@ -81,29 +81,29 @@ public abstract class PatchGrid extends Grid {
 
     /**
      * Creates random pairings of all possible x coordinates and y coordinates in the grid
-     * 
+     *
      * @return Lists of <xCoords, yCoords>
      */
-    protected List<Location> createRandomLocationsList(){
-      
+    protected List<Location> createRandomLocationsList () {
+
         List<Location> locations = new ArrayList<Location>();
-        
+
         for (int r = 0; r < getRows(); r++) {
             for (int c = 0; c < getColumns(); c++) {
-               
+
                 locations.add(new Location(r, c));
             }
         }
 
-        
         Collections.shuffle(locations);
-       
+
         return locations;
     }
+
     /**
      * Inserts a new agent on the grid by calling initializeAgent, adding it
      * to a patch, and storing it in myAgents
-     * 
+     *
      * @param row The row to place to newly initialized Agent
      * @param column The column to place to newly initialized Agent
      */
@@ -117,7 +117,7 @@ public abstract class PatchGrid extends Grid {
 
     /**
      * Abstract method that initializes an Agent at a specific location in the grid
-     * 
+     *
      * @param row The row of the initialized Agent
      * @param column The column of the initialized Agent
      * @return The Agent to insert in the grid
@@ -128,6 +128,7 @@ public abstract class PatchGrid extends Grid {
      * Called every step of the game loop - updates each cell's next state
      * - sets Agent states, sets Patch states, and removes dead agents
      */
+    @Override
     protected void setCellStates () {
         setAgentStates();
         setPatchStates();
@@ -150,7 +151,7 @@ public abstract class PatchGrid extends Grid {
 
     /**
      * Determines the next state of the given patch
-     * 
+     *
      * @param patch The patch to determine next state
      */
     protected abstract void setPatchState (Patch patch);
@@ -159,7 +160,6 @@ public abstract class PatchGrid extends Grid {
      * Determines the next state of each agent by calling setAgentState on each
      */
     protected void setAgentStates () {
-        System.out.println(myAgents.size());
         for (Agent agent : myAgents) {
             setAgentState(agent);
         }
@@ -167,14 +167,14 @@ public abstract class PatchGrid extends Grid {
 
     /**
      * Determines the next state of the given agent
-     * 
+     *
      * @param agent The agent to determine next state
      */
     protected abstract void setAgentState (Agent agent);
 
     /**
      * Adds an agent to the collection of stored agents
-     * 
+     *
      * @param agent
      */
     protected void addAgent (Agent agent) {
@@ -194,10 +194,10 @@ public abstract class PatchGrid extends Grid {
     /**
      * Adds an agent to the list of agentsToBeRemoved that will get removed at
      * the end of each game cycle
-     * 
+     *
      * Note: Subclasses can override this method to add further necessary
      * logic for removing an agent
-     * 
+     *
      * @param agent The agent to remove
      */
     protected void addAgentToRemove (Agent agent) {
@@ -206,10 +206,10 @@ public abstract class PatchGrid extends Grid {
 
     /**
      * Moves an agent to a new Patch
-     * 
+     *
      * Note: Subclasses can override this method to add further necessary
      * logic for moving an agent
-     * 
+     *
      * @param origin The agent to move
      * @param destination The patch where the agent should move
      */
@@ -244,7 +244,7 @@ public abstract class PatchGrid extends Grid {
         return myRandomLocations;
     }
 
-    protected void shuffleRandomLocations() {
+    protected void shuffleRandomLocations () {
         Collections.shuffle(myRandomLocations);
     }
 }

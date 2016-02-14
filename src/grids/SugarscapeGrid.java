@@ -32,10 +32,9 @@ public class SugarscapeGrid extends PatchGrid {
     private int mySugarThresholdStrong;
     private int myPatchSugarMax;
 
-
     /**
      * Constructor - sets up parameters and initializes cells
-     * 
+     *
      * @param params The XML parameters
      */
     public SugarscapeGrid (Parameters params) {
@@ -65,7 +64,6 @@ public class SugarscapeGrid extends PatchGrid {
         int sugar = r.nextInt(myAgentSugarMax - myAgentSugarMin + 1) + myAgentSugarMin;
         int sugarMetabolism =
                 r.nextInt(myAgentMetabolismMax - myAgentMetabolismMin + 1) + myAgentMetabolismMin;
-        ;
         int vision = r.nextInt(myAgentVisionMax - myAgentVisionMin + 1) + myAgentVisionMin;
 
         Agent agent =
@@ -107,7 +105,7 @@ public class SugarscapeGrid extends PatchGrid {
     /**
      * Helper method used in toggleState(cell) to copy persistent data in addition
      * to state
-     * 
+     *
      * @param patch The patch to toggle
      * @param nextState The state to toggle to
      */
@@ -160,11 +158,11 @@ public class SugarscapeGrid extends PatchGrid {
 
         if (patchToOccupy != null) {
             moveAgent(agent, patchToOccupy);
-            
+
         }
         else {
             System.out.println("Error");
-            
+
         }
 
     }
@@ -285,17 +283,17 @@ public class SugarscapeGrid extends PatchGrid {
         this.mySugarGrowBackInterval = mySugarGrowBackInterval;
     }
 
-	@Override
-	public void updateParams(Map<String, Double> map) {
-		myAgentSugarMin = map.get("agentSugarMin").intValue();
-		myAgentSugarMax = map.get("agentSugarMax").intValue();
-		myAgentMetabolismMin = map.get("agentMetabolismMin").intValue();
-		myAgentMetabolismMax = map.get("agentMetabolismMax").intValue();
-		myAgentVisionMin = map.get("agentVisionMin").intValue();
-		myAgentVisionMax = map.get("agentVisionMax").intValue();
-		mySugarGrowBackRate = map.get("sugarGrowBackRate").intValue();
-		mySugarGrowBackInterval =  map.get("sugarGrowBackInterval").intValue();
+    @Override
+    public void updateParams (Map<String, Double> map) {
+        myAgentSugarMin = map.get("agentSugarMin").intValue();
+        myAgentSugarMax = map.get("agentSugarMax").intValue();
+        myAgentMetabolismMin = map.get("agentMetabolismMin").intValue();
+        myAgentMetabolismMax = map.get("agentMetabolismMax").intValue();
+        myAgentVisionMin = map.get("agentVisionMin").intValue();
+        myAgentVisionMax = map.get("agentVisionMax").intValue();
+        mySugarGrowBackRate = map.get("sugarGrowBackRate").intValue();
+        mySugarGrowBackInterval = map.get("sugarGrowBackInterval").intValue();
 
-	}
-    
+    }
+
 }

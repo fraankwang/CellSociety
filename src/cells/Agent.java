@@ -6,10 +6,11 @@ package cells;
 
 import states.State;
 
+
 /**
- * Abstract class for an Agent 
- * 
- *  
+ * Abstract class for an Agent
+ *
+ *
  */
 public abstract class Agent extends DataCell {
 

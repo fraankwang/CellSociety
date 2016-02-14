@@ -19,14 +19,14 @@ import states.State;
  */
 public class SegregationGrid extends Grid {
 
-	private int[][] myInitialStates;
+    private int[][] myInitialStates;
     private double mySimilarityPercentage;
-    
+
     public SegregationGrid (Parameters params) {
         super(params);
         mySimilarityPercentage = Double.parseDouble(params.getParameter("similaritypercentage"));
         myInitialStates = params.getInitialStates();
-        
+
         initializeCells();
     }
 
@@ -132,7 +132,7 @@ public class SegregationGrid extends Grid {
     private double getSimilarityPercentage () {
         return mySimilarityPercentage;
     }
-    
+
     @Override
     public Map<String, String> getMyGameState () {
         Map<String, String> currentGameState = super.getMyGameState();
@@ -142,11 +142,9 @@ public class SegregationGrid extends Grid {
 
     }
 
-	@Override
-	public void updateParams(Map<String, Double> map) {
-		mySimilarityPercentage = map.get("similaritypercentage");
-	}
-
-
+    @Override
+    public void updateParams (Map<String, Double> map) {
+        mySimilarityPercentage = map.get("similaritypercentage");
+    }
 
 }

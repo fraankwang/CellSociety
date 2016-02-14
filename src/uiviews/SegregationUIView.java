@@ -12,27 +12,30 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 
-public class SegregationUIView extends UIView{
 
-	private static final String SIMILARITY_PERCENTAGE = "similaritypercentage";
+public class SegregationUIView extends UIView {
 
-	public SegregationUIView(Grid grid, Parameters params) {
-		super(grid, params);
-	}
+    private static final String SIMILARITY_PERCENTAGE = "similaritypercentage";
 
-	@Override
-	protected Group createView() {
-		Group root = new Group();
-		VBox box = new VBox();
-		Label similarityLabel = new Label(Constants.RESOURCES.getString("similaritySliderTitle"));
-		double similarityPercent = Double.parseDouble(getMyParams().getParameter(SIMILARITY_PERCENTAGE));
-		Slider slider = createSlider(0, 100, similarityPercent);
-		slider.valueProperty().addListener(e -> updateParamsAndGrid(SIMILARITY_PERCENTAGE, slider.getValue()));
+    public SegregationUIView (Grid grid, Parameters params) {
+        super(grid, params);
+    }
 
-		box.getChildren().addAll(similarityLabel, slider);
-		root.getChildren().add(box);
-		
-		return root;
-	}
+    @Override
+    protected Group createView () {
+        Group root = new Group();
+        VBox box = new VBox();
+        Label similarityLabel = new Label(Constants.RESOURCES.getString("similaritySliderTitle"));
+        double similarityPercent =
+                Double.parseDouble(getMyParams().getParameter(SIMILARITY_PERCENTAGE));
+        Slider slider = createSlider(0, 100, similarityPercent);
+        slider.valueProperty()
+                .addListener(e -> updateParamsAndGrid(SIMILARITY_PERCENTAGE, slider.getValue()));
+
+        box.getChildren().addAll(similarityLabel, slider);
+        root.getChildren().add(box);
+
+        return root;
+    }
 
 }
