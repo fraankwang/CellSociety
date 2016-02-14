@@ -7,7 +7,10 @@ import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
 import javafx.scene.chart.Chart;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 public abstract class UIView {
 
@@ -25,9 +28,7 @@ public abstract class UIView {
 		
 	}
 	
-
-	
-	protected abstract Group createView();
+	protected abstract Group createView ();
 	
 //	protected abstract void createLineChart();
 	
@@ -38,24 +39,43 @@ public abstract class UIView {
     	return slider;
 	}
 	
-	protected void addToParamsMapAndUpdateGrid(String name, double value){
+	protected void updateParamsAndGrid (String name, double value){
 		paramsMap.put(name, value);
 		getMyGrid().updateParams(getMyParamsMap());
 	}
 	
-	public Group getView() {
+	protected void updateFromTextField (TextField textfield, String mapString){
+		if(textfield.getText().matches("\\d+")){
+			updateParamsAndGrid(mapString, Double.parseDouble(textfield.getText()));
+		}
+	}
+	
+	protected TextField makeTextField (String defaultText, String mapString){
+		TextField textfield = new TextField(defaultText);
+		paramsMap.put(mapString, Double.parseDouble(textfield.getText()));
+		textfield.textProperty().addListener(e -> updateFromTextField(textfield, mapString));
+		return textfield;
+	}
+	
+	protected void addLabelandTextField (String label, TextField textfield, VBox box){
+		Label newLabel = new Label(label);
+		box.getChildren().addAll(newLabel, textfield);
+	}
+	
+	
+	public Group getView (){
 		return myView;
 	}
 	
-	protected Grid getMyGrid() {
+	protected Grid getMyGrid (){
 		return myGrid;
 	}
 	
-	protected void setMyGrid(Grid grid) {
+	protected void setMyGrid (Grid grid){
 		myGrid = grid;
 	}
 
-	protected Map<String, Double> getMyParamsMap() {
+	protected Map<String, Double> getMyParamsMap () {
 		return paramsMap;
 	}
 

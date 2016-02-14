@@ -20,7 +20,7 @@ public class SegregationUIView extends UIView{
 		Label similarityLabel = new Label("Similarity Percentage");
 		double similarityPercent = Double.parseDouble(getMyParams().getParameter("similaritypercentage"));
 		Slider slider = createSlider(0, 100, similarityPercent);
-		slider.valueProperty().addListener(e -> addToParamsMapAndUpdateGrid("similaritypercentage", slider.getValue()));
+		slider.valueProperty().addListener(e -> updateParamsAndGrid("similaritypercentage", slider.getValue()));
 
 		box.getChildren().addAll(similarityLabel, slider);
 		root.getChildren().add(box);
