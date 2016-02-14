@@ -20,4 +20,10 @@ public class ForagingAntsUIView extends UIView {
         return root;
     }
 
+	@Override
+	public void createChart() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

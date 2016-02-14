@@ -2,7 +2,7 @@
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
 
-package game;
+package manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,29 +37,31 @@ import uiviews.UIView;
 
 
 /**
- * Manages the simulation - in charge of the game loop and grid
+ * Manages the simulation - in charge of the Simulation loop and grid
  */
-public class Game {
+public class SimulationManager {
     public static final int MILLISECONDS_PER_SECOND = 1000;
 
-    private String myGameType;
+    
+    private String mySimulationType;
+
     private Grid myGrid;
     private Parameters myParameters;
     private String myGridShape;
     private String myNeighborDirections;
 
-    private Group myGameRoot;
+    private Group mySimulationRoot;
     private Group myUIRoot;
     private Group myLineChartRoot;
-    private Timeline myGameLoop;
+    private Timeline mySimulationLoop;
 
     /**
-     * Given parsed XML data, construct appropriate Grid Model/View and gameLoop
+     * Given parsed XML data, construct appropriate Grid Model/View and SimulationLoop
      *
      * @param params A map containing parsed XML data
      */
-    public Game (Parameters params) {
-        myGameType = params.getGameType();
+    public SimulationManager (Parameters params) {
+        mySimulationType = params.getSimulationType();
         myParameters = params;
 
         myGridShape = Constants.RESOURCES.getString("defaultGridShape");
@@ -84,48 +86,55 @@ public class Game {
     }
 
     /**
-     * Initializes a specific grid based on the gameType parameter
+     * Initializes a specific grid based on the SimulationType parameter
      *
      * This function uses only global variables so the user can press the reset
      * button (in the Main class) at any time
      */
     private void initializeGridModel () {
-        UIView uiView = null;
 
-        if (myGameType.equals("Fire")) {
+    	UIView uiView = null;
+    	
+        if (mySimulationType.equals("Fire")) {
             myGrid = new FireGrid(myParameters);
             uiView = new FireUIView(myGrid, myParameters);
 
         }
-        else if (myGameType.equals("GameOfLife")) {
+        else if (mySimulationType.equals("GameOfLife")) {
             myGrid = new GameOfLifeGrid(myParameters);
             uiView = new GameOfLifeUIView(myGrid, myParameters);
 
         }
-        else if (myGameType.equals("Segregation")) {
+        else if (mySimulationType.equals("Segregation")) {
             myGrid = new SegregationGrid(myParameters);
             uiView = new SegregationUIView(myGrid, myParameters);
 
         }
-        else if (myGameType.equals("PredatorPrey")) {
+        else if (mySimulationType.equals("PredatorPrey")) {
             myGrid = new PredatorPreyGrid(myParameters);
             uiView = new PredatorPreyUIView(myGrid, myParameters);
 
         }
-        else if (myGameType.equals("Sugarscape")) {
+        else if (mySimulationType.equals("Sugarscape")) {
             myGrid = new SugarscapeGrid(myParameters);
             uiView = new SugarscapeUIView(myGrid, myParameters);
 
         }
-        else if (myGameType.equals("ForagingAnts")) {
+
+        else if (mySimulationType.equals("ForagingAnts")) {
             myGrid = new ForagingAntsGrid(myParameters);
             uiView = new ForagingAntsUIView(myGrid, myParameters);
 
 
         }
+        
+        myGrid.setMyUIView(uiView);
 
         myUIRoot = uiView.getView();
+        
+        uiView.createChart();
         myLineChartRoot = uiView.getLineChart();
+        
 
     }
 
@@ -173,7 +182,19 @@ public class Game {
 
     }
 
-    /**
+
+	/**
+	 * Creates ScrollPane with current GridView and puts it in myGameRoot,
+	 * the primary UI element to be displayed when MainController sets up a new Game
+	 */
+	private void setRoot () {
+	    Group group = new Group();
+	    group.getChildren().add(createScrollPane());
+	    mySimulationRoot = group;
+	    
+	}
+
+	/**
      * Creates a scroll pane surrounding the GridView
      *
      * @return ScrollPane with appropriate GridView
@@ -181,22 +202,13 @@ public class Game {
     private ScrollPane createScrollPane () {
         ScrollPane sp = new ScrollPane();
         sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
-        sp.setContent(myGrid.getView());
+        sp.setContent(myGrid.getGridView());
 
         return sp;
 
     }
 
-    /**
-     * Creates ScrollPane with current GridView and puts it in myGameRoot,
-     * the primary UI element to be displayed when MainController sets up a new Game
-     */
-    private void setRoot () {
-        Group group = new Group();
-        group.getChildren().add(createScrollPane());
-        myGameRoot = group;
 
-    }
 
     /**
      * Commanded by MainController to re-initialize GridView and create a new ScrollPane with
@@ -261,6 +273,13 @@ public class Game {
         initializeNeighborOffsets();
 
     }
+    
+	public void resetGraph() {
+		getMyGrid().getMyUIView().createChart();
+        myLineChartRoot = getMyGrid().getMyUIView().getLineChart();
+		
+	}
+
 
     /**
      * Sets myGrid's myNeighbor's attribute with appropriate directional headings
@@ -345,7 +364,7 @@ public class Game {
     }
 
     /**
-     * Initialize the game loop, using the delay parameter from xml to determine speed
+     * Initialize the Simulation loop, using the delay parameter from xml to determine speed
      * In each KeyFrame of the animation, myGameLoop calls the step() function from myGrid
      */
     private void initializeGameLoop () {
@@ -355,28 +374,29 @@ public class Game {
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
                                       e -> myGrid.step());
 
-        myGameLoop = new Timeline();
-        myGameLoop.setCycleCount(Animation.INDEFINITE);
-        myGameLoop.getKeyFrames().add(frame);
+        mySimulationLoop = new Timeline();
+        mySimulationLoop.setCycleCount(Animation.INDEFINITE);
+        mySimulationLoop.getKeyFrames().add(frame);
+        
 
     }
 
     /**
-     * Start the game loop
+     * Start the Simulation loop
      */
     public void startGame () {
-        if (myGameLoop != null) {
-            myGameLoop.play();
+        if (mySimulationLoop != null) {
+            mySimulationLoop.play();
         }
 
     }
 
     /**
-     * End the game loop
+     * End the Simulation loop
      */
     public void stopGame () {
-        if (myGameLoop != null) {
-            myGameLoop.stop();
+        if (mySimulationLoop != null) {
+            mySimulationLoop.stop();
         }
 
     }
@@ -392,11 +412,12 @@ public class Game {
      * @param speed the speed to set the animation
      */
     public void setTimelineRate (double speed) {
-        myGameLoop.setRate(speed);
+    	mySimulationLoop.setRate(speed);
+
     }
 
-    public Group getGameRoot () {
-        return myGameRoot;
+    public Group getSimulationRoot () {
+        return mySimulationRoot;
     }
 
     public Grid getMyGrid () {
@@ -408,7 +429,7 @@ public class Game {
     }
 
     public String getMyGameType () {
-        return myGameType;
+        return mySimulationType;
     }
 
     public Group getMyUIRoot () {

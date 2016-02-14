@@ -9,8 +9,10 @@ import java.util.Map;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.chart.XYChart;
 import states.SegregationState;
 import states.State;
+import uiviews.SegregationUIView;
 
 
 /**
@@ -19,7 +21,12 @@ import states.State;
  */
 public class SegregationGrid extends Grid {
 
-    private int[][] myInitialStates;
+
+	private int redCount;
+	private int blueCount;
+	
+	private int[][] myInitialStates;
+
     private double mySimilarityPercentage;
 
     public SegregationGrid (Parameters params) {
@@ -36,6 +43,12 @@ public class SegregationGrid extends Grid {
 
         for (State state : SegregationState.values()) {
             if (s == state.getStateValue()) {
+            	if (state == SegregationState.RED) {
+            		redCount++;
+            	}
+            	else if (state == SegregationState.BLUE) {
+            		blueCount++;
+            	}
                 return new SimpleCell(state, row, col);
             }
         }
@@ -78,15 +91,19 @@ public class SegregationGrid extends Grid {
     protected void toggleState (GridCell cell) {
         if (cell.getMyCurrentState() == SegregationState.EMPTY) {
             cell.setMyCurrentState(SegregationState.RED);
+            redCount++;
 
         }
         else if (cell.getMyCurrentState() == SegregationState.RED) {
             cell.setMyCurrentState(SegregationState.BLUE);
-
+            redCount--;
+            blueCount++;
+            
         }
         else if (cell.getMyCurrentState() == SegregationState.BLUE) {
             cell.setMyCurrentState(SegregationState.EMPTY);
-
+            blueCount--;
+            
         }
 
     }
@@ -142,9 +159,39 @@ public class SegregationGrid extends Grid {
 
     }
 
-    @Override
-    public void updateParams (Map<String, Double> map) {
-        mySimilarityPercentage = map.get("similaritypercentage");
-    }
+
+	@Override
+	public void updateParams(Map<String, Double> map) {
+		mySimilarityPercentage = map.get("similaritypercentage");
+	}
+
+	@Override
+	protected void updateUIView() {
+		SegregationUIView SegregationUIView = (SegregationUIView) getMyUIView();
+		XYChart.Series<Number, Number> agentSeries = SegregationUIView.getRedPopulation();
+		XYChart.Series<Number, Number> sugarSeries = SegregationUIView.getBluePopulation();
+		    
+		SegregationUIView.addDataPoint(agentSeries, getElapsedTime(), getRedCount());
+		SegregationUIView.addDataPoint(sugarSeries, getElapsedTime(), getBlueCount());
+		
+	}
+	
+	/**
+	 * Number of Red cells
+	 * @return
+	 */
+	private int getRedCount () {
+		return redCount / (getRows() * getColumns());
+	}
+	
+	/**
+	 * Number of Blue cells
+	 * @return
+	 */
+	private double getBlueCount () {
+		return blueCount * 100 / (getRows() * getColumns());
+		
+	}
+
 
 }

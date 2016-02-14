@@ -31,11 +31,13 @@ import javafx.stage.Stage;
 
 public class MainView {
 
-    // Important numbers that shouldn't be changed by user
-    public static final int TOOLBAR_HEIGHT = 50;
-    public static final int GRID_VIEW_SIZE = 600;
-    public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
-    public static final int WINDOW_WIDTH = 1020;
+	public static final int TOOLBAR_HEIGHT = 50;
+	public static final int GRID_VIEW_SIZE = 700;
+	public static final int GRAPH_SIZE = GRID_VIEW_SIZE;
+	public static final int PARAMETER_WIDTH = 150;
+	public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
+	public static final int WINDOW_WIDTH = GRID_VIEW_SIZE + GRAPH_SIZE;
+
     public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;
     public static final int TOOLBAR_BUTTON_INSET_VERTICAL = 2;
 
@@ -143,10 +145,10 @@ public class MainView {
 
         Button startButton =
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStart"),
-                           event -> myController.startGame());
+                           event -> myController.startSimulation());
         Button stopButton =
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStop"),
-                           event -> myController.stopGame());
+                           event -> myController.stopSimulation());
         Button stepButton =
                 makeButton(Constants.RESOURCES.getString("toolbarButtonTitleStep"),
                            event -> myController.stepGame());
@@ -221,15 +223,20 @@ public class MainView {
      *
      * @param sidebar The bar to be added
      */
-    public void displayParameters (Group sidebar) {
-        myPrimaryPane.setLeft(sidebar);
 
+    public void displayParameters(Group sidebar) {
+    	myPrimaryPane.setRight(sidebar);
+    	
     }
-
-    public void displayLineChart (Group lineChartRoot) {
-        myPrimaryPane.setBottom(lineChartRoot);
-
-    }
+    
+    /**
+     * Adds graph of populations over time to bottom of window
+     * @param root
+     */
+    public void displayLineChart(Group root) {
+    	myPrimaryPane.setLeft(root);  
+    	
+	}
 
     /**
      * Switches to a new game by displaying the game root in the center of the BorderPane
@@ -263,5 +270,9 @@ public class MainView {
     public void setController (MainController controller) {
         myController = controller;
     }
+
+	public Group getMyPrimaryRoot() {
+		return myPrimaryRoot;
+	}
 
 }

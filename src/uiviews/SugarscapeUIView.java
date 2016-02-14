@@ -8,76 +8,104 @@ import constants.Constants;
 import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import main.MainView;
 
 
 public class SugarscapeUIView extends UIView {
 
-    private static final String SUGAR_GROW_BACK_INTERVAL = "sugarGrowBackInterval";
-    private static final String SUGAR_GROW_BACK_RATE = "sugarGrowBackRate";
-    private static final String AGENT_VISION_MAX = "agentVisionMax";
-    private static final String AGENT_VISION_MIN = "agentVisionMin";
-    private static final String AGENT_METABOLISM_MAX = "agentMetabolismMax";
-    private static final String AGENT_METABOLISM_MIN = "agentMetabolismMin";
-    private static final String AGENT_SUGAR_MAX = "agentSugarMax";
-    private static final String AGENT_SUGAR_MIN = "agentSugarMin";
 
-    public SugarscapeUIView (Grid grid, Parameters params) {
-        super(grid, params);
-    }
+	private LineChart<Number,Number> myChart;
+	private XYChart.Series<Number, Number> agentPopulation;
+	private XYChart.Series<Number, Number> sugarCount;
 
-    @Override
-    protected Group createView () {
-        Group root = new Group();
-        VBox box = new VBox();
+	public SugarscapeUIView(Grid grid, Parameters params) {
+		super(grid, params);
+	}
 
-        TextField myAgentSugarMinField =
-                makeTextField(getMyParams().getParameter(AGENT_SUGAR_MIN), AGENT_SUGAR_MIN);
-        addLabelandTextField(Constants.RESOURCES.getString("AgentSugarMinField"),
-                             myAgentSugarMinField, box);
+	@Override
+	protected Group createView() {
+		Group root = new Group();
+		VBox box = new VBox();
+		
+		TextField myAgentSugarMinField = makeTextField(getMyParams().getParameter("agentSugarMin"), "agentSugarMin");
+		addLabelandTextField("Minimum Agent Sugar", myAgentSugarMinField, box);
+		
+		
+		TextField myAgentSugarMaxField = makeTextField(getMyParams().getParameter("agentSugarMax"), "agentSugarMax");
+		addLabelandTextField("Maximum Agent Sugar", myAgentSugarMaxField, box);
+		
+		
+		TextField myAgentMetabolismMinField = makeTextField(getMyParams().getParameter("agentMetabolismMin"), "agentMetabolismMin");
+		addLabelandTextField("Minimum Agent Metabolism", myAgentMetabolismMinField, box);
+		
+	
+		TextField myAgentMetabolismMaxField = makeTextField(getMyParams().getParameter("agentMetabolismMax"), "agentMetabolismMax");
+		addLabelandTextField("Maximum Agent Metabolism", myAgentMetabolismMaxField, box);
+		
+	
+		TextField myAgentVisionMinField = makeTextField(getMyParams().getParameter("agentVisionMin"), "agentVisionMin");
+		addLabelandTextField("Minimum Agent Vision", myAgentVisionMinField, box);
+		
+		
+		TextField myAgentVisionMaxField = makeTextField(getMyParams().getParameter("agentVisionMax"), "agentVisionMax");
+		addLabelandTextField("Maximum Agent Vision", myAgentVisionMaxField, box);
+		
 
-        TextField myAgentSugarMaxField =
-                makeTextField(getMyParams().getParameter(AGENT_SUGAR_MAX), AGENT_SUGAR_MAX);
-        addLabelandTextField(Constants.RESOURCES.getString("AgentSugarMaxField"),
-                             myAgentSugarMaxField, box);
+		TextField mySugarGrowBackRateField = makeTextField(getMyParams().getParameter("sugarGrowBackRate"), "sugarGrowBackRate");
+		addLabelandTextField("Sugar Grow Back Rate", mySugarGrowBackRateField, box);
+		
 
-        TextField myAgentMetabolismMinField =
-                makeTextField(getMyParams().getParameter(AGENT_METABOLISM_MIN),
-                              AGENT_METABOLISM_MIN);
-        addLabelandTextField(Constants.RESOURCES.getString("AgentMetabolismMinField"),
-                             myAgentMetabolismMinField, box);
+		TextField mySugarGrowBackIntervalField = makeTextField(getMyParams().getParameter("sugarGrowBackInterval"), "sugarGrowBackInterval");
+		addLabelandTextField("Sugar Grow Back Interval", mySugarGrowBackIntervalField, box);
+		
+		root.getChildren().add(box);
+		return root;
+	}
+	
+	/**
+	 * Specifies Sugarscape specific parameters to graph
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void createChart() {
+		NumberAxis xAxis = formatXAxis("Time");
 
-        TextField myAgentMetabolismMaxField =
-                makeTextField(getMyParams().getParameter(AGENT_METABOLISM_MAX),
-                              AGENT_METABOLISM_MAX);
-        addLabelandTextField(Constants.RESOURCES.getString("AgentMetabolismMaxField"),
-                             myAgentMetabolismMaxField, box);
+		double upperBound = 100.0;
+		NumberAxis yAxis = formatYAxis("Counts", upperBound);
+		yAxis.setAutoRanging(true);
+		
+		myChart = new LineChart<Number,Number>(xAxis, yAxis);
+		myChart.setMaxSize(MainView.WINDOW_WIDTH, MainView.GRAPH_SIZE);		
+		myChart.setTitle(Constants.RESOURCES.getString("SugarscapeGraphTitle"));
+		
+		agentPopulation = new XYChart.Series<>();
+		agentPopulation.setName(Constants.RESOURCES.getString("SugarscapeAgentSeries"));
+		sugarCount = new XYChart.Series<>();
+		sugarCount.setName(Constants.RESOURCES.getString("SugarscapeSugarSeries"));
 
-        TextField myAgentVisionMinField =
-                makeTextField(getMyParams().getParameter(AGENT_VISION_MIN), AGENT_VISION_MIN);
-        addLabelandTextField(Constants.RESOURCES.getString("AgentVisionMinField"),
-                             myAgentVisionMinField, box);
+		myChart.getData().addAll(agentPopulation, sugarCount);
+		
+		myChart.setHorizontalGridLinesVisible(false);
+		myChart.setVerticalGridLinesVisible(false);
+		
+		Group root = new Group();
+		root.getChildren().add(myChart);
+		
+		setLineChart(root);
+		
+	}
+	
+	public XYChart.Series<Number, Number> getAgentPopulationSeries () {
+		return agentPopulation;
+	}
 
-        TextField myAgentVisionMaxField =
-                makeTextField(getMyParams().getParameter(AGENT_VISION_MAX), AGENT_VISION_MAX);
-        addLabelandTextField(Constants.RESOURCES.getString("AgentVisionMaxField"),
-                             myAgentVisionMaxField, box);
-
-        TextField mySugarGrowBackRateField =
-                makeTextField(getMyParams().getParameter(SUGAR_GROW_BACK_RATE),
-                              SUGAR_GROW_BACK_RATE);
-        addLabelandTextField(Constants.RESOURCES.getString("SugarGrowBackRateField"),
-                             mySugarGrowBackRateField, box);
-
-        TextField mySugarGrowBackIntervalField =
-                makeTextField(getMyParams().getParameter(SUGAR_GROW_BACK_INTERVAL),
-                              SUGAR_GROW_BACK_INTERVAL);
-        addLabelandTextField(Constants.RESOURCES.getString("SugarGrowBackIntervalField"),
-                             mySugarGrowBackIntervalField, box);
-
-        root.getChildren().add(box);
-        return root;
-    }
+	public XYChart.Series<Number, Number> getSugarCountSeries () {
+		return sugarCount;
+	}
 
 }
