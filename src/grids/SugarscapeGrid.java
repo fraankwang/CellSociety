@@ -26,6 +26,12 @@ public class SugarscapeGrid extends PatchGrid {
     private int myAgentVisionMax;
     private int mySugarGrowBackRate;
     private int mySugarGrowBackInterval;
+    private int mySugarThresholdLow;
+    private int mySugarThresholdMedium;
+    private int mySugarThresholdHigh;
+    private int mySugarThresholdStrong;
+    private int myPatchSugarMax;
+
 
     /**
      * Constructor - sets up parameters and initializes cells
@@ -42,6 +48,11 @@ public class SugarscapeGrid extends PatchGrid {
         myAgentVisionMax = Integer.parseInt(params.getParameter("agentVisionMax"));
         mySugarGrowBackRate = Integer.parseInt(params.getParameter("sugarGrowBackRate"));
         mySugarGrowBackInterval = Integer.parseInt(params.getParameter("sugarGrowBackInterval"));
+        mySugarThresholdLow = Integer.parseInt(params.getParameter("sugarThresholdLow"));
+        mySugarThresholdMedium = Integer.parseInt(params.getParameter("sugarThresholdMedium"));
+        mySugarThresholdHigh = Integer.parseInt(params.getParameter("sugarThresholdHigh"));
+        mySugarThresholdStrong = Integer.parseInt(params.getParameter("sugarThresholdStrong"));
+        myPatchSugarMax = Integer.parseInt(params.getParameter("patchSugarMax"));
 
         initializeCells();
 
@@ -66,11 +77,10 @@ public class SugarscapeGrid extends PatchGrid {
     protected Patch initializePatch (int row, int column) {
 
         Random r = new Random();
-        int myPatchSugarMax = 25;
-        int myPatchSugarMin = 0;
-        int sugar = r.nextInt(myPatchSugarMax - myPatchSugarMin + 1) + myPatchSugarMin;
+        int sugar = r.nextInt(myPatchSugarMax - 0 + 1) + 0;
         return new SugarPatch(row, column, mySugarGrowBackRate, sugar, myPatchSugarMax,
-                              mySugarGrowBackInterval);
+                              mySugarGrowBackInterval, mySugarThresholdLow, mySugarThresholdMedium,
+                              mySugarThresholdHigh, mySugarThresholdStrong);
     }
 
     @Override
@@ -165,7 +175,7 @@ public class SugarscapeGrid extends PatchGrid {
         SugarAgent agent = (SugarAgent) origin;
         SugarPatch newPatch = (SugarPatch) destination;
 
-        agent.addSugar(newPatch.getMySugar());
+        agent.eat(newPatch.getMySugar());
         newPatch.didGetEaten(agent);
 
         if (agent.getMySugar() <= 0) {

@@ -6,7 +6,10 @@ package states;
 
 import javafx.scene.paint.Color;
 
-
+/**
+ *  Enum of states for the GameOfLife simulation 
+ *
+ */
 public enum GameOfLifeState implements State {
 
     DEAD(Color.WHITE, 0),

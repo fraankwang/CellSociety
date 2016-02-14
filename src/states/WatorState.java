@@ -6,7 +6,10 @@ package states;
 
 import javafx.scene.paint.Color;
 
-
+/**
+ *  Enum of states for the PredatorPrey simulation 
+ *
+ */
 public enum WatorState implements State {
                                          EMPTY(Color.BLUE, 0),
                                          SHARK(Color.RED, 1),

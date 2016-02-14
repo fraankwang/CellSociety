@@ -6,7 +6,6 @@ package grids;
 
 import java.util.Map;
 import java.util.Random;
-
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
@@ -20,21 +19,20 @@ import states.State;
  */
 public class FireGrid extends Grid {
 
-	private int[][] myInitialStates;
+    private int[][] myInitialStates;
     private double myProbCatch;
-    
-    
+
     public FireGrid (Parameters params) {
         super(params);
         myProbCatch = Double.parseDouble(params.getParameter("probcatch"));
         myInitialStates = params.getInitialStates();
-        
+
         initializeCells();
     }
 
     @Override
     protected GridCell initializeCell (int row, int col) {
-    	int s = myInitialStates[row][col];
+        int s = myInitialStates[row][col];
 
         // Note: duplicated code, but no way to subclass an enum to abstract FireState.values
         // Can maybe use reflection, but we don't know that yet
@@ -128,6 +126,12 @@ public class FireGrid extends Grid {
 
     }
 
+    @Override
+    public void updateParams(Map<String, Double> map) {
+    	myProbCatch = map.get("probcatch");
+    	
+    }
+
     // =========================================================================
     // Getters and Setters
     // =========================================================================
@@ -144,13 +148,11 @@ public class FireGrid extends Grid {
 		
 	}
 
-
-	@Override
-	public void updateParams(Map<String, Double> map) {
-		myProbCatch = map.get("probcatch");
-		
-	}
-
+	
+    private void setProbCatch (double set) {
+        myProbCatch = set;
+        
+    }
 
 
 }

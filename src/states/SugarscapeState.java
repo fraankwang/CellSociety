@@ -2,7 +2,10 @@ package states;
 
 import javafx.scene.paint.Color;
 
-
+/**
+ *  Enum of states for the Sugarscape simulation 
+ *
+ */
 public enum SugarscapeState implements State {
 
       AGENT(Color.RED, 0),
