@@ -79,7 +79,7 @@ public abstract class GridView {
 	public void updateUI () {
 		initialize(myGrid.getMyCells());
 		myView = createUI();
-		
+
 	}
 	
 	/**

@@ -10,7 +10,8 @@ import java.util.Map;
 import constants.Parameters;
 import grids.Grid;
 import javafx.scene.Group;
-import javafx.scene.chart.Chart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -43,6 +44,52 @@ public abstract class UIView {
 	 * @return the Group that is the View
 	 */
 	protected abstract Group createView ();
+	
+	/**
+	 * Customized expanding line graph that 
+	 */
+	public abstract void createChart ();
+	
+	/**
+	 * Abstract method for formatting NumberAxis
+	 * @param label
+	 * @return formatted xAxis
+	 */
+	protected NumberAxis formatXAxis (String label) {
+		NumberAxis xAxis = new NumberAxis();
+		xAxis.setLabel(label);
+		xAxis.setAutoRanging(true);
+		xAxis.setMinorTickVisible(false);
+		
+		return xAxis;
+	}
+	
+	/**
+	 * Abstract method for formatting NumberAxis
+	 * @param label
+	 * @return formatted yAxis
+	 */
+	protected NumberAxis formatYAxis(String label, double upperBound) {
+		NumberAxis yAxis = new NumberAxis();
+		yAxis.setLabel(label);
+		yAxis.setUpperBound(upperBound);
+		yAxis.setAutoRanging(false);
+		yAxis.setMinorTickVisible(false);
+		
+		return yAxis;
+	}
+	
+	/**
+	 * Convenience method to update series with data points
+	 * @param series
+	 * @param x-coordinate
+	 * @param y-coordinate
+	 */
+	public void addDataPoint (XYChart.Series<Number, Number> series, double x, double y) {
+		series.getData().add(new XYChart.Data<>(x,y));
+		
+	}
+	
 	
 	/**
 	 * Builds a slider that goes from min to max and starts at defaultValue
@@ -136,8 +183,8 @@ public abstract class UIView {
 		return myLineChart;
 	}
 	
-	protected void setLineChart(Chart chart) {
-		myLineChart = new Group();
-		myLineChart.getChildren().add(chart);
+	protected void setLineChart(Group chart) {
+		myLineChart = chart;
+		
 	}
 }

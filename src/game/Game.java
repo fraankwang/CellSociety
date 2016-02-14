@@ -25,7 +25,9 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import uiviews.FireUIView;
 import uiviews.GameOfLifeUIView;
@@ -115,13 +117,19 @@ public class Game {
             myGrid = new SugarscapeGrid(myParameters);
             uiView = new SugarscapeUIView(myGrid, myParameters);
         
-        }else if (myGameType.equals("ForagingAnts")) {
+        }
+        else if (myGameType.equals("ForagingAnts")) {
             myGrid = new ForagingAntsGrid(myParameters);
         
         }
         
+        myGrid.setMyUIView(uiView);
+        
         myUIRoot = uiView.getView();
+        
+        uiView.createChart();
         myLineChartRoot = uiView.getLineChart();
+        
 
     }
 
@@ -178,8 +186,9 @@ public class Game {
 	 */
 	private ScrollPane createScrollPane () {
 	    ScrollPane sp = new ScrollPane();
+
 	    sp.setPrefSize(myGrid.getMyGridSize().width, myGrid.getMyGridSize().height);
-	    sp.setContent(myGrid.getView());
+	    sp.setContent(myGrid.getGridView());
 	    
 	    return sp;
 	    
@@ -253,6 +262,12 @@ public class Game {
     public void setNeighborDirections (String neighborDirections) {
 		myNeighborDirections = neighborDirections;
 		initializeNeighborOffsets();
+		
+	}
+
+	public void resetGraph() {
+		getMyGrid().getMyUIView().createChart();
+        myLineChartRoot = getMyGrid().getMyUIView().getLineChart();
 		
 	}
 
@@ -346,7 +361,7 @@ public class Game {
     private void initializeGameLoop () {
 
         double framesPerSecond =
-                MILLISECONDS_PER_SECOND * 1 / myParameters.getDelay();
+                MILLISECONDS_PER_SECOND * 1 / myParameters.getDelay() / 10;
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECONDS_PER_SECOND / framesPerSecond),
                                       e -> myGrid.step());
 

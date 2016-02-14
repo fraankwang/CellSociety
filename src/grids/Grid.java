@@ -17,6 +17,7 @@ import constants.Offset;
 import constants.Parameters;
 import gridviews.GridView;
 import javafx.scene.Group;
+import uiviews.UIView;
 
 
 /**
@@ -34,9 +35,11 @@ public abstract class Grid {
     private GridCell[][] myCells;
 
     private List<Offset> myNeighborOffsets;
+    protected UIView myUIView;
 
     // View
     private GridView myGridView;
+    protected long elapsedTime;
 
     /**
      * Constructor - initializes a Grid based on parameters from xml
@@ -117,10 +120,16 @@ public abstract class Grid {
     public void step () {
         setCellStates();
         updateCellStates();
-
+        elapsedTime++;
+        updateUIView();
     }
 
     /**
+     * Updates dynamic graph UI element during each step
+     */
+    protected abstract void updateUIView ();
+
+	/**
      * Updates each cell's next state by calling setCellState for each cell
      */
     protected void setCellStates () {
@@ -322,7 +331,7 @@ public abstract class Grid {
         myRows = gridHeight;
     }
 
-    public Group getView () {
+    public Group getGridView () {
         return myGridView.getMyView();
     }
 
@@ -352,6 +361,18 @@ public abstract class Grid {
 	public void setCellSize(int cellSize) {
 		getMyGridView().setMyCellSize(cellSize);
 		
+	}
+
+	public UIView getMyUIView() {
+		return myUIView;
+	}
+
+	public void setMyUIView(UIView myUIView) {
+		this.myUIView = myUIView;
+	}
+	
+	protected long getElapsedTime () {
+		return elapsedTime;
 	}
 
 }

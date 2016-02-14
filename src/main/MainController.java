@@ -76,10 +76,12 @@ public class MainController {
     		int currentCellSize = myPrimaryGame.getMyGrid().getMyGridView().getMyCellSize();
     		myPrimaryGame.changeCellSizeParameter(currentCellSize);
     		myPrimaryGame.initializeGrid(currentCellSize);
+    		myPrimaryGame.resetGraph();
     		
     		myView.displayGame(myPrimaryGame.getGameRoot());
     		myView.displayParameters(myPrimaryGame.getMyUIRoot());
-
+    		myView.displayLineChart(myPrimaryGame.getLineChartRoot());
+    		
     	}
     	
     }
@@ -146,9 +148,10 @@ public class MainController {
         Parameters params = parseXML(file);
         
         myPrimaryGame = new Game(params);
+        
         myView.displayGame(myPrimaryGame.getGameRoot());
-        myView.displayLineChart(myPrimaryGame.getLineChartRoot());
         myView.displayParameters(myPrimaryGame.getMyUIRoot());
+        myView.displayLineChart(myPrimaryGame.getLineChartRoot());
         
     }
 
@@ -203,13 +206,6 @@ public class MainController {
     		myPrimaryGame.setTimelineRate(speed);
     	}
     }
-    
-    
-    
-    public void updateParams() {
-    	//myPrimaryGame.getMyGrid().updateParameters();
-    }
-    
-    
+        
 
 }

@@ -4,13 +4,18 @@
 
 package grids;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.Random;
 import cells.GridCell;
 import cells.SimpleCell;
 import constants.Parameters;
+import javafx.scene.chart.XYChart;
 import states.FireState;
 import states.State;
+import uiviews.FireUIView;
 
 
 /**
@@ -21,7 +26,9 @@ public class FireGrid extends Grid {
 
     private int[][] myInitialStates;
     private double myProbCatch;
-
+    private int burnedCount = 0;
+    private int treeCount = 0;
+    
     public FireGrid (Parameters params) {
         super(params);
         myProbCatch = Double.parseDouble(params.getParameter("probcatch"));
@@ -38,6 +45,10 @@ public class FireGrid extends Grid {
         // Can maybe use reflection, but we don't know that yet
         for (State state : FireState.values()) {
             if (s == state.getStateValue()) {
+            	if (state == FireState.TREE) {
+            		treeCount++;
+            	}
+            	
                 return new SimpleCell(state, row, col);
             }
         }
@@ -51,9 +62,11 @@ public class FireGrid extends Grid {
     protected void setCellState (GridCell cell) {
         if (cell.getMyCurrentState() == FireState.BURNING) {
             cell.setMyNextState(FireState.BURNED);
+            burnedCount++;
         }
         else if (willCatch(cell)) {
             cell.setMyNextState(FireState.BURNING);
+            treeCount--;
         }
         else {
             cell.setMyNextState(cell.getMyCurrentState());
@@ -65,10 +78,13 @@ public class FireGrid extends Grid {
     protected void toggleState (GridCell cell) {
         if (cell.getMyCurrentState() == FireState.BURNING) {
             cell.setMyCurrentState(FireState.BURNED);
-
+            burnedCount++;
+            treeCount--;
+            
         }
         else if (cell.getMyCurrentState() == FireState.BURNED) {
             cell.setMyCurrentState(FireState.TREE);
+            treeCount++;
 
         }
         else if (cell.getMyCurrentState() == FireState.TREE) {
@@ -148,5 +164,36 @@ public class FireGrid extends Grid {
 		
 	}
 
+	@Override
+	protected void updateUIView() {
+		FireUIView fireView = (FireUIView) getMyUIView();
+		XYChart.Series<Number, Number> treePopulationSeries = fireView.getTreePopulation();
+		XYChart.Series<Number, Number> burnedTrees = fireView.getBurnedTrees();
+		    
+		int[][] currentStates = getCurrentStatesArray();
+		fireView.addDataPoint(treePopulationSeries, getElapsedTime(), percentageTrees(currentStates));
+		fireView.addDataPoint(burnedTrees, getElapsedTime(), percentagedBurnedTrees(currentStates));
+		
+	}
+
+	/**
+	 * Current percentage of non-burned trees
+	 * @param states
+	 * @return
+	 */
+	private int percentageTrees (int[][] states) {
+		return treeCount * 100 / (getRows() * getColumns());
+		
+	}
+	
+	/**
+	 * Accumulated percentage of burned trees
+	 * @param states
+	 * @return
+	 */
+	private double percentagedBurnedTrees (int[][] states) {
+		return burnedCount * 100 / (getRows() * getColumns());
+		
+	}
 
 }

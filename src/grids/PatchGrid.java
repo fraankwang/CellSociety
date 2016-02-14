@@ -159,7 +159,7 @@ public abstract class PatchGrid extends Grid {
      * Determines the next state of each agent by calling setAgentState on each
      */
     protected void setAgentStates () {
-        System.out.println(myAgents.size());
+
         for (Agent agent : myAgents) {
             setAgentState(agent);
         }

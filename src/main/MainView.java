@@ -30,11 +30,14 @@ import javafx.stage.Stage;
 
 public class MainView {
 
-    // Important numbers that shouldn't be changed by user
-    public static final int TOOLBAR_HEIGHT = 50;
-    public static final int GRID_VIEW_SIZE = 600;
-    public static final int WINDOW_HEIGHT = GRID_VIEW_SIZE + TOOLBAR_HEIGHT;
-    public static final int WINDOW_WIDTH = 1000;
+	public static final int WINDOW_HEIGHT = 800;
+	public static final int WINDOW_WIDTH = 1000;
+
+	public static final int TOOLBAR_HEIGHT = 50;
+	public static final int GRID_VIEW_SIZE = 500;
+	public static final int GRAPH_SIZE = WINDOW_HEIGHT - GRID_VIEW_SIZE - TOOLBAR_HEIGHT;
+	public static final int PARAMETER_WIDTH = (WINDOW_WIDTH - GRID_VIEW_SIZE)/2;
+
     public static final int TOOLBAR_BUTTON_INSET_HORIZONTAL = 10;
     public static final int TOOLBAR_BUTTON_INSET_VERTICAL = 2;
 
@@ -222,9 +225,13 @@ public class MainView {
     	
     }
     
-    public void displayLineChart(Group lineChartRoot) {
-    	myPrimaryPane.setBottom(lineChartRoot);
-		
+    /**
+     * Adds graph of populations over time to bottom of window
+     * @param root
+     */
+    public void displayLineChart(Group root) {
+    	myPrimaryPane.setBottom(root);  
+    	
 	}
 
 	/**
@@ -257,5 +264,9 @@ public class MainView {
     public void setController (MainController controller) {
         myController = controller;
     }
+
+	public Group getMyPrimaryRoot() {
+		return myPrimaryRoot;
+	}
 
 }
