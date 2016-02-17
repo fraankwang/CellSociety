@@ -1,3 +1,11 @@
+// This entire file is part of my masterpiece.
+// FRANK WANG
+
+/**
+ * This code represents my masterpiece because I built the original infrastructure (initialize() - which is now initializeGrid())
+ * This is, as the name implies, a manager of everything within the simulation.
+ */
+
 /**
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */
