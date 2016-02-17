@@ -1,3 +1,20 @@
+// This entire file is part of my masterpiece
+// FRANK WANG
+
+/**
+ * This is also part of my code masterpiece. This works in close conjunction with the SimulationManager
+ * class as the controller is mostly controlling elements within SimulationManager. It acts in many ways
+ * as a middleman between MainView and SimulationManager by calling display functions in MainView on UI components
+ * (like Group roots) from the SimulationManager getters. The original simulation is actually instantiated in the
+ * setUpSimulation function, which is after a user selects an XML to be parsed, which can be passed into the 
+ * SimulationManager constructor so that a proper simulation is constructed from the parameters. 
+ * 
+ * I did not include MainView in the masterpiece because I believe it is very simple and only displays
+ * UI elements taken from the MainController, which is why I decided to only include the classes that
+ * hold the primary interactions so that the user can actually view how the model looks.
+ * 
+ */
+
 /**
  * Authors: Frank Wang, Jeremy Schreck, Madhav Kumar
  */

@@ -3,7 +3,24 @@
 
 /**
  * This code represents my masterpiece because I built the original infrastructure (initialize() - which is now initializeGrid())
- * This is, as the name implies, a manager of everything within the simulation.
+ * 
+ * This is, as the name implies, a manager of everything within the simulation. It contains a Grid myGrid,
+ * which contains both the model and view components. 
+ * 
+ * The global variables are all used in getters or setters for the MainController to display on the primaryPane,
+ * for example the LineChartRoot or the UIRoot. 
+ * 
+ * The initializeGrid() method kicks off the simulation by instantiating the Model (new SubclassGrid and SubclassUIView)
+ * along with the GridView which takes myGrid as a reference as the view depends on the model.
+ * 
+ * setRoot() and createScrollPane just work with whatever the global variable myGrid is at, which is important for
+ * displaying in the MainController as we want a display of the current data without reinstantiating the model.
+ * 
+ * SimulationManager also manages the Timeline, and various methods (i.e. MainController telling the SimulationManager
+ * to start/stop/reset or set the Timeline rate) affect the global variable. initializeGameLoop() is called
+ * in the constructor, which is called at the end because it takes the Grid's step() function as something that
+ * each KeyFrame of the Animation does. myGrid.step() continually updates the simulations, which are linked to their views,
+ * which the MainController has linked with the MainView through display functions.
  */
 
 /**
