@@ -9,13 +9,11 @@ import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
-import main.MainView;
-
 
 public class RectangleGridView extends GridView {
 
-    public RectangleGridView (Grid grid, int cellSize) {
-        super(grid, cellSize);
+    public RectangleGridView (Grid grid) {
+        super(grid);
     }
 
     @Override
@@ -58,11 +56,11 @@ public class RectangleGridView extends GridView {
         Group root = new Group();
 
         Pane pane = new Pane();
-        pane.setPrefHeight(MainView.GRID_VIEW_SIZE);
-        pane.setPrefWidth(MainView.GRID_VIEW_SIZE);
+        pane.setPrefHeight(GRID_VIEW_SIZE);
+        pane.setPrefWidth(GRID_VIEW_SIZE);
 
         int cellSize = getMyCellSize();
-
+        
         for (int row = 0; row < getMyRows(); row++) {
             for (int col = 0; col < getMyColumns(); col++) {
                 Polygon shape = (Polygon) getMyCellShapes()[row][col];

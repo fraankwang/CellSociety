@@ -9,13 +9,11 @@ import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
-import main.MainView;
-
 
 public class TriangleGridView extends GridView {
 
-    public TriangleGridView (Grid grid, int cellSize) {
-        super(grid, cellSize);
+    public TriangleGridView (Grid grid) {
+        super(grid);
 
     }
 
@@ -74,8 +72,8 @@ public class TriangleGridView extends GridView {
         Group root = new Group();
 
         Pane pane = new Pane();
-        pane.setPrefHeight(MainView.GRID_VIEW_SIZE);
-        pane.setPrefWidth(MainView.GRID_VIEW_SIZE);
+        pane.setPrefHeight(GRID_VIEW_SIZE);
+        pane.setPrefWidth(GRID_VIEW_SIZE);
 
         int cellSize = getMyCellSize();
         double triangleHeight = (cellSize * Math.sqrt(3.0)) / 2;

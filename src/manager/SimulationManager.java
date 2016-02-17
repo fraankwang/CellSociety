@@ -150,16 +150,16 @@ public class SimulationManager {
         }
 
         if (myGridShape.equals(Constants.RESOURCES.getString("ShapeRectangle"))) {
-            gridView = new RectangleGridView(myGrid, cellSize);
+            gridView = new RectangleGridView(myGrid);
 
         }
         else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeTriangle"))) {
-            gridView = new TriangleGridView(myGrid, cellSize);
+            gridView = new TriangleGridView(myGrid);
 
         }
         else if (myGridShape.equals(Constants.RESOURCES.getString("ShapeHexagon"))) {
             if (myNeighborDirections.equals("All")) {
-                gridView = new HexagonGridView(myGrid, cellSize);
+                gridView = new HexagonGridView(myGrid);
 
             }
             else {
@@ -247,7 +247,7 @@ public class SimulationManager {
         }
 
         getMyGrid().setCellSize(cellSize);
-        getMyGrid().getMyGridView().updateUI();
+        getMyGrid().getMyGridView().reloadView();
         setRoot();
 
     }
